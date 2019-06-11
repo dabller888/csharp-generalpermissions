@@ -1,0 +1,42 @@
+Enhancements in PL/SQL Developer 7.0.1
+======================================
+* Fixed several ODBC Importer issues
+* Fixed "Not enough storage" problem
+* Several SQL Window parsing errors fixed
+* Added two parameters for HTML books:
+  > HTMLBooks= to determine the directory for the book index files
+  > HTMLBookSelection= to determine the path for the book selection
+* HTML Export did not use character set and header preference
+* Hint preferences grid did not always show scrollbar
+* CSV Export did not export null values in the first field(s)
+* Report Window layout grid selection lists did not work correctly
+* Comments were removed from statements when stored in the recall buffer
+* SQL Window would allow tab changes during execution, which could cause 
+  errors
+* SQL Window fetch buttons would focus editor after completion
+* SQL Window "Executing..." message would immediately be cleared
+* SQL Window QBE query is now displayed again for scripts with 1 statement
+* SQL Window column width and order preserved when re-executed 
+* Switching from Single Record view could cause 'Row index out of range' 
+  error for empty result set
+* SQL Window could not be switched to Single Record view for cursor result
+  sets
+* Preferences menu item groups (at the left) would not always have enough 
+  room for contents
+* User Interface preference "Autocomplete dropdown lists" added
+* User Interface preference "Position messageboxes near mouse pointer" added
+* Edit > Next/Previous Tab Page could cause hang-up or error message
+* Added Shift-Delete/Insert (cut/paste) in Large Data Editor
+* Support for Templates in Explain plan Window popup menu
+* Pasting data in Grid could give empty value on next row
+* Edit Object Window could not copy/paste grid data
+* Explain Plan now also enabled for insert statements
+* Comments in the where clause of a browser filter could cause 
+  "missing right parenthesis" error
+* Double-click on a Job in the Browser would do nothing
+* Substitution variable history would override case of entered text
+* Copied & pasted authorizations would not be saved when pressing OK
+* Plug-In function IDE_ExecuteSQLReport would give 
+  "cannot focus invisible window"
+* Plug-In event OnPopup was not called for Session Window popups
+

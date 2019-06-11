@@ -1,0 +1,131 @@
+﻿
+<#@ include file="$(ProjectDir)/mysql/DbHelper.ttinclude"#>
+using System;
+using MySql.Data.MySqlClient;
+using System.Data;
+using System.Collections.Generic;
+namespace ToolSite.Entity
+{
+	public class Config
+	{
+		public static string DefaultDb = "<#=config.DbDatabase#>";
+		public static string ConnStr = "<#=config.ConnectionString#>";
+	}
+		
+<#foreach(var table in DbHelper.GetDbTables(config.ConnectionString, config.DbDatabase)){#>
+<# string tableName = DbHelper.ToSplitFirstUpper(table.TableName); #>
+	public partial class <#=tableName#>
+    {
+		#region Field
+<# foreach(DbColumn column in DbHelper.GetDbColumns(config.ConnectionString, config.DbDatabase, table.TableName)){#>
+		/// <summary>
+        /// <#= column.Comment#>
+        /// </summary>
+		public <#= column.CSharpType#> <#=DbHelper.ToSplitFirstUpper(column.Field)#> { get; set; }
+<#}#>		#endregion
+
+		public int Save()
+		{
+			<#=DbHelper.GetParameter(config.ConnectionString, config.DbDatabase, table.TableName, false)#>
+			string sql = "<#=DbHelper.GetInsertSql(config.ConnectionString, config.DbDatabase, table.TableName)#>";
+		return DBHelper.NoneQuery(sql, paras);
+		}
+		
+		public int Update()
+        {
+
+            <#=DbHelper.GetParameter(config.ConnectionString, config.DbDatabase, table.TableName, true)#>
+			string sql = "<#=DbHelper.GetUpdateSql(config.ConnectionString, config.DbDatabase, table.TableName)#>";
+            return DBHelper.NoneQuery(sql, paras);
+
+        }
+
+		public static int Delete(int id)
+        {
+            string sql = string.Format("DELETE FROM <#=table.TableName#> WHERE id = {0}", id);
+            return DBHelper.NoneQuery(sql);
+
+        }
+
+		public static <#=tableName#> GetById(int id)
+        {
+            string sql = string.Format("SELECT * FROM <#=table.TableName#> WHERE id = {0}", id);
+            DataTable table = DBHelper.GetDateTable(sql);
+			List<<#=tableName#>> list = new DatatableFill<<#=tableName#>>().FillModel(table);
+            //List<<#=tableName#>> list = Mapper.DynamicMap<IDataReader, List<<#=tableName#>>>(table.CreateDataReader());
+            if (list == null || list.Count == 0) return null;
+            return list[0];
+        }
+
+		public static List<<#=tableName#>> GetList()
+        {
+            string sql = "SELECT * FROM <#=table.TableName#>";
+            DataTable table = DBHelper.GetDateTable(sql);
+			List<<#=tableName#>> list = new DatatableFill<<#=tableName#>>().FillModel(table);
+            //List<<#=tableName#>> list = Mapper.DynamicMap<IDataReader, List<<#=tableName#>>>(table.CreateDataReader());
+            return list;
+
+        }
+
+		public static List<<#=tableName#>> Find(string where)
+        {
+            string sql = string.Format("SELECT * FROM <#=table.TableName#> WHERE {0};", where);
+            DataTable table = DBHelper.GetDateTable(sql);
+            return new DatatableFill<<#=tableName#>>().FillModel(table);
+        }
+
+        public static List<<#=tableName#>> Find(string field, string prop)
+        {
+            return Find(string.Format(" {0} = '{1}' ", field, prop));
+
+        }
+
+        public static bool Exist(string field, string prop)
+        {
+            int n = Count(field, prop);
+            return n > 0 ? true : false;
+        }
+
+        public static int Count(string where)
+        {
+            string sql = string.Format("SELECT COUNT(1) FROM <#=table.TableName#> WHERE {0}", where);
+            DataTable table = DBHelper.GetDateTable(sql);
+            return Convert.ToInt32(table.Rows[0][0]);
+        }
+
+        public static int Count(string field, string prop)
+        {
+            return Count(string.Format(" {0} = '{1}' ", field, prop));
+        }
+
+        public static int Count()
+        {
+            return Count(" 1 = 1 ");
+        }
+
+        public static List<<#=tableName#>> Find(int index, int size, ref int count)
+        {
+            count = Count(" 1 = 1 ");
+            string sql = string.Format(" 1 = 1 Order by id desc  LIMIT {0}, {1} ", index * size , size);
+            return Find(sql);
+        }
+
+        public static List<<#=tableName#>> Find(string field, string prop, int index, int size, ref int count)
+        {
+            count = Count(field, prop);
+            string sql = string.Format(" {0} = {1} Order by id desc LIMIT {2}, {3} ", field, prop, index, size);
+            return Find(sql);
+        }
+    }
+
+<#}#>
+}
+
+<#+
+	class config
+    {
+        public static readonly string ConnectionString = "Server=127.0.0.1;Database=toolsite;Uid=root;Pwd=root;";
+        public static readonly string DbDatabase = "toolsite";
+    }
+#>
+

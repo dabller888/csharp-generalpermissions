@@ -1,0 +1,74 @@
+﻿<div style="padding:10px;">
+    <form id="UserInfoForm" method="post" novalidate="novalidate">
+        <table id="tblInfo">
+            <tr>
+                <th><label for="LoginName">用户名</label></th>
+                <td><input class="easyui-textbox" id="LoginName" name="LoginName" data-options="readonly:true" /></td>
+            </tr>
+            <tr>
+                <th><label for="RealName">所属区</label></th>
+                <td>
+                    <select id="RealName" class="easyui-combobox" data-options="readonly:true">
+                        <option value="全部">--全部--</option>
+                        <option value="高新区">高新区</option>
+                        <option value="麻城市">麻城市</option>
+                        <option value="英山县">英山县</option>
+                        <option value="黄州区">黄州区</option>
+                        <option value="浠水县">浠水县</option>
+                        <option value="红安县">红安县</option>
+                        <option value="武穴市">武穴市</option>
+                        <option value="蕲春县">蕲春县</option>
+                        <option value="团风县">团风县</option>
+                        <option value="黄梅县">黄梅县</option>
+                        <option value="龙感湖">龙感湖</option>
+                        <option value="罗田县">罗田县</option>
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <th><label for="Sex">性别</label></th>
+                <td>
+                    <select id="Sex" class="easyui-combobox">
+                        <option value="0">男</option>
+                        <option value="1">女</option>
+                        <option value="2">不详</option>
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <th><label for="Phone">电话</label></th>
+                <td><input class="easyui-numberbox" id="Phone" name="Phone" data-options="validType:'length[1,14]'" /></td>
+            </tr>
+            <tr>
+                <th><label for="Email">邮箱:</label></th>   <!--data-options="validType:'email'"-->
+                <td><input class="easyui-textbox" id="Email" name="Email" data-options="validType:'email'" /></td>
+            </tr>
+            <tr>
+                <td colspan="2" style="text-align:center; padding-top:10px">
+                    <input type="hidden" id="UserId" />
+                    <a href="javascript:void(0)" class="easyui-linkbutton" id="btnRegist" iconcls="icon-ok">确定</a>
+                    <a href="javascript:void(0)" class="easyui-linkbutton" iconcls="icon-cancel" onclick="javascript: $('#personal-set-window').window('close')">关闭</a>
+                </td>
+            </tr>
+        </table>
+    </form>
+</div>
+<script>
+    $(function () {
+        bindUserInfo();
+    });
+
+    function bindUserInfo() {
+        $.getJSON("/Back/System/GetCurrentUser", { }, function (data) {
+            if (data.Code == 1) {
+                $("#UserId").val(data.Content.UserId);
+                $("#LoginName").textbox("setValue", data.Content.LoginName);
+                $("#RealName").combobox("setValue", data.Content.RealName);
+                $("#Sex").combobox("setValue", data.Content.Sex);
+                $("#Phone").numberbox("setValue", data.Content.Phone);
+                $("#Email").textbox("setValue", data.Content.Email);
+            }
+        });
+    }
+
+</script>

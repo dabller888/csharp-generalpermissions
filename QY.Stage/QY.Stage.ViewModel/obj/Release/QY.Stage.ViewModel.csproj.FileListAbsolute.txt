@@ -1,0 +1,10 @@
+D:\install\qy2017\黄冈\QY.Stage\QY.Stage.ViewModel\bin\Release\QY.Stage.ViewModel.dll
+D:\install\qy2017\黄冈\QY.Stage\QY.Stage.ViewModel\bin\Release\QY.Stage.ViewModel.pdb
+D:\install\qy2017\黄冈\QY.Stage\QY.Stage.ViewModel\obj\Release\QY.Stage.ViewModel.dll
+D:\install\qy2017\黄冈\QY.Stage\QY.Stage.ViewModel\obj\Release\QY.Stage.ViewModel.pdb
+D:\install\qy2017\黄冈\QY.Stage\QY.Stage.ViewModel\obj\Release\QY.Stage.ViewModel.csprojResolveAssemblyReference.cache
+D:\install\qy2017\黄冈\QY.Stage20171010完\QY.Stage\QY.Stage.ViewModel\bin\Release\QY.Stage.ViewModel.dll
+D:\install\qy2017\黄冈\QY.Stage20171010完\QY.Stage\QY.Stage.ViewModel\bin\Release\QY.Stage.ViewModel.pdb
+D:\install\qy2017\黄冈\QY.Stage20171010完\QY.Stage\QY.Stage.ViewModel\obj\Release\QY.Stage.ViewModel.dll
+D:\install\qy2017\黄冈\QY.Stage20171010完\QY.Stage\QY.Stage.ViewModel\obj\Release\QY.Stage.ViewModel.pdb
+D:\install\qy2017\黄冈\QY.Stage20171010完\QY.Stage\QY.Stage.ViewModel\obj\Release\QY.Stage.ViewModel.csprojResolveAssemblyReference.cache

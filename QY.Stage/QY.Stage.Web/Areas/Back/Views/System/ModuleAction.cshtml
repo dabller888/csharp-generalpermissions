@@ -1,0 +1,205 @@
+﻿@using Newtonsoft.Json;
+@using QY.Stage.PocoModel;
+
+<div class="easyui-layout" style="width:100%;height:100%;">
+    <div data-options="region:'north',split:false,title:'',collapsible:false,border:false" style="height: 300px; overflow: hidden;">
+        <div class=" easyui-layout" style="width:100%;height:100%;">
+            <div data-options="region:'west',split:true,title:'模块',collapsible:false" style="width:500px;padding:5px;">
+                <div>
+                    <table id="Modules"></table>
+                </div>
+            </div>
+            <div data-options="region:'center',title:'功能'" style="padding:5px;">
+                <div>
+                    <table id="Actions"></table>
+                </div>
+            </div>
+            <div data-options="region:'south',split:false,title:''" style="height:45px;">
+                <div style="text-align:center; padding-top:5px">
+                    <input type="hidden" id="ModuleId" />
+                    <a href="javascript:void(0)" class="easyui-linkbutton" id="btnAdd" iconcls="icon-add">添加</a>
+                    <a href="javascript:void(0)" class="easyui-linkbutton" id="btnDelete" iconcls="icon-remove">删除</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div data-options="region:'south',title:'模块功能',collapsible:false" style="height:300px;padding:5px;">
+        <div>
+            <table id="ModuleActions"></table>
+        </div>
+    </div>
+</div>
+<script>
+    $(function () {
+        initModules();
+        initActions();
+        initModuleActions({ ModuleActionId: 0 });
+        bindEvents();
+        var userActions = JSON.parse("@JsonConvert.SerializeObject(Session[(Session["UserInfo"] as SysUser).LoginName + "action"])".replace(/&quot;/g, "\""));
+        var actions = JSON.parse("@JsonConvert.SerializeObject(Session["action"])".replace(/&quot;/g, "\""));
+        user.renderActions(userActions, actions);
+    });
+
+    function initModules() {
+        var selectIndex = 111111;
+        $('#Modules').datagrid({
+            title: '',
+            iconCls: 'icon-blank',
+            height: 500,
+            width: '100%',
+            singleSelect: true,
+            nowrap: true,
+            autoRowHeight: false,
+            striped: true,
+            url: '/Back/System/GetModuleList',
+            sortName: 'ModuleId',
+            sortOrder: 'asc',
+            striped: true,
+            border: true,
+            remoteSort: false,
+            idField: 'ModuleId',
+            columns: [[
+                { field: 'ck', checkbox: true, hidden: true },
+                { field: 'ModuleId', title: '模块编号', width: 30, hidden: true },
+                { field: 'ModulePId', title: '上级编号', width: 50, align: "center" },
+                { field: 'ModuleName', title: '模块名称', width: 100 },
+                { field: 'ModuleUrl', title: '模块地址', width: 200 }
+            ]], onClickRow: function (index, data) {
+                var row = $('#Modules').datagrid('getSelected');
+                if (index == selectIndex) {
+                    //第一次单击选中,第二次单击取消选中
+                    $('#Modules').datagrid("getPanel").find(".datagrid-view2 .datagrid-body table input[type='checkbox']:eq(" + index + ") ").attr("checked", false);
+                    $('#Modules').datagrid('clearSelections');
+                    $('#ModuleId').val("");
+                } else {
+                    $('#ModuleId').val(row.ModuleId);
+                    initModuleActions({ ModuleActionId: row.ModuleId });
+                    initActions({ ModuleActionId: row.ModuleId });
+                }
+                selectIndex = index;
+            }
+        });
+    }
+
+    function initActions(queryData) {
+        $('#Actions').datagrid({
+            title: '',
+            iconCls: 'icon-blank',
+            height: 560,
+            width: '100%',
+            nowrap: true,
+            autoRowHeight: false,
+            striped: true,
+            collapsible: true,
+            url: '/Back/System/GetModuleNotMA',
+            sortName: 'ActionId',
+            sortOrder: 'asc',
+            striped: true,
+            border: true,
+            remoteSort: false,
+            idField: 'ActionId',
+            rownumbers: false,
+            queryParams: queryData,
+            columns: [[
+                { field: 'ck', checkbox: true },
+                { field: 'ActionId', title: '功能编号', width: 80, hidden: true },
+                { field: 'ActionName', title: '功能名称', width: 80, align: "center" },
+                { field: 'ButtonCode', title: '功能编码', width: 100 },
+                { field: 'ParaName', title: '参数编码', width: 100 }
+            ]]
+        });
+    }
+
+    function initModuleActions(queryData) {
+        $('#ModuleActions').datagrid({
+            title: '',
+            iconCls: 'icon-blank',
+            height: 500,
+            width: '100%',
+            nowrap: true,
+            autoRowHeight: false,
+            striped: true,
+            url: '/Back/System/GetModuleAction',
+            sortName: 'ModuleActionId',
+            sortOrder: 'asc',
+            striped: true,
+            border: true,
+            remoteSort: false,
+            idField: 'ModuleActionId',
+            queryParams: queryData,
+            columns: [[
+                { field: 'ck', checkbox: true },
+                { field: 'ModuleActionId', title: '模块编号', width: 80, hidden: true },
+                { field: 'ModuleId', title: '模块编号', width: 80, hidden: true },
+                { field: 'ActionId', title: '模块编号', width: 80, hidden: true },
+                { field: 'ModuleName', title: '模块名称', width: 100, sortable: true },
+                { field: 'ActionName', title: '功能名称', width: 100, sortable: true },
+                { field: 'ButtonCode', title: '模块地址', width: 160, sortable: true }
+            ]]
+        });
+    }
+
+    function bindEvents() {
+        $('#btnAdd').click(function () {
+            var moduleId = $('#ModuleId').val();
+            var actions = $('#Actions').datagrid('getSelections');
+            if (moduleId === "") {
+                $.messager.alert("友情提示", "请选择一条模块数据", "warning");
+                return false;
+            }
+            if (actions.length <= 0) {
+                $.messager.alert("友情提示", "请选择功能", "warning");
+                return false;
+            }
+            var mas = "";
+            for (var i = 0; i < actions.length; i++) {
+                mas += '{"ModuleActionId":0,"ModuleId":' + moduleId + ',"ActionId":' + actions[i].ActionId + '},';
+            }
+            mas = "[" + mas.substring(0, mas.length - 1) + "]";
+            $.post("/Back/System/AddModuleAction", {
+                ModuleActionIds: mas
+            }, function (data) {
+                if (data.Code == 1) {
+                    $.messager.alert("友情提示", "添加成功", "success");
+                    $("#Actions").datagrid("reload");
+                    $("#Actions").datagrid("clearSelections");
+
+                    $("#ModuleActions").datagrid("reload");
+                    $("#ModuleActions").datagrid("clearSelections");
+                }
+                else {
+                    $.messager.alert("友情提示", "添加失败:" + data, "warning");
+                }
+            });
+        });
+
+        $('#btnDelete').click(function () {
+            var items = $('#ModuleActions').datagrid('getSelections');
+            if (items.length >= 1) {
+                var ModuleActionIds = "";
+                for (var i = 0; i < items.length; i++) {
+                    ModuleActionIds += items[i].ModuleActionId + ",";
+                }
+                ModuleActionIds = ModuleActionIds.substring(0, ModuleActionIds.length - 1);
+                $.post("/Back/System/DeleteModuleAction", {
+                    ModuleActionIds: ModuleActionIds
+                }, function (data) {
+                    if (data.Code == 1) {
+                        $.messager.alert("友情提示", "删除成功", "success");
+                        $("#Actions").datagrid("reload");
+                        $("#Actions").datagrid("clearSelections");
+
+                        $("#ModuleActions").datagrid("reload");
+                        $("#ModuleActions").datagrid("clearSelections");
+                    }
+                    else {
+                        $.messager.alert("友情提示", "删除失败:" + data, "warning");
+                    }
+                });
+            }
+            else {
+                $.messager.alert("友情提示", "请您选择需要删除模块功能", "warning")
+            }
+        });
+    }
+</script>

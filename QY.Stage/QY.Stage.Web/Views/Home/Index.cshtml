@@ -1,0 +1,464 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <title></title>
+    <link rel="stylesheet" href="/Content/css/bass.css" />
+    <style>
+        body, html {
+            width: 100%;
+            height: 100%;
+            float: left;
+        }
+
+        .Gg-top {
+            width: 100%;
+            height: 145px;
+            float: left;
+        }
+
+        .ad {
+            width: 100%;
+            height: 100%;
+            float: left;
+        }
+
+        .topimg {
+            float: left;
+            width: 100%;
+            height: 100%;
+        }
+
+        .map {
+            height: 500px;
+            width: 100%;
+            position: relative;
+            float: left;
+        }
+
+        #allmap {
+            width: 100%;
+            height: 100%;
+        }
+
+        /*百度地图去掉下标*/
+        .anchorBL {
+            display: none;
+        }
+
+        .map-title {
+            position: absolute;
+            top: 0px;
+            left: 5%;
+            border-radius: 40px;
+            overflow: hidden;
+            width: 87%;
+            height: 45px;
+            background: url(/Content/img/map-top.png) no-repeat;
+            background-size: cover;
+            z-index: 10;
+        }
+
+        .information {
+            position: absolute;
+            top: 45px;
+            width: 92%;
+            min-height: 110px;
+            left: 4%;
+            background: white;
+            z-index: 10;
+            box-sizing: border-box;
+            padding: 0 15px;
+            float: left;
+            padding-bottom: 5px;
+        }
+
+        .i-name {
+            width: 100%;
+            float: left;
+            border-bottom: 1px solid #dcdcdc;
+            line-height: 40px;
+            font-size: 17px;
+            color: #333333;
+        }
+
+        .i-phone {
+            float: left;
+            width: 100%;
+            line-height: 30px;
+            font-size: 15px;
+        }
+
+        .icon {
+            width: 12px;
+            height: 20px;
+            margin-top: 5px;
+            margin-right: 10px;
+            float: left;
+        }
+
+        .i-address {
+            float: left;
+            width: 100%;
+            line-height: 20px;
+            font-size: 15px;
+        }
+
+        .now-location {
+            float: left;
+            width: 100%;
+            line-height: 20px;
+            font-size: 15px;
+            margin-top: 5px;
+        }
+
+        .icon-adress {
+            width: 13px;
+            height: 17px;
+            margin-top: 3px;
+            margin-right: 10px;
+            float: left;
+        }
+
+        .m-foot {
+            position: absolute;
+            bottom: 35px;
+            height: 100px;
+            left: 5%;
+            width: 90%;
+        }
+
+        .f-tab {
+            height: 40px;
+            width: 100%;
+            float: left;
+        }
+
+        .tab {
+            width: 65%;
+            height: 100%;
+            background: white;
+            border-radius: 40px 40px 40px 0px;
+        }
+
+        .tabul {
+            width: 100%;
+            display: flex;
+            line-height: 40px;
+        }
+
+            .tabul li {
+                flex: 1;
+                text-align: center;
+                font-size: 14px;
+            }
+
+        .call {
+            float: left;
+            height: 50px;
+            width: 100%;
+            margin-top: 15px;
+        }
+
+        .send {
+            width: 70%;
+            height: 100%;
+            float: left;
+            background: #4287ff;
+            border-radius: 5px;
+            color: white;
+            box-sizing: border-box;
+            text-align: center;
+            font-size: 17px;
+            border: 0;
+            padding: 10px 0px 10px 10px;
+        }
+
+        .b-text {
+            float: left;
+        }
+
+        .call-one {
+            width: 25%;
+            height: 100%;
+            float: right;
+            background: #ff3c3c;
+            border-radius: 5px;
+            line-height: 50px;
+            text-align: center;
+            font-size: 17px;
+            color: white;
+        }
+
+        .s-icon {
+            float: left;
+            margin-top: 3px;
+            margin-right: 5px;
+        }
+
+        .foot2 {
+            float: left;
+            width: 100%;
+            height: 200px;
+        }
+
+            .foot2 img {
+                float: left;
+                width: 100%;
+                height: 200px;
+            }
+
+        .send:disabled {
+            opacity: 0.6;
+        }
+
+        .points {
+            position: fixed;
+            background: rgba(255,255,255,0.8);
+            top: 60%;
+            left: 15%;
+            z-index: 100;
+            box-sizing: border-box;
+            padding: 10px;
+            display: none;
+        }
+
+        .t-footer2 {
+            float: left;
+            width: 100%;
+        }
+
+        .shade {
+            width: 100%;
+            height: 100%;
+            position: fixed;
+            top: 0;
+            background: rgba(0,0,0,0.5);
+            z-index: 1000;
+        }
+
+        .s-text {
+            font-size: 18px;
+            color: white;
+            position: absolute;
+            left: 35%;
+            top: 42%;
+            width: 100px;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <!--
+        描述：顶部广告位
+    -->
+    <div class="Gg-top">
+        <a class="ad">
+            <img src="/Content/img/top.jpg" class="topimg" />
+        </a>
+    </div>
+
+
+    <!--
+        描述：地图
+    -->
+    <div class="map">
+        <!--
+            描述：头部
+        -->
+        <div class="map-title">
+
+        </div>
+
+        <!--
+            描述：当前人的信息
+        -->
+        <div class="information">
+            @if (ViewBag.elder != null) {
+                <div class="i-name">
+                    @ViewBag.elder.ElderName
+                </div>
+
+                <p class="i-phone"> <img src="/Content/img/icon-phone.png" class="icon" />紧急联系人:  @ViewBag.elder.FirstPhone</p>
+                
+            }
+
+            <p class="now-location">
+                <img src="/Content/img/icon-address.png" class="icon-adress" />
+                <span>当前位置:</span>
+                <span id="n-wz"></span>
+            </p>
+
+        </div>
+        <!--
+            描述：地图
+        -->
+        <div id="allmap">
+
+        </div>
+        <!--
+            描述：打电话发短信
+        -->
+        <div class="m-foot">
+            <!--<div class="f-tab">
+                <div class="tab">
+                    <ul class="tabul">
+                        <li>老人迷路</li>
+                        <li>老人迷路</li>
+                        <li>老人迷路</li>
+                    </ul>
+                </div>
+            </div>-->
+
+            <div class="call">
+                <button type="button" class="send" id="send">
+                    <img src="/Content/img/message1.png" class="s-icon" />
+                    <span>发送求助信息给TA的家人</span>
+                </button>
+
+                <a class="call-one" href="tel:110">
+                    <img src="/Content/img/phone.png" />
+                    <span>110</span>
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!--
+        描述：底部广告位
+    -->
+    <img src="/Content/img/t-foot2.jpg" class="t-footer2">
+    <a class="foot2">
+        <img src="/Content/img/footer2.png" />
+    </a>
+
+    <!--
+        描述：温馨提示
+    -->
+
+    <div class="points" id="tishi">
+        温馨提示:如位置偏差过大请重新扫码
+    </div>
+
+    <!--
+        描述：遮罩层
+    -->
+
+    <div class="shade">
+        <span class="s-text">
+            
+        </span>
+
+    </div>
+
+</body>
+<script src="/Content/js/jquery.min.js"></script>
+<script src="http://api.map.baidu.com/api?v=2.0&ak=OdAuOHwOAjD6byM4y7iUM1eI"></script>
+
+<script>
+    // 百度地图API功能
+    var map = new BMap.Map("allmap");    // 创建Map实例
+    map.centerAndZoom(new BMap.Point(114.30, 30.60), 16);  // 初始化地图,设置中心点坐标和地图级别
+    var geoc = new BMap.Geocoder();   //地址解析对象
+    map.disableDragging();     //禁止拖拽
+
+    var geolocation = new BMap.Geolocation();
+    geolocation.getCurrentPosition(function (r) {
+        if (this.getStatus() == BMAP_STATUS_SUCCESS) {
+            var myIcon = new BMap.Icon('/Content/img/map-icon.png', new BMap.Size(20, 30));
+            var mk = new BMap.Marker(r.point, { icon: myIcon });
+            map.addOverlay(mk);
+            map.panTo(r.point);
+            //console.log(mk)
+            geoc.getLocation(r.point, function (rs) {
+                var addComp = rs.addressComponents;
+                var address = addComp.province + addComp.city + addComp.district + addComp.street + addComp.streetNumber;
+                //alert(address);
+                document.getElementById("tishi").style.display = 'block'
+                setTimeout(function () {
+                    document.getElementById("tishi").style.display = 'none'
+                }, 2000)
+
+                document.getElementById("n-wz").innerHTML = address;
+
+            });
+
+        }
+        else {
+            alert('failed' + this.getStatus());
+        }
+    }, { enableHighAccuracy: true })
+
+    $(function () {
+        $('.shade').hide();
+    })
+
+    var timer = 60;
+    var send = document.getElementById("send");
+
+    send.onclick = function () {
+        $.ajax({
+            url: '/Home/SendSMS',
+            type: 'POST',
+            datatype: 'json',
+            data: {
+                SerialNo: getUrlParam("id")
+            },
+            beforeSend: function () {
+                send.setAttribute("disabled", true);
+                var setimer = setInterval(function () {
+                    timer--;
+                    send.innerHTML = timer + "s之后重新发送"
+                    if (timer == 0) {
+                        clearInterval(setimer);
+                        send.removeAttribute("disabled")
+                        send.innerHTML = "点击重新发送"
+                    }
+                }, 1000)
+
+            },
+            success: function (data) {
+                console.log(JSON.stringify(data))
+                if (data.Code == 1) {
+                    var res = data.Data;
+                    if (res.error_code == '0') {
+                        $('.shade .s-text').text(res.reason);
+                    } else {
+
+                    }
+
+                } else if (data.Code == 0) {
+                    $('.shade .s-text').text(data.Message);
+                } else if (data.Code == 2 || data.Code == 3 || data.Code == 4) {
+                    $('.shade .s-text').text(data.Message);
+                }
+                $('.shade').show();
+                setTimeout(function () {
+                    $('.shade').hide();
+                }, 2000);
+            },
+            error: function (err) {
+                $('.shade .s-text').text(err);
+                $('.shade').hide();
+                setTimeout(function () {
+                    $('.shade').hide();
+                }, 1000);
+            }
+        });        
+    }
+
+
+    var id = getUrlParam("id");
+    function getUrlParam(name) {
+        var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)");
+        var r = window.location.search.substr(1).match(reg);
+        if (r != null) return unescape(r[2]); return null;
+    }
+
+
+
+
+</script>
+
+</html>

@@ -1,0 +1,47 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Controllers xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <!--系统控制器-->
+  <System>
+    <Actions>
+      <!--用户-->
+      <GetUserList>search</GetUserList>
+      <GetUserDetails>edit|show</GetUserDetails>
+      <SaveUser>add|edit</SaveUser>
+      <DeleteUsers>delete</DeleteUsers>
+      <ModifyPasswd>passwd</ModifyPasswd>
+      <EnableUser>enable</EnableUser>
+      
+      <DeleteUserRole>enable</DeleteUserRole>
+      <AddUserRole>enable</AddUserRole>
+      <GetUsersNotUR>enable</GetUsersNotUR>
+      <GetPatchUserRole>enable</GetPatchUserRole>
+
+      <!--角色-->
+      <GetRoleList></GetRoleList>
+      <GetRoleDetails></GetRoleDetails>
+      <SaveRole></SaveRole>
+      <DeleteRoles></DeleteRoles>
+      
+      <GetAllModuleActionAndSelected>search</GetAllModuleActionAndSelected>
+      <AddRoleModuleAction>add</AddRoleModuleAction>
+
+      <!--模块-->
+      <GetModuleList></GetModuleList>
+      <GetModuleDetails></GetModuleDetails>
+      <SaveModule></SaveModule>
+      <DeleteModules></DeleteModules>
+      
+      <GetModuleNotMA></GetModuleNotMA>
+      <GetModuleAction></GetModuleAction>
+      <AddModuleAction></AddModuleAction>
+      <DeleteModuleAction></DeleteModuleAction>
+
+      <!--功能-->
+      <GetActionList></GetActionList>
+      <GetActionDetails></GetActionDetails>
+      <SaveAction></SaveAction>
+      <DeleteActions></DeleteActions>
+      
+    </Actions>    
+  </System>
+</Controllers>

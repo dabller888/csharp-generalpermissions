@@ -1,0 +1,23 @@
+﻿@using QY.Stage.Model.ViewModel;
+@model IEnumerable<TestViewModel>
+@{
+    var test = (TestViewModel)ViewBag.t;
+    ViewBag.Title = "Index";
+}
+<ul>
+    @*@foreach (var item in Model) {
+
+        <li>
+            <div>@item.Id</div>
+            <div>@item.Name</div>
+        </li>
+    }*@
+
+    @foreach (var item in ViewBag.users) { 
+        <li>
+            @item.UserId,@item.LoginName
+        </li>
+    }
+</ul>
+
+@test.Name

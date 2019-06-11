@@ -1,0 +1,858 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{4E172D0E-58E8-44D9-AAD1-975199BC4B80}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>CodeGeneral</RootNamespace>
+    <AssemblyName>CodeGeneral</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="MySql.Data, Version=5.2.3.0, Culture=neutral, PublicKeyToken=c5687fc88969c44d, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>lib\MySql.Data.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="333333\Controller\controller.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>controller.tt</DependentUpon>
+    </Compile>
+    <Compile Include="333333\Controller\ElderController.cs">
+      <DependentUpon>controller.tt</DependentUpon>
+    </Compile>
+    <Compile Include="333333\Controller\GroupModuleController.cs">
+      <DependentUpon>controller.tt</DependentUpon>
+    </Compile>
+    <Compile Include="333333\Controller\GroupRoleController.cs">
+      <DependentUpon>controller.tt</DependentUpon>
+    </Compile>
+    <Compile Include="333333\Controller\GroupUserController.cs">
+      <DependentUpon>controller.tt</DependentUpon>
+    </Compile>
+    <Compile Include="333333\Controller\ModuleActionController.cs">
+      <DependentUpon>controller.tt</DependentUpon>
+    </Compile>
+    <Compile Include="333333\Controller\RoleGroupController.cs">
+      <DependentUpon>controller.tt</DependentUpon>
+    </Compile>
+    <Compile Include="333333\Controller\RoleModuleController.cs">
+      <DependentUpon>controller.tt</DependentUpon>
+    </Compile>
+    <Compile Include="333333\Controller\RoleUserController.cs">
+      <DependentUpon>controller.tt</DependentUpon>
+    </Compile>
+    <Compile Include="333333\Controller\SysActionController.cs">
+      <DependentUpon>controller.tt</DependentUpon>
+    </Compile>
+    <Compile Include="333333\Controller\SysDepartmentController.cs">
+      <DependentUpon>controller.tt</DependentUpon>
+    </Compile>
+    <Compile Include="333333\Controller\SysGroupController.cs">
+      <DependentUpon>controller.tt</DependentUpon>
+    </Compile>
+    <Compile Include="333333\Controller\SysLogController.cs">
+      <DependentUpon>controller.tt</DependentUpon>
+    </Compile>
+    <Compile Include="333333\Controller\SysModuleController.cs">
+      <DependentUpon>controller.tt</DependentUpon>
+    </Compile>
+    <Compile Include="333333\Controller\SysRoleController.cs">
+      <DependentUpon>controller.tt</DependentUpon>
+    </Compile>
+    <Compile Include="333333\Controller\SysUserController.cs">
+      <DependentUpon>controller.tt</DependentUpon>
+    </Compile>
+    <Compile Include="333333\Controller\UserGroupController.cs">
+      <DependentUpon>controller.tt</DependentUpon>
+    </Compile>
+    <Compile Include="333333\Controller\UserModuleController.cs">
+      <DependentUpon>controller.tt</DependentUpon>
+    </Compile>
+    <Compile Include="333333\Controller\UserRoleController.cs">
+      <DependentUpon>controller.tt</DependentUpon>
+    </Compile>
+    <Compile Include="333333\cxt\dbcontext.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>dbcontext.tt</DependentUpon>
+    </Compile>
+    <Compile Include="333333\DAO\ElderRepository.cs">
+      <DependentUpon>dao.tt</DependentUpon>
+    </Compile>
+    <Compile Include="333333\Elder.cs">
+      <DependentUpon>ooooo.tt</DependentUpon>
+    </Compile>
+    <Compile Include="333333\Entity\entity.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>entity.tt</DependentUpon>
+    </Compile>
+    <Compile Include="333333\Entity\GroupModule.cs">
+      <DependentUpon>entity.tt</DependentUpon>
+    </Compile>
+    <Compile Include="333333\Entity\GroupRole.cs">
+      <DependentUpon>entity.tt</DependentUpon>
+    </Compile>
+    <Compile Include="333333\Entity\GroupUser.cs">
+      <DependentUpon>entity.tt</DependentUpon>
+    </Compile>
+    <Compile Include="333333\Entity\ModuleAction.cs">
+      <DependentUpon>entity.tt</DependentUpon>
+    </Compile>
+    <Compile Include="333333\Entity\RoleGroup.cs">
+      <DependentUpon>entity.tt</DependentUpon>
+    </Compile>
+    <Compile Include="333333\Entity\RoleModule.cs">
+      <DependentUpon>entity.tt</DependentUpon>
+    </Compile>
+    <Compile Include="333333\Entity\RoleUser.cs">
+      <DependentUpon>entity.tt</DependentUpon>
+    </Compile>
+    <Compile Include="333333\Entity\SysAction.cs">
+      <DependentUpon>entity.tt</DependentUpon>
+    </Compile>
+    <Compile Include="333333\Entity\SysDepartment.cs">
+      <DependentUpon>entity.tt</DependentUpon>
+    </Compile>
+    <Compile Include="333333\Entity\SysGroup.cs">
+      <DependentUpon>entity.tt</DependentUpon>
+    </Compile>
+    <Compile Include="333333\Entity\SysLog.cs">
+      <DependentUpon>entity.tt</DependentUpon>
+    </Compile>
+    <Compile Include="333333\Entity\SysModule.cs">
+      <DependentUpon>entity.tt</DependentUpon>
+    </Compile>
+    <Compile Include="333333\Entity\SysRole.cs">
+      <DependentUpon>entity.tt</DependentUpon>
+    </Compile>
+    <Compile Include="333333\Entity\SysUser.cs">
+      <DependentUpon>entity.tt</DependentUpon>
+    </Compile>
+    <Compile Include="333333\Entity\UserGroup.cs">
+      <DependentUpon>entity.tt</DependentUpon>
+    </Compile>
+    <Compile Include="333333\Entity\UserModule.cs">
+      <DependentUpon>entity.tt</DependentUpon>
+    </Compile>
+    <Compile Include="333333\Entity\UserRole.cs">
+      <DependentUpon>entity.tt</DependentUpon>
+    </Compile>
+    <Compile Include="333333\ooooo.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ooooo.tt</DependentUpon>
+    </Compile>
+    <Compile Include="333333\GroupModule.cs">
+      <DependentUpon>ooooo.tt</DependentUpon>
+    </Compile>
+    <Compile Include="333333\GroupRole.cs">
+      <DependentUpon>ooooo.tt</DependentUpon>
+    </Compile>
+    <Compile Include="333333\GroupUser.cs">
+      <DependentUpon>ooooo.tt</DependentUpon>
+    </Compile>
+    <Compile Include="333333\ModuleAction.cs">
+      <DependentUpon>ooooo.tt</DependentUpon>
+    </Compile>
+    <Compile Include="333333\RoleGroup.cs">
+      <DependentUpon>ooooo.tt</DependentUpon>
+    </Compile>
+    <Compile Include="333333\RoleModule.cs">
+      <DependentUpon>ooooo.tt</DependentUpon>
+    </Compile>
+    <Compile Include="333333\RoleUser.cs">
+      <DependentUpon>ooooo.tt</DependentUpon>
+    </Compile>
+    <Compile Include="333333\SysAction.cs">
+      <DependentUpon>ooooo.tt</DependentUpon>
+    </Compile>
+    <Compile Include="333333\SysDepartment.cs">
+      <DependentUpon>ooooo.tt</DependentUpon>
+    </Compile>
+    <Compile Include="333333\SysGroup.cs">
+      <DependentUpon>ooooo.tt</DependentUpon>
+    </Compile>
+    <Compile Include="333333\SysLog.cs">
+      <DependentUpon>ooooo.tt</DependentUpon>
+    </Compile>
+    <Compile Include="333333\SysModule.cs">
+      <DependentUpon>ooooo.tt</DependentUpon>
+    </Compile>
+    <Compile Include="333333\SysRole.cs">
+      <DependentUpon>ooooo.tt</DependentUpon>
+    </Compile>
+    <Compile Include="333333\SysUser.cs">
+      <DependentUpon>ooooo.tt</DependentUpon>
+    </Compile>
+    <Compile Include="333333\Service\ElderService.cs">
+      <DependentUpon>services.tt</DependentUpon>
+    </Compile>
+    <Compile Include="333333\Service\GroupModuleService.cs">
+      <DependentUpon>services.tt</DependentUpon>
+    </Compile>
+    <Compile Include="333333\Service\GroupRoleService.cs">
+      <DependentUpon>services.tt</DependentUpon>
+    </Compile>
+    <Compile Include="333333\Service\GroupUserService.cs">
+      <DependentUpon>services.tt</DependentUpon>
+    </Compile>
+    <Compile Include="333333\Service\ModuleActionService.cs">
+      <DependentUpon>services.tt</DependentUpon>
+    </Compile>
+    <Compile Include="333333\Service\RoleGroupService.cs">
+      <DependentUpon>services.tt</DependentUpon>
+    </Compile>
+    <Compile Include="333333\Service\RoleModuleService.cs">
+      <DependentUpon>services.tt</DependentUpon>
+    </Compile>
+    <Compile Include="333333\Service\RoleUserService.cs">
+      <DependentUpon>services.tt</DependentUpon>
+    </Compile>
+    <Compile Include="333333\Service\services.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>services.tt</DependentUpon>
+    </Compile>
+    <Compile Include="333333\Service\SysActionService.cs">
+      <DependentUpon>services.tt</DependentUpon>
+    </Compile>
+    <Compile Include="333333\Service\SysDepartmentService.cs">
+      <DependentUpon>services.tt</DependentUpon>
+    </Compile>
+    <Compile Include="333333\Service\SysGroupService.cs">
+      <DependentUpon>services.tt</DependentUpon>
+    </Compile>
+    <Compile Include="333333\Service\SysLogService.cs">
+      <DependentUpon>services.tt</DependentUpon>
+    </Compile>
+    <Compile Include="333333\Service\SysModuleService.cs">
+      <DependentUpon>services.tt</DependentUpon>
+    </Compile>
+    <Compile Include="333333\Service\SysRoleService.cs">
+      <DependentUpon>services.tt</DependentUpon>
+    </Compile>
+    <Compile Include="333333\Service\SysUserService.cs">
+      <DependentUpon>services.tt</DependentUpon>
+    </Compile>
+    <Compile Include="333333\Service\UserGroupService.cs">
+      <DependentUpon>services.tt</DependentUpon>
+    </Compile>
+    <Compile Include="333333\Service\UserModuleService.cs">
+      <DependentUpon>services.tt</DependentUpon>
+    </Compile>
+    <Compile Include="333333\Service\UserRoleService.cs">
+      <DependentUpon>services.tt</DependentUpon>
+    </Compile>
+    <Compile Include="333333\UI\UI2.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>UI2.tt</DependentUpon>
+    </Compile>
+    <Compile Include="333333\UI\UI.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>UI.tt</DependentUpon>
+    </Compile>
+    <Compile Include="333333\UserGroup.cs">
+      <DependentUpon>ooooo.tt</DependentUpon>
+    </Compile>
+    <Compile Include="333333\UserModule.cs">
+      <DependentUpon>ooooo.tt</DependentUpon>
+    </Compile>
+    <Compile Include="333333\UserRole.cs">
+      <DependentUpon>ooooo.tt</DependentUpon>
+    </Compile>
+    <Compile Include="333333\EntityMapping\config.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>config.tt</DependentUpon>
+    </Compile>
+    <Compile Include="333333\DAO\dao.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>dao.tt</DependentUpon>
+    </Compile>
+    <Compile Include="333333\DAO\GroupModuleRepository.cs">
+      <DependentUpon>dao.tt</DependentUpon>
+    </Compile>
+    <Compile Include="333333\DAO\GroupRoleRepository.cs">
+      <DependentUpon>dao.tt</DependentUpon>
+    </Compile>
+    <Compile Include="333333\DAO\GroupUserRepository.cs">
+      <DependentUpon>dao.tt</DependentUpon>
+    </Compile>
+    <Compile Include="333333\DAO\ModuleActionRepository.cs">
+      <DependentUpon>dao.tt</DependentUpon>
+    </Compile>
+    <Compile Include="333333\DAO\RoleGroupRepository.cs">
+      <DependentUpon>dao.tt</DependentUpon>
+    </Compile>
+    <Compile Include="333333\DAO\RoleModuleRepository.cs">
+      <DependentUpon>dao.tt</DependentUpon>
+    </Compile>
+    <Compile Include="333333\DAO\RoleUserRepository.cs">
+      <DependentUpon>dao.tt</DependentUpon>
+    </Compile>
+    <Compile Include="333333\DAO\SysActionRepository.cs">
+      <DependentUpon>dao.tt</DependentUpon>
+    </Compile>
+    <Compile Include="333333\DAO\SysDepartmentRepository.cs">
+      <DependentUpon>dao.tt</DependentUpon>
+    </Compile>
+    <Compile Include="333333\DAO\SysGroupRepository.cs">
+      <DependentUpon>dao.tt</DependentUpon>
+    </Compile>
+    <Compile Include="333333\DAO\SysLogRepository.cs">
+      <DependentUpon>dao.tt</DependentUpon>
+    </Compile>
+    <Compile Include="333333\DAO\SysModuleRepository.cs">
+      <DependentUpon>dao.tt</DependentUpon>
+    </Compile>
+    <Compile Include="333333\DAO\SysRoleRepository.cs">
+      <DependentUpon>dao.tt</DependentUpon>
+    </Compile>
+    <Compile Include="333333\DAO\SysUserRepository.cs">
+      <DependentUpon>dao.tt</DependentUpon>
+    </Compile>
+    <Compile Include="333333\DAO\UserGroupRepository.cs">
+      <DependentUpon>dao.tt</DependentUpon>
+    </Compile>
+    <Compile Include="333333\DAO\UserModuleRepository.cs">
+      <DependentUpon>dao.tt</DependentUpon>
+    </Compile>
+    <Compile Include="333333\DAO\UserRoleRepository.cs">
+      <DependentUpon>dao.tt</DependentUpon>
+    </Compile>
+    <Compile Include="333333\EntityMapping\GroupModuleConfiguration.cs">
+      <DependentUpon>config.tt</DependentUpon>
+    </Compile>
+    <Compile Include="333333\EntityMapping\GroupRoleConfiguration.cs">
+      <DependentUpon>config.tt</DependentUpon>
+    </Compile>
+    <Compile Include="333333\EntityMapping\GroupUserConfiguration.cs">
+      <DependentUpon>config.tt</DependentUpon>
+    </Compile>
+    <Compile Include="333333\EntityMapping\ModuleActionConfiguration.cs">
+      <DependentUpon>config.tt</DependentUpon>
+    </Compile>
+    <Compile Include="333333\EntityMapping\RoleGroupConfiguration.cs">
+      <DependentUpon>config.tt</DependentUpon>
+    </Compile>
+    <Compile Include="333333\EntityMapping\RoleModuleConfiguration.cs">
+      <DependentUpon>config.tt</DependentUpon>
+    </Compile>
+    <Compile Include="333333\EntityMapping\RoleUserConfiguration.cs">
+      <DependentUpon>config.tt</DependentUpon>
+    </Compile>
+    <Compile Include="333333\EntityMapping\SysActionConfiguration.cs">
+      <DependentUpon>config.tt</DependentUpon>
+    </Compile>
+    <Compile Include="333333\EntityMapping\SysDepartmentConfiguration.cs">
+      <DependentUpon>config.tt</DependentUpon>
+    </Compile>
+    <Compile Include="333333\EntityMapping\SysGroupConfiguration.cs">
+      <DependentUpon>config.tt</DependentUpon>
+    </Compile>
+    <Compile Include="333333\EntityMapping\SysLogConfiguration.cs">
+      <DependentUpon>config.tt</DependentUpon>
+    </Compile>
+    <Compile Include="333333\EntityMapping\SysModuleConfiguration.cs">
+      <DependentUpon>config.tt</DependentUpon>
+    </Compile>
+    <Compile Include="333333\EntityMapping\SysRoleConfiguration.cs">
+      <DependentUpon>config.tt</DependentUpon>
+    </Compile>
+    <Compile Include="333333\EntityMapping\SysUserConfiguration.cs">
+      <DependentUpon>config.tt</DependentUpon>
+    </Compile>
+    <Compile Include="333333\EntityMapping\UserGroupConfiguration.cs">
+      <DependentUpon>config.tt</DependentUpon>
+    </Compile>
+    <Compile Include="333333\EntityMapping\UserModuleConfiguration.cs">
+      <DependentUpon>config.tt</DependentUpon>
+    </Compile>
+    <Compile Include="333333\EntityMapping\UserRoleConfiguration.cs">
+      <DependentUpon>config.tt</DependentUpon>
+    </Compile>
+    <Compile Include="333333\纯实体\entity.cs">
+      <DependentUpon>entity.tt</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="333333\ViewModel\GroupModuleRequest.cs">
+      <DependentUpon>viewmodel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="333333\ViewModel\GroupRoleRequest.cs">
+      <DependentUpon>viewmodel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="333333\ViewModel\GroupUserRequest.cs">
+      <DependentUpon>viewmodel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="333333\ViewModel\ModuleActionRequest.cs">
+      <DependentUpon>viewmodel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="333333\ViewModel\RoleGroupRequest.cs">
+      <DependentUpon>viewmodel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="333333\ViewModel\RoleModuleRequest.cs">
+      <DependentUpon>viewmodel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="333333\ViewModel\RoleUserRequest.cs">
+      <DependentUpon>viewmodel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="333333\ViewModel\SysActionRequest.cs">
+      <DependentUpon>viewmodel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="333333\ViewModel\SysDepartmentRequest.cs">
+      <DependentUpon>viewmodel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="333333\ViewModel\SysGroupRequest.cs">
+      <DependentUpon>viewmodel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="333333\ViewModel\SysLogRequest.cs">
+      <DependentUpon>viewmodel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="333333\ViewModel\SysModuleRequest.cs">
+      <DependentUpon>viewmodel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="333333\ViewModel\SysRoleRequest.cs">
+      <DependentUpon>viewmodel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="333333\ViewModel\SysUserRequest.cs">
+      <DependentUpon>viewmodel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="333333\ViewModel\UserGroupRequest.cs">
+      <DependentUpon>viewmodel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="333333\ViewModel\UserModuleRequest.cs">
+      <DependentUpon>viewmodel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="333333\ViewModel\UserRoleRequest.cs">
+      <DependentUpon>viewmodel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="333333\ViewModel\viewmodel.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>viewmodel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="333333\纯实体\GroupModule.cs">
+      <DependentUpon>entity.tt</DependentUpon>
+    </Compile>
+    <Compile Include="333333\纯实体\GroupRole.cs">
+      <DependentUpon>entity.tt</DependentUpon>
+    </Compile>
+    <Compile Include="333333\纯实体\GroupUser.cs">
+      <DependentUpon>entity.tt</DependentUpon>
+    </Compile>
+    <Compile Include="333333\纯实体\ModuleAction.cs">
+      <DependentUpon>entity.tt</DependentUpon>
+    </Compile>
+    <Compile Include="333333\纯实体\RoleGroup.cs">
+      <DependentUpon>entity.tt</DependentUpon>
+    </Compile>
+    <Compile Include="333333\纯实体\RoleModule.cs">
+      <DependentUpon>entity.tt</DependentUpon>
+    </Compile>
+    <Compile Include="333333\纯实体\RoleUser.cs">
+      <DependentUpon>entity.tt</DependentUpon>
+    </Compile>
+    <Compile Include="333333\纯实体\SysAction.cs">
+      <DependentUpon>entity.tt</DependentUpon>
+    </Compile>
+    <Compile Include="333333\纯实体\SysDepartment.cs">
+      <DependentUpon>entity.tt</DependentUpon>
+    </Compile>
+    <Compile Include="333333\纯实体\SysGroup.cs">
+      <DependentUpon>entity.tt</DependentUpon>
+    </Compile>
+    <Compile Include="333333\纯实体\SysLog.cs">
+      <DependentUpon>entity.tt</DependentUpon>
+    </Compile>
+    <Compile Include="333333\纯实体\SysModule.cs">
+      <DependentUpon>entity.tt</DependentUpon>
+    </Compile>
+    <Compile Include="333333\纯实体\SysRole.cs">
+      <DependentUpon>entity.tt</DependentUpon>
+    </Compile>
+    <Compile Include="333333\纯实体\SysUser.cs">
+      <DependentUpon>entity.tt</DependentUpon>
+    </Compile>
+    <Compile Include="333333\纯实体\UserGroup.cs">
+      <DependentUpon>entity.tt</DependentUpon>
+    </Compile>
+    <Compile Include="333333\纯实体\UserModule.cs">
+      <DependentUpon>entity.tt</DependentUpon>
+    </Compile>
+    <Compile Include="333333\纯实体\UserRole.cs">
+      <DependentUpon>entity.tt</DependentUpon>
+    </Compile>
+    <Compile Include="3layer\DAL.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>DAL.tt</DependentUpon>
+    </Compile>
+    <Compile Include="3layer\SysUser.cs">
+      <DependentUpon>DAL.tt</DependentUpon>
+    </Compile>
+    <Compile Include="3layer\UsrSessions.cs">
+      <DependentUpon>DAL.tt</DependentUpon>
+    </Compile>
+    <Compile Include="BLL\IServices.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>IServices.tt</DependentUpon>
+    </Compile>
+    <Compile Include="BLL\Services.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Services.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DAL\DbSession.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>DbSession.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DAL\IDbSession1.cs">
+      <DependentUpon>IDbSession.tt</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="DAL\IRepository.cs">
+      <DependentUpon>IRepository.tt</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="DAL\Repository.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Repository.tt</DependentUpon>
+    </Compile>
+    <Compile Include="mysql\DBHelper.cs" />
+    <Compile Include="mysql\Entity1.cs">
+      <DependentUpon>Entity.tt</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="mysql\SysUser.cs">
+      <DependentUpon>Entity.tt</DependentUpon>
+    </Compile>
+    <Compile Include="mysql\UsrSessions.cs">
+      <DependentUpon>Entity.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Tools.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Tools.ttinclude</DependentUpon>
+    </Compile>
+    <Compile Include="业务逻辑\Action1.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Action.tt</DependentUpon>
+    </Compile>
+    <Compile Include="业务逻辑\GroupModuleAction.cs">
+      <DependentUpon>Action.tt</DependentUpon>
+    </Compile>
+    <Compile Include="业务逻辑\GroupRoleAction.cs">
+      <DependentUpon>Action.tt</DependentUpon>
+    </Compile>
+    <Compile Include="业务逻辑\GroupUserAction.cs">
+      <DependentUpon>Action.tt</DependentUpon>
+    </Compile>
+    <Compile Include="业务逻辑\ModuleActionAction.cs">
+      <DependentUpon>Action.tt</DependentUpon>
+    </Compile>
+    <Compile Include="业务逻辑\RoleGroupAction.cs">
+      <DependentUpon>Action.tt</DependentUpon>
+    </Compile>
+    <Compile Include="业务逻辑\RoleModuleAction.cs">
+      <DependentUpon>Action.tt</DependentUpon>
+    </Compile>
+    <Compile Include="业务逻辑\RoleUserAction.cs">
+      <DependentUpon>Action.tt</DependentUpon>
+    </Compile>
+    <Compile Include="业务逻辑\SysActionAction.cs">
+      <DependentUpon>Action.tt</DependentUpon>
+    </Compile>
+    <Compile Include="业务逻辑\SysDepartmentAction.cs">
+      <DependentUpon>Action.tt</DependentUpon>
+    </Compile>
+    <Compile Include="业务逻辑\SysGroupAction.cs">
+      <DependentUpon>Action.tt</DependentUpon>
+    </Compile>
+    <Compile Include="业务逻辑\SysLogAction.cs">
+      <DependentUpon>Action.tt</DependentUpon>
+    </Compile>
+    <Compile Include="业务逻辑\SysModuleAction.cs">
+      <DependentUpon>Action.tt</DependentUpon>
+    </Compile>
+    <Compile Include="业务逻辑\SysRoleAction.cs">
+      <DependentUpon>Action.tt</DependentUpon>
+    </Compile>
+    <Compile Include="业务逻辑\SysUserAction.cs">
+      <DependentUpon>Action.tt</DependentUpon>
+    </Compile>
+    <Compile Include="业务逻辑\UserGroupAction.cs">
+      <DependentUpon>Action.tt</DependentUpon>
+    </Compile>
+    <Compile Include="业务逻辑\UserModuleAction.cs">
+      <DependentUpon>Action.tt</DependentUpon>
+    </Compile>
+    <Compile Include="业务逻辑\UserRoleAction.cs">
+      <DependentUpon>Action.tt</DependentUpon>
+    </Compile>
+    <Compile Include="实体\Elder.cs">
+      <DependentUpon>QY.Stage.Poco.Model - 复制.tt</DependentUpon>
+    </Compile>
+    <Compile Include="实体\Entity1.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Entity.tt</DependentUpon>
+    </Compile>
+    <Compile Include="实体\QY.Stage.Poco.Model - 复制.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>QY.Stage.Poco.Model - 复制.tt</DependentUpon>
+    </Compile>
+    <Compile Include="实体\QY.Stage.Poco.Model.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>QY.Stage.Poco.Model.tt</DependentUpon>
+    </Compile>
+    <Compile Include="实体\SysUser.cs">
+      <DependentUpon>Entity.tt</DependentUpon>
+    </Compile>
+    <Compile Include="实体\UsrSessions.cs">
+      <DependentUpon>Entity.tt</DependentUpon>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="333333\EntityMapping\config.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>config.cs</LastGenOutput>
+    </None>
+    <None Include="333333\DAO\dao.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>dao.cs</LastGenOutput>
+    </None>
+    <None Include="333333\cxt\dbcontext.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>dbcontext.cs</LastGenOutput>
+    </None>
+    <None Include="333333\Entity\entity.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>entity.cs</LastGenOutput>
+    </None>
+    <None Include="333333\Service\services.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>services.cs</LastGenOutput>
+    </None>
+    <None Include="333333\UI\GroupModuleList.cshtml">
+      <DependentUpon>UI.tt</DependentUpon>
+    </None>
+    <None Include="333333\UI\GroupRoleList.cshtml">
+      <DependentUpon>UI.tt</DependentUpon>
+    </None>
+    <None Include="333333\UI\GroupUserList.cshtml">
+      <DependentUpon>UI.tt</DependentUpon>
+    </None>
+    <None Include="333333\UI\ModuleActionList.cshtml">
+      <DependentUpon>UI.tt</DependentUpon>
+    </None>
+    <None Include="333333\UI\RoleGroupList.cshtml">
+      <DependentUpon>UI.tt</DependentUpon>
+    </None>
+    <None Include="333333\UI\RoleModuleList.cshtml">
+      <DependentUpon>UI.tt</DependentUpon>
+    </None>
+    <None Include="333333\UI\RoleUserList.cshtml">
+      <DependentUpon>UI.tt</DependentUpon>
+    </None>
+    <None Include="333333\UI\SysActionList.cshtml">
+      <DependentUpon>UI.tt</DependentUpon>
+    </None>
+    <None Include="333333\UI\SysDepartmentList.cshtml">
+      <DependentUpon>UI.tt</DependentUpon>
+    </None>
+    <None Include="333333\UI\SysGroupList.cshtml">
+      <DependentUpon>UI.tt</DependentUpon>
+    </None>
+    <None Include="333333\UI\SysLogList.cshtml">
+      <DependentUpon>UI.tt</DependentUpon>
+    </None>
+    <None Include="333333\UI\SysModuleList.cshtml">
+      <DependentUpon>UI.tt</DependentUpon>
+    </None>
+    <None Include="333333\UI\SysRoleList.cshtml">
+      <DependentUpon>UI.tt</DependentUpon>
+    </None>
+    <None Include="333333\UI\SysUserList.cshtml">
+      <DependentUpon>UI.tt</DependentUpon>
+    </None>
+    <None Include="333333\UI\UserGroupList.cshtml">
+      <DependentUpon>UI.tt</DependentUpon>
+    </None>
+    <None Include="333333\UI\UserModuleList.cshtml">
+      <DependentUpon>UI.tt</DependentUpon>
+    </None>
+    <None Include="333333\UI\UserRoleList.cshtml">
+      <DependentUpon>UI.tt</DependentUpon>
+    </None>
+    <None Include="333333\ViewModel\viewmodel.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>viewmodel.cs</LastGenOutput>
+    </None>
+    <None Include="3layer\BLL.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>BLL.txt</LastGenOutput>
+    </None>
+    <None Include="3layer\Controller.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>Controller.txt</LastGenOutput>
+    </None>
+    <None Include="3layer\DAL.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>DAL.cs</LastGenOutput>
+    </None>
+    <None Include="3layer\EasyUICRUD.cshtml">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>EasyUICRUD.tt</DependentUpon>
+    </None>
+    <None Include="3layer\EasyUICRUD.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>EasyUICRUD.cshtml</LastGenOutput>
+    </None>
+    <None Include="BLL\IServices.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>IServices.cs</LastGenOutput>
+    </None>
+    <None Include="BLL\Services.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>Services.cs</LastGenOutput>
+    </None>
+    <None Include="DAL\DbSession.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>DbSession.cs</LastGenOutput>
+    </None>
+    <None Include="DAL\IDbSession.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>IDbSession1.cs</LastGenOutput>
+    </None>
+    <None Include="DAL\IRepository.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>IRepository.cs</LastGenOutput>
+    </None>
+    <None Include="DAL\Repository.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>Repository.cs</LastGenOutput>
+    </None>
+    <None Include="DbHelper.ttinclude" />
+    <None Include="MultipleOutputHelper.ttinclude" />
+    <None Include="mysql\DbHelper.ttinclude" />
+    <None Include="Tools.ttinclude">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>Tools.cs</LastGenOutput>
+    </None>
+    <None Include="业务逻辑\Action.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>Action1.cs</LastGenOutput>
+    </None>
+    <None Include="实体\Entity.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>Entity1.cs</LastGenOutput>
+    </None>
+    <None Include="实体\QY.Stage.Poco.Model - 复制.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>QY.Stage.Poco.Model - 复制.cs</LastGenOutput>
+    </None>
+    <None Include="实体\QY.Stage.Poco.Model.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>QY.Stage.Poco.Model.cs</LastGenOutput>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="333333\p\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="lib\MySql.Data.dll" />
+    <None Include="mysql\Entity.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>Entity1.cs</LastGenOutput>
+    </None>
+    <None Include="333333\纯实体\entity.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>entity.cs</LastGenOutput>
+    </None>
+    <None Include="333333\ooooo.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>ooooo.cs</LastGenOutput>
+    </None>
+    <None Include="333333\Controller\controller.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>controller.cs</LastGenOutput>
+    </None>
+    <None Include="333333\UI\UI.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>UI.cs</LastGenOutput>
+    </None>
+    <None Include="333333\UI\UI2.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>UI2.cs</LastGenOutput>
+    </None>
+    <Content Include="333333\读取表结构信息.txt" />
+    <Content Include="3layer\BLL.txt">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>BLL.tt</DependentUpon>
+    </Content>
+    <Content Include="3layer\Controller.txt">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Controller.tt</DependentUpon>
+    </Content>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

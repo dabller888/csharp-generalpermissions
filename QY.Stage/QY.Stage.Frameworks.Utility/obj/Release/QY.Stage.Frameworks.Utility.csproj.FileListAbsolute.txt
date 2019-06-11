@@ -1,0 +1,12 @@
+D:\install\qy2017\黄冈\QY.Stage\QY.Stage.Frameworks.Utility\bin\Release\QY.Stage.Frameworks.Utility.dll
+D:\install\qy2017\黄冈\QY.Stage\QY.Stage.Frameworks.Utility\bin\Release\QY.Stage.Frameworks.Utility.pdb
+D:\install\qy2017\黄冈\QY.Stage\QY.Stage.Frameworks.Utility\bin\Release\Newtonsoft.Json.dll
+D:\install\qy2017\黄冈\QY.Stage\QY.Stage.Frameworks.Utility\obj\Release\QY.Stage.Frameworks.Utility.dll
+D:\install\qy2017\黄冈\QY.Stage\QY.Stage.Frameworks.Utility\obj\Release\QY.Stage.Frameworks.Utility.pdb
+D:\install\qy2017\黄冈\QY.Stage\QY.Stage.Frameworks.Utility\obj\Release\QY.Stage.Frameworks.Utility.csprojResolveAssemblyReference.cache
+D:\install\qy2017\黄冈\QY.Stage20171010完\QY.Stage\QY.Stage.Frameworks.Utility\bin\Release\QY.Stage.Frameworks.Utility.dll
+D:\install\qy2017\黄冈\QY.Stage20171010完\QY.Stage\QY.Stage.Frameworks.Utility\bin\Release\QY.Stage.Frameworks.Utility.pdb
+D:\install\qy2017\黄冈\QY.Stage20171010完\QY.Stage\QY.Stage.Frameworks.Utility\bin\Release\Newtonsoft.Json.dll
+D:\install\qy2017\黄冈\QY.Stage20171010完\QY.Stage\QY.Stage.Frameworks.Utility\obj\Release\QY.Stage.Frameworks.Utility.dll
+D:\install\qy2017\黄冈\QY.Stage20171010完\QY.Stage\QY.Stage.Frameworks.Utility\obj\Release\QY.Stage.Frameworks.Utility.pdb
+D:\install\qy2017\黄冈\QY.Stage20171010完\QY.Stage\QY.Stage.Frameworks.Utility\obj\Release\QY.Stage.Frameworks.Utility.csprojResolveAssemblyReference.cache

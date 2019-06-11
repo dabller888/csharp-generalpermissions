@@ -1,0 +1,18 @@
+# SQL Manager 2005 for MySQL 3.6.5.8
+# ---------------------------------------
+# Host     : 192.168.0.100
+# Port     : 3306
+# Database : nj_nzy_oa
+
+
+/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
+/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
+/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
+/*!40101 SET NAMES gbk */;
+
+SET FOREIGN_KEY_CHECKS=0;
+
+CREATE DATABASE `nj_nzy_oa`
+    CHARACTER SET 'gbk'
+    COLLATE 'gbk_chinese_ci';
+

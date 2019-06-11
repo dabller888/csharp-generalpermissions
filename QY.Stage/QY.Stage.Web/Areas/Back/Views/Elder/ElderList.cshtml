@@ -1,0 +1,651 @@
+﻿@using Newtonsoft.Json;
+@using QY.Stage.PocoModel;
+<script type="text/javascript">
+
+        $(function () {
+            //初始化弹出窗体
+            initTable();
+
+            //绑定注册按钮的事件
+            BindRegistButtonClickEvent();
+
+            //绑定修改事件的信息
+            BindUpdateButtonClickEvent();
+
+            SearchInfo();
+        });
+
+        //初始化表格
+        function initTable(queryData) {
+            $('#test').datagrid({
+                title: '老人信息管理',
+                iconCls: 'icon-more',
+                height: 530,
+                width: '100%',
+                nowrap: true,
+                autoRowHeight: false,
+                striped: true,
+                collapsible: true,
+                url: '/Back/Elder/GetElderList',
+                sortName: 'ElderId',
+                sortOrder: 'asc',
+                //striped:true,
+                border: true,
+                remoteSort: false,
+                idField: 'ElderId',
+                pagination: true,
+                rownumbers: false,
+                queryParams: queryData,
+                columns: [[
+                    { field: 'ck', checkbox: true },
+					{ field: 'ElderId', title: '编号', width: 80, sortable: true },
+					{ field: 'SerialNo', title: '序号', width: 120, sortable: true },
+					{ field: 'ElderName', title: '姓名', width: 80, sortable: true },
+					{
+					    field: 'Sex', title: '性别', width: 60, sortable: false, align: "center",
+					    formatter: function (value, row, index) {
+					        var str = '不详';
+					        if (value == 0) { str = '男'; }
+					        else if (value == 1) { str = '女'; }
+					        else { str = '不详'; }
+					        return str;
+					    }
+					},
+					{ field: 'Age', title: '年龄', width: 60, sortable: true, align: "center" },
+                    {
+                        field: 'QRCode', title: "二维码", width: 60, sortable: true, align: "center",
+                        formatter: function (value, row, index) {
+                            if (value == "") {
+                                return '<span >' + 暂无 + '</span>';
+                            } else {
+                                return '<img src="/Uploads/QRCode/' + value + '" width="20" heigth="20" />';
+                            }
+                        }
+                    },
+                    { field: 'FirstName', title: '联系人（紧）', width: 80, sortable: false },
+					{ field: 'FirstPhone', title: '电话（紧）', width: 120, sortable: false },
+					{
+					    field: 'IsEnable', title: '启用', width: 80, sortable: false, align: "center",
+					    formatter: function (value, row, index) {
+					        var str = '已启用';
+					        if (value == 0) { str = '未启用'; }
+					        else { str = '已启用'; }
+					        return str;
+					    }
+					}
+                ]],
+
+                toolbar: [{
+                    id: 'btnAdd',
+                    text: '新增老人信息',
+                    iconCls: 'icon-add',
+                    handler: function () {
+                        ShowCreateElderDialog();
+                    }
+                }, '-', {
+                    id: 'btnEdit',
+                    text: '修改老人信息',
+                    iconCls: 'icon-edit',
+                    handler: function () {
+                        ShowUpdateElderDialog();
+                    }
+                }, '-', {
+                    id: 'btnDelete',
+                    text: '删除老人',
+                    iconCls: 'icon-remove',
+                    handler: function () {
+                        DeleteElderInfoByClick();
+                    }
+                }, '-', {
+                    id: 'btnCode',
+                    text: '生成二维码',
+                    iconCls: 'icon-remove',
+                    handler: function () {
+                        GenerateQRCodeDialog();
+                    }
+                }],
+                onBeforeLoad: function () {                
+                    var userActions = JSON.parse("@JsonConvert.SerializeObject(Session[(Session["UserInfo"] as SysUser).LoginName + "action"])".replace(/&quot;/g, "\""));
+                    var actions = JSON.parse("@JsonConvert.SerializeObject(Session["action"])".replace(/&quot;/g, "\""));
+                    user.renderActions(userActions, actions);
+
+                    $('#btnCode').hide();
+                }
+            });
+        }
+
+        //搜索数据信息
+        function SearchInfo() {
+            $("#btnSearch").click(function () {
+                var queryData = { SerialNo: $("#txtSerialNo").textbox('getValue'), ElderName: $("#txtElderName").textbox('getValue') };
+                initTable(queryData);
+                return false;
+            });
+        }
+
+        //弹出添加老人的对话框
+        function ShowCreateElderDialog() {
+            $('#AddElderDialog').dialog('open').dialog('setTitle', '添加老人信息');
+            $.post("/Back/Elder/GenerateSN", {}, function (data) {
+                $('#SerialNo').textbox("setValue", data.sn);
+            });
+            ClearTextBox();
+        }
+
+        function BindRegistButtonClickEvent() {
+            $("#btnRegist").click(function () {
+                var valid = $('#ff').form('validate');
+                if (valid == false) {
+                    return false;
+                }
+
+                $.post("/Back/Elder/AddElder", {
+                    SerialNo: $("#SerialNo").textbox('getValue'),
+                    ElderName: $("#ElderName").textbox('getValue'),
+                    CardNo: $("#CardNo").textbox('getValue'),
+                    Sex: $("#Sex").combobox("getValue"),
+                    Age: $("#Age").textbox('getValue'),
+                    Addr: $("#Addr").textbox('getValue'),
+                    Post: $("#Post").textbox('getValue'),
+                    Phone: $("#Phone").textbox('getValue'),
+                    Content: $("#Content").textbox('getValue'),
+                    FirstName: $("#FirstName").textbox('getValue'),
+                    FirstSex: $("#FirstSex").combobox("getValue"),
+                    FirstAddr: $("#FirstAddr").textbox('getValue'),
+                    FirstPost: $("#FirstPost").textbox('getValue'),
+                    FirstPhone: $("#FirstPhone").textbox('getValue'),
+                    FirstRelation: $("#FirstRelation").textbox('getValue'),
+                    SecName: $("#SecName").textbox('getValue'),
+                    SecSex: $("#SecSex").combobox("getValue"),
+                    SecAddr: $("#SecAddr").textbox('getValue'),
+                    SecPost: $("#SecPost").textbox('getValue'),
+                    SecPhone: $("#SecPhone").textbox('getValue'),
+                    SecRelation: $("#SecRelation").textbox('getValue'),
+                    IsEnable: $("#IsEnable").prop('checked') ? 1 : 0
+                }, function (data) {
+                    if (data.Code == 1) {
+                        $.messager.alert("友情提示", "添加成功!");
+                        $('#AddElderDialog').dialog('close');
+                        $("#test").datagrid("reload");
+                    } else if (data.Code == 2) {
+                        $.messager.alert("友情提示", "序号已存在!");
+                    } else {
+                        $.messager.alert("友情提示", "添加失败，请您检查!");
+                    }
+                });
+            });
+        }
+
+        function ClearTextBox() {
+            $("#ElderName").textbox('setValue',"");
+            $("#CardNo").textbox('setValue',"");
+            $("#Age").textbox('setValue',"");
+            $("#Addr").textbox('setValue',"");
+            $("#Post").textbox('setValue',"");
+            $("#Phone").textbox('setValue',"");
+            $("#Content").textbox('setValue',"");
+            $("#FirstName").textbox('setValue',"");
+            $("#FirstAddr").textbox('setValue',"");
+            $("#FirstPost").textbox('setValue',"");
+            $("#FirstPhone").textbox('setValue',"");
+            $("#SecName").textbox('setValue',"");
+            $("#SecAddr").textbox('setValue',"");
+            $("#SecPost").textbox('setValue',"");
+            $("#SecPhone").textbox('setValue',"");
+        }
+
+        //实现多选删除信息
+        function DeleteElderInfoByClick() {
+            //获取到用户选定的某一列的ID号
+            var deleteElderID = $("#test").datagrid("getSelections");
+            //判断用户选择了多少条数据
+            // //异步将删除的ID发送到后台，后台删除之后，返回前台OK，前台刷新表格
+            if (deleteElderID.length >= 1) {
+                var ids = "";   //1,2,3,4
+                for (var i = 0; i < deleteElderID.length; i++) {
+                    ids += deleteElderID[i].ElderId + ",";
+                }
+                //去掉最后的一个,
+                ids = ids.substring(0, ids.length - 1);
+
+                //遍历出删除用户的信息
+                var ElderNameList = "";
+                for (var i = 0; i < deleteElderID.length; i++) {
+                    ElderNameList += deleteElderID[i].ElderName + ",";
+                }
+                ElderNameList = ElderNameList.substring(0, ElderNameList.length - 1);
+                //var LoginUName = $("#test").datagrid("getSelections")[0].UName;
+                //发送异步请求删除数据
+                $.messager.confirm("删除信息", "您确认删除<font color='Red' size='3'>" + ElderNameList + "</font>老人信息吗？", function (DeleteUserInfo) {
+                    if (DeleteUserInfo) {
+                        $.post("/Back/Elder/DeleteElders", { ElderIds: ids }, function (data) {
+                            console.log(JSON.stringify(data))
+                            if (data.Code == 1) {
+                                $.messager.alert("友情提示", "删除成功");
+                                $("#test").datagrid("reload");
+
+                                //当删除完成的时候清除掉所选择的长度，防止下次选择的时候还记录了上次的内容
+                                //第一种方法
+                                //deleteUserInfoID.length = "";
+                                //第二种方法
+                                $("#test").datagrid("clearSelections");
+                            }
+                            else {
+                                $.messager.alert("友情提示", "删除失败:" + data);
+                            }
+                        });
+                    }
+                });
+            }
+            else {
+                $.messager.alert("友情提示", "请您选择要删除的数据");
+            }
+        }
+
+        //弹出修改用户的对话框
+        function ShowUpdateElderDialog() {
+            var UpdateElderID = $("#test").datagrid("getSelections");
+            if (UpdateElderID.length == 1) {
+                $("#UpdateElderDialog").dialog("open").dialog("setTitle", "修改功能信息");
+
+                //绑定显示修改的详细信息的内容
+                BingUpdateDetailsShowTextBox();
+            }
+            else {
+                $.messager.alert("友情提示", "每次只能修改一行数据，你已经选择了<font color='red' size='6'>" + UpdateElderID.length + "</font>行");
+            }
+        }
+
+        //绑定修改用户的信息显示在用户的TextBox文本框中
+        function BingUpdateDetailsShowTextBox() {
+            //首先获取选中的用户的ID
+            var CheckID = $("#test").datagrid("getSelections")[0].ElderId;
+            $.getJSON("/Back/Elder/GetElderDetails", { ElderId: CheckID }, function (data) {
+                if (data.Code == 1) {
+                    $("#eElderId").val(data.Content.ElderId);
+                    $("#eSerialNo").textbox("setValue",data.Content.SerialNo);
+                    $("#eElderName").textbox("setValue",data.Content.ElderName);
+                    $("#eCardNo").textbox("setValue",data.Content.CardNo);
+                    $("#eSex").combobox("setValue", data.Content.Sex);
+                    $("#eAge").textbox("setValue",data.Content.Age);
+                    $("#eAddr").textbox("setValue",data.Content.Addr);
+                    $("#ePost").textbox("setValue",data.Content.Post);
+                    $("#ePhone").textbox("setValue",data.Content.Phone);
+                    $("#eContent").textbox("setValue",data.Content.Content);
+                    $("#eQRCode").textbox("setValue",data.Content.QRCode);
+                    $("#eFirstName").textbox("setValue",data.Content.FirstName);
+                    $("#eFirstSex").combobox("setValue", data.Content.FirstSex);
+                    $("#eFirstAddr").textbox("setValue",data.Content.FirstAddr);
+                    $("#eFirstPost").textbox("setValue",data.Content.FirstPost);
+                    $("#eFirstPhone").textbox("setValue",data.Content.FirstPhone);
+                    $("#eFirstRelation").combobox("setValue", data.Content.FirstRelation);
+                    $("#eSecName").textbox("setValue",data.Content.SecName);
+                    $("#eSecSex").combobox("setValue", data.Content.SecSex);
+                    $("#eSecAddr").textbox("setValue",data.Content.SecAddr);
+                    $("#eSecPost").textbox("setValue",data.Content.SecPost);
+                    $("#eSecPhone").textbox("setValue",data.Content.SecPhone);
+                    $("#eSecRelation").combobox("setValue", data.Content.SecRelation);
+                    $("#eIsEnable").prop('checked', (data.Content.IsEnable == 1 ? true : false));
+                } else {
+                    $.messager.alert("友情提示", "没有找到相关项!");
+                }
+            });
+        }
+
+        //修改用户的信息
+        function BindUpdateButtonClickEvent() {
+            $("#btnUpdate").click(function () {
+                //首先判断前台的验证是否通过
+                var valid = $('#UpdateElderInfo').form('validate');
+                if (valid == false) {
+                    return false;
+                }
+                //使用异步实现修改用户信息
+                $.post("/Back/Elder/SaveElder", {
+                    ElderId: $("#eElderId").val(),
+                    SerialNo: $("#eSerialNo").textbox('getValue'),
+                    ElderName: $("#eElderName").textbox('getValue'),
+                    CardNo: $("#eCardNo").textbox('getValue'),
+                    Sex: $("#eSex").combobox("getValue"),
+                    Age: $("#eAge").textbox('getValue'),
+                    Addr: $("#eAddr").textbox('getValue'),
+                    Post: $("#ePost").textbox('getValue'),
+                    Phone: $("#ePhone").textbox('getValue'),
+                    Content: $("#eContent").textbox('getValue'),
+                    FirstName: $("#eFirstName").textbox('getValue'),
+                    FirstSex: $("#eFirstSex").combobox("getValue"),
+                    FirstAddr: $("#eFirstAddr").textbox('getValue'),
+                    FirstPost: $("#eFirstPost").textbox('getValue'),
+                    FirstPhone: $("#eFirstPhone").textbox('getValue'),
+                    FirstRelation: $("#eFirstRelation").textbox('getValue'),
+                    SecName: $("#eSecName").textbox('getValue'),
+                    SecSex: $("#eSecSex").combobox("getValue"),
+                    SecAddr: $("#eSecAddr").textbox('getValue'),
+                    SecPost: $("#eSecPost").textbox('getValue'),
+                    SecPhone: $("#eSecPhone").textbox('getValue'),
+                    SecRelation: $("#eSecRelation").textbox('getValue'),
+                    IsEnable: $("#eIsEnable").prop('checked') ? 1 : 0
+                }, function (data) {
+                    if (data.Code == 1) {
+                        $("#UpdateElderDialog").dialog('close');
+                        $("#test").datagrid('reload');
+                        $.messager.alert("友情提示", "修改功能成功!");
+                    } else if (data.Code == 2) {
+                        $.messager.alert("友情提示", "功能名称已存在!");
+                    } else {
+                        $.messager.alert("友情提示", "修改失败，请您检查!");
+                    }
+                });
+            });
+        }
+
+        function GenerateQRCodeDialog() {
+            var UpdateElderID = $("#test").datagrid("getSelections");
+            if (UpdateElderID.length == 1) {
+                $("#QRCodeDialog").dialog("open").dialog("setTitle", "创建二维码");
+                var SerialNo = $("#test").datagrid("getSelections")[0].SerialNo;
+                $('#qSerialNo').textbox('setValue', SerialNo);
+                $('#qElderId').val($("#test").datagrid("getSelections")[0].ElderId);
+                var qrcode = $("#test").datagrid("getSelections")[0].QRCode;
+                if (qrcode !== "") {
+                    $('#qrcode').attr("src", "/Uploads/QRCode/"+qrcode);
+                }
+                $('#btnQRCode').click(function () {
+                    $.post("/Back/Elder/GenerateQRCode", {
+                        ElderId: $('#qElderId').val()
+                    }, function (data) {
+                        $('#qrcode').attr("src", data.path);
+                    });
+                });
+            }
+            else {
+                $.messager.alert("友情提示", "只能选择一行数据，你已经选择了<font color='red' size='6'>" + UpdateElderID.length + "</font>行");
+            }
+        }
+</script>
+
+@*-------------------------- 搜索-------------------------*@
+<fieldset id="btnSearchDlg" style="margin-top:0;">
+    <legend>搜索</legend>
+    <div>
+        <label for="txtSerialNo">序号：</label>
+        <input class="easyui-textbox" type="text" id="txtSerialNo" name="txtSerialNo" />&nbsp;&nbsp;
+        <label for="txtElderName">姓名：</label>
+        <input class="easyui-textbox" type="text" id="txtElderName" name="txtElderName" />
+        <a href="javascript:;" class="easyui-linkbutton" iconcls="icon-search" id="btnSearch" name="btnSearch">搜索</a>
+    </div>
+</fieldset>
+
+@*-------------------------- 实现对用户数据的显示-------------------------*@
+<div>
+    <table id="test"></table>
+</div>
+
+@*----------------------------设置添加的弹出层--------------------------------*@
+<div id="AddElderDialog" class="easyui-dialog" style="width:800px;height:500px;padding:10px" iconcls="icon-save"
+     closed="true" resizable="true" modal="true" buttons="#dlg-buttons" align="center">
+    <form id="ff" method="post" novalidate="novalidate">
+        <table id="tblAdd">
+            <tr>
+                <th><label for="SerialNo">序号</label></th>
+                <td><input class="easyui-textbox" type="text" id="SerialNo" name="SerialNo" data-options="readonly:true" /></td>
+                <th><label for="ElderName">姓名</label></th>
+                <td><input class="easyui-textbox" type="text" id="ElderName" name="ElderName" data-options="required:true,validType:'length[0,64]'" /></td>
+            </tr>
+            <tr>
+                <th><label for="Sex">性别</label></th>
+                <td>
+                    <select id="Sex" class="easyui-combobox">
+                        <option value="0">男</option>
+                        <option value="1">女</option>
+                        <option value="2">不详</option>
+                    </select>
+                </td>
+                <th><label for="Age">年龄</label></th>
+                <td><input class="easyui-textbox" type="text" id="Age" name="Age" data-options="required:true,validType:['integer','length[1,3]']" /></td>
+            </tr>
+            <tr>
+                <th><label for="CardNo">身份证号码</label></th>
+                <td><input class="easyui-textbox" type="text" id="CardNo" name="CardNo" data-options="required:true,validType:['idcard','length[1,18]']"></td>
+                <th><label for="IsEnable"></label></th>
+                <td><input type="checkbox" id="IsEnable" name="IsEnable" checked="checked">启用</td>
+            </tr>
+            <tr>
+                <th><label for="Addr">住址</label></th>
+                <td colspan="3"><input class="easyui-textbox" id="Addr" name="Addr" style="width:90%;height:30px;" data-options="validType:'length[0,1024]',multiline:true"></td>
+            </tr>
+            <tr>
+                <th><label for="Phone">电话</label></th>
+                <td><input class="easyui-textbox" type="text" id="Phone" name="Phone" data-options="validType:'mobile'"></td>
+                <th><label for="Post">邮编</label></th>
+                <td><input class="easyui-textbox" type="text" id="Post" name="Post" data-options="validType:'length[0,6]'"></td>
+            </tr>
+            <tr>
+                <th><label for="FirstName">姓名（紧）</label></th>
+                <td><input class="easyui-textbox" type="text" id="FirstName" name="FirstName" data-options="required:true,validType:'length[0,64]'"></td>
+                <th><label for="FirstSex">性别（紧）</label></th>
+                <td>
+                    <select id="FirstSex" class="easyui-combobox">
+                        <option value="0">男</option>
+                        <option value="1">女</option>
+                        <option value="2">不详</option>
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <th><label for="FirstAddr">住址（紧）</label></th>
+                <td colspan="3"><input class="easyui-textbox" id="FirstAddr" name="FirstAddr" style="width:90%;height:30px;" data-options="required:true,validType:'length[0,2048]',multiline:true"></td>
+            </tr>
+            <tr>
+                <th><label for="FirstPhone">电话（紧）</label></th>
+                <td><input class="easyui-textbox" type="text" id="FirstPhone" name="FirstPhone" data-options="required:true,validType:'mobile'"></td>
+                <th><label for="FirstPost">邮编（紧）</label></th>
+                <td><input class="easyui-textbox" type="text" id="FirstPost" name="FirstPost" data-options="validType:'length[0,6]'"></td>
+            </tr>
+            <tr>
+                <th><label for="FirstRelation">关系（紧）</label></th>
+                <td colspan="3">
+                    <select id="FirstRelation" class="easyui-combobox">
+                        <option value="0">父亲</option>
+                        <option value="1">母亲</option>
+                        <option value="2">儿子</option>
+                        <option value="3">女儿</option>
+                        <option value="4">其他</option>
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <th><label for="SecName">姓名（次）</label></th>
+                <td><input class="easyui-textbox" type="text" id="SecName" name="SecName" data-options="validType:'length[0,64]'"></td>
+                <th><label for="SecSex">性别（次）</label></th>
+                <td>
+                    <select id="SecSex" class="easyui-combobox">
+                        <option value="0">男</option>
+                        <option value="1">女</option>
+                        <option value="2">不详</option>
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <th><label for="SecAddr">住址（次）</label></th>
+                <td colspan="3"><input class="easyui-textbox" id="SecAddr" name="SecAddr" style="width:90%;height:30px;" data-options="validType:'length[0,2048]',multiline:true"></td>
+            </tr>
+            <tr>
+                <th><label for="SecPhone">电话（次）</label></th>
+                <td><input class="easyui-textbox" type="text" id="SecPhone" name="SecPhone" data-options="validType:'mobile'"></td>
+                <th><label for="SecPost">邮编（次）</label></th>
+                <td><input class="easyui-textbox" type="text" id="SecPost" name="SecPost" data-options="validType:'length[0,6]'"></td>
+            </tr>
+            <tr>
+                <th><label for="SecRelation">关系（次）</label></th>
+                <td colspan="3">
+                    <select id="SecRelation" class="easyui-combobox">
+                        <option value="0">父亲</option>
+                        <option value="1">母亲</option>
+                        <option value="2">儿子</option>
+                        <option value="3">女儿</option>
+                        <option value="4">其他</option>
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <th><label for="Content">描述：</label></th>
+                <td colspan="3"><input class="easyui-textbox" id="Content" name="Content" style="width:90%;height:30px;" data-options="validType:'length[0,2048]',multiline:true"></td>
+            </tr>
+            <tr>
+                <td colspan="4" style="text-align:center; padding-top:10px">
+                    <a href="javascript:void(0)" class="easyui-linkbutton" id="btnRegist" iconcls="icon-ok">确定</a>
+                    <a href="javascript:void(0)" class="easyui-linkbutton" iconcls="icon-cancel" onclick="javascript:$('#AddElderDialog').dialog('close')">关闭</a>
+                </td>
+            </tr>
+        </table>
+    </form>
+</div>
+
+@*----------------------------设置修改的的弹出层--------------------------------*@
+<div id="UpdateElderDialog" class="easyui-dialog" style="width:800px;height:500px;padding:10px" iconcls="icon-save"
+     closed="true" resizable="true" modal="true" buttons="#dlg-buttons" align="center">
+    <form id="UpdateElderInfo" method="post" novalidate="novalidate">
+        <table id="tblUpdate">
+            <tr>
+                <th><label for="eSerialNo">序号</label></th>
+                <td><input class="combo  easyui-textbox" type="text" id="eSerialNo" name="eSerialNo" data-options="readonly:true" /></td>
+                <th><label for="eElderName">姓名</label></th>
+                <td><input class="combo  easyui-textbox" type="text" id="eElderName" name="eElderName" data-options="required:true,validType:'length[0,64]'" /></td>
+            </tr>
+            <tr>
+                <th><label for="eSex">性别</label></th>
+                <td>
+                    <select id="eSex" class="easyui-combobox">
+                        <option value="0">男</option>
+                        <option value="1">女</option>
+                        <option value="2">不详</option>
+                    </select>
+                </td>
+                <th><label for="eAge">年龄</label></th>
+                <td><input class="easyui-textbox" type="text" id="eAge" name="eAge" data-options="required:true,validType:['integer','length[1,3]']" /></td>
+            </tr>
+            <tr>
+                <th><label for="eCardNo">身份证号码</label></th>
+                <td><input class="easyui-textbox" type="text" id="eCardNo" name="eCardNo" data-options="required:true,validType:['idcard','length[1,18]']"></td>
+                <th><label for="eIsEnable"></label></th>
+                <td><input type="checkbox" id="eIsEnable" name="eIsEnable">启用</td>
+            </tr>
+            <tr>
+                <th><label for="eAddr">住址</label></th>
+                <td colspan="3"><input class="easyui-textbox" id="eAddr" name="eAddr" style="width:90%;height:30px;" data-options="validType:'length[0,1024]',multiline:true"></td>
+            </tr>
+            <tr>
+                <th><label for="ePhone">电话</label></th>
+                <td><input class="easyui-textbox" type="text" id="ePhone" name="ePhone" data-options="validType:'mobile'"></td>
+                <th><label for="ePost">邮编</label></th>
+                <td><input class="easyui-textbox" type="text" id="ePost" name="ePost" data-options="validType:'length[0,6]'"></td>
+            </tr>
+            <tr>
+                <th><label for="eFirstName">姓名（紧）</label></th>
+                <td><input class="easyui-textbox" type="text" id="eFirstName" name="eFirstName" data-options="required:true,validType:'length[0,64]'"></td>
+                <th><label for="eFirstSex">性别（紧）</label></th>
+                <td>
+                    <select id="eFirstSex" class="easyui-combobox">
+                        <option value="0">男</option>
+                        <option value="1">女</option>
+                        <option value="2">不详</option>
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <th><label for="eFirstAddr">住址（紧）</label></th>
+                <td colspan="3"><input class="easyui-textbox" id="eFirstAddr" name="eFirstAddr" style="width:90%;height:30px;" data-options="required:true,validType:'length[0,2048]',multiline:true"></td>
+            </tr>
+            <tr>
+                <th><label for="eFirstPhone">电话（紧）</label></th>
+                <td><input class="easyui-textbox" type="text" id="eFirstPhone" name="eFirstPhone" data-options="validType:'mobile'"></td>
+                <th><label for="eFirstPost">邮编（紧）</label></th>
+                <td><input class="easyui-textbox" type="text" id="eFirstPost" name="eFirstPost" data-options="validType:'length[0,6]'"></td>
+            </tr>
+            <tr>
+                <th><label for="eFirstRelation">关系（紧）</label></th>
+                <td colspan="3">
+                    <select id="eFirstRelation" class="easyui-combobox">
+                        <option value="0">父亲</option>
+                        <option value="1">母亲</option>
+                        <option value="2">儿子</option>
+                        <option value="3">女儿</option>
+                        <option value="4">其他</option>
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <th><label for="eSecName">姓名（次）</label></th>
+                <td><input class="easyui-textbox" type="text" id="eSecName" name="eSecName" data-options="validType:'length[0,64]'"></td>
+                <th><label for="eSecSex">性别（次）</label></th>
+                <td>
+                    <select id="eSecSex" class="easyui-combobox">
+                        <option value="0">男</option>
+                        <option value="1">女</option>
+                        <option value="2">不详</option>
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <th><label for="eSecAddr">住址（次）</label></th>
+                <td colspan="3"><input class="easyui-textbox" id="eSecAddr" name="eSecAddr" style="width:90%;height:30px;" data-options="validType:'length[0,2048]',multiline:true"></td>
+            </tr>
+            <tr>
+                <th><label for="eSecPhone">电话（次）</label></th>
+                <td><input class="easyui-textbox" type="text" id="eSecPhone" name="eSecPhone" data-options="validType:'mobile'"></td>
+                <th><label for="eSecPost">邮编（次）</label></th>
+                <td><input class="easyui-textbox" type="text" id="eSecPost" name="eSecPost" data-options="validType:'length[0,6]'"></td>
+            </tr>
+            <tr>
+                <th><label for="eSecRelation">关系（次）</label></th>
+                <td colspan="3">
+                    <select id="eSecRelation" class="easyui-combobox">
+                        <option value="0">父亲</option>
+                        <option value="1">母亲</option>
+                        <option value="2">儿子</option>
+                        <option value="3">女儿</option>
+                        <option value="4">其他</option>
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <th><label for="Content">描述：</label></th>
+                <td colspan="3"><input class="easyui-textbox" id="eContent" name="eContent" style="width:90%;height:30px;" data-options="validType:'length[0,2048]',multiline:true"></td>
+            </tr>
+            <tr>
+                <td colspan="4" style="text-align:center; padding-top:10px">
+                    <input type="hidden" id="eElderId" name="eElderId" />
+                    <a href="javascript:void(0)" class="easyui-linkbutton" id="btnUpdate" iconcls="icon-ok">确定</a>
+                    <a href="javascript:void(0)" class="easyui-linkbutton" iconcls="icon-cancel" onclick="javascript:$('#UpdateElderDialog').dialog('close')">关闭</a>
+                </td>
+            </tr>
+        </table>
+    </form>
+</div>
+
+@*----------------------------设置二维码的的弹出层--------------------------------*@
+<div id="QRCodeDialog" class="easyui-dialog" style="width:400px;height:400px;padding:10px"
+     closed="true" resizable="true" modal="true" buttons="#dlg-buttons" align="center">
+    <form id="GenerateCode" method="post" novalidate="novalidate">
+        <table id="tblUpdate">
+            <tr>
+                <th><label for="qSerialNo">序号</label></th>
+                <td><input class="easyui-textbox" type="text" id="qSerialNo" name="qSerialNo" /></td>
+             </tr>
+            <tr>
+                <th><label for="qrcode">二维码：</label></th>
+                <td colspan="3">
+                    <img id="qrcode" src="" />
+                </td>
+            </tr>
+            <tr>
+                <td colspan="4" style="text-align:center; padding-top:10px">
+                    <input type="hidden" id="qElderId" name="qElderId" />
+                    <a href="javascript:void(0)" class="easyui-linkbutton" id="btnQRCode" iconcls="icon-ok">生成二维码</a>
+                    <a href="javascript:void(0)" class="easyui-linkbutton" iconcls="icon-cancel" onclick="javascript: $('#QRCodeDialog').dialog('close')">关闭</a>
+                </td>
+            </tr>
+        </table>
+    </form>
+</div>

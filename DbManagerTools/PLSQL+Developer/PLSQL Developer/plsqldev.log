@@ -1,0 +1,123 @@
+---------------------------2007-2-7 15:20:47---------------------------
+Exception 'EListError' in module plsqldev.exe at 00023C7A
+List index out of bounds (1)
+
+Call stack:
+:00424C7A [plsqldev.exe]
+:7C812A5B [kernel32.dll]
+:00424C7A [plsqldev.exe]
+:0040E973 [plsqldev.exe]
+:00412C1D [plsqldev.exe]
+:00412C28 [plsqldev.exe]
+:004051C6 [plsqldev.exe] (system.pas, line 9066)
+Recursive call (2 times):
+:00424C7A [plsqldev.exe]
+:00424BCA [plsqldev.exe]
+:00424C7A [plsqldev.exe]
+:0057B1A6 [plsqldev.exe] (TSSetLib.pas, line 1557)
+:00597E7B [plsqldev.exe] (TsGrid.pas, line 7017)
+:005978F6 [plsqldev.exe] (TsGrid.pas, line 6830)
+:0059785E [plsqldev.exe] (TsGrid.pas, line 6806)
+:0059A2E4 [plsqldev.exe] (TsGrid.pas, line 8341)
+:004A03F8 [plsqldev.exe]
+:0059A3F7 [plsqldev.exe] (TsGrid.pas, line 8372)
+:0049B103 [plsqldev.exe]
+:00499BAC [plsqldev.exe]
+:0049B14F [plsqldev.exe]
+:005968B2 [plsqldev.exe] (TsGrid.pas, line 6284)
+:0049AE93 [plsqldev.exe]
+:77D3E162 [user32.dll]
+:02E51A4B [ieprot.dll]
+:77D318F4 [user32.dll]
+:77D1EA9E [user32.dll]
+Recursive call (2 times):
+:77D1EAAD [user32.dll]
+:77D1EBF3 [user32.dll]
+:77D1EC03 [user32.dll]
+:7C92EAE3 [ntdll.dll]
+:77D318A2 [user32.dll]
+:0049DD5A [plsqldev.exe]
+:0049DEF4 [plsqldev.exe]
+:00596A08 [plsqldev.exe] (TsGrid.pas, line 6353)
+:0049DB6F [plsqldev.exe]
+:00431F56 [plsqldev.exe]
+:77D18734 [user32.dll]
+:77D18816 [user32.dll]
+:77D189CD [user32.dll]
+:77D1CA67 [user32.dll]
+:77D196C7 [user32.dll]
+:004BC5C0 [plsqldev.exe]
+:004BC5F7 [plsqldev.exe]
+:004BC827 [plsqldev.exe]
+:004BC86A [plsqldev.exe]
+:00B182AB [plsqldev.exe] (PlSqlDev.dpr, line 126)
+:7C92E64E [ntdll.dll]
+:7C816FD7 [kernel32.dll]
+
+Main Thread ID = 00000BE4, Current Thread ID = 00000BE4
+Registers:
+EAX = 001AFB08  CS = 001B  EIP = 7C812A5B  Flags = 00000202
+EBX = 02DD7598  SS = 0023  ESP = 001AFB04    EBP = 001AFB58
+ECX = 00000000  DS = 0023  ESI = 001AFB8C    FS  = 003B
+EDX = 00424C7A  ES = 0023  EDI = 04D9A5C8    GS  = 0000
+Code at CS:EIP
+5E C9 C2 10 00 85 FF 0F 8E 36 93 FF FF 8B 55 FC 
+Stack:
+00000001 0EEDFADE 00000001 00000000 7C812A5B 
+00000000 00000000 7C816FD7 00404D05 02BFF338 
+0043800B 00000002 00000000 00000000 02BBF680 
+7C816FD7 FFFFFFFF FFFFFFFF FFFFFFFF FFFFFFFF 
+
+Additional info:
+
+PL/SQL Developer
+  Version 7.0.1.1066 (MBCS)
+  20000.0915 - Unlimited user license
+  Windows XP version 6.0 (build 2600) Service Pack 2
+  Language: 简体中文  (姜华东)
+  
+  Physical memory : 768,432 kB  (184,172 available)
+  Paging file     : 1,881,548 kB  (1,049,348 available)
+  Virtual memory  : 2,097,024 kB  (1,989,024 available)
+
+Parameters
+  C:\Program Files\PLSQL Developer\plsqldev.exe
+
+Preferences
+  Session mode: Multi
+  OCI Library: 
+  Use OCI7: False
+
+Plug-Ins
+
+Aliases
+  EXTPROC_CONNECTION_DATA
+  INST1_HTTP
+  MZJDB
+  ORA10_100
+  ORA9_100
+  ORA92
+  ORACLE54
+  ORACLE9
+  WEBGIS
+
+Homes
+  OraHome92  (C:\oracle\ora92)
+
+DLLs
+  C:\oracle\ora92\bin\oci.dll
+
+TNS File
+  C:\oracle\ora92\Network\Admin\tnsnames.ora
+
+Using
+  Home: OraHome92
+  DLL: C:\oracle\ora92\bin\oci.dll
+  OCI: version 9.2
+  Oracle9i Enterprise Edition Release 9.2.0.1.0 
+  Character size: 2 byte(s)
+
+Windows
+ *SQL 窗口 - select mydes3.encrypt('2') from dual
+  
+

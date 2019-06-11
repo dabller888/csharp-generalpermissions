@@ -1,0 +1,502 @@
+﻿@using Newtonsoft.Json;
+@using QY.Stage.PocoModel;
+@*-------------------------- 搜索-------------------------*@
+<fieldset id="btnSearchDlg" style="margin-top:0;">
+    <legend>搜索</legend>
+    <div class="search-box">
+        <label for="txtLoginName">登录名：</label>
+        <input class="easyui-textbox" id="txtLoginName" name="txtLoginName" />&nbsp;&nbsp;
+        <label for="txtEmail">邮箱：</label>
+        <input class="easyui-textbox" id="txtEmail" name="txtEmail" />
+        <a href="javascript:;" class="easyui-linkbutton" iconcls="icon-search" id="btnSerach" name="btnSerach">搜索</a>
+    </div>
+</fieldset>
+
+@*-------------------------- 实现对用户数据的显示-------------------------*@
+<div>
+    <table id="test"></table>
+</div>
+
+@*----------------------------设置添加的弹出层--------------------------------*@
+<div id="AddUserDialog" class="easyui-dialog" style="width:400px;height:420px;padding:10px" iconcls="icon-save"
+     closed="true" resizable="true" modal="true" buttons="#dlg-buttons" align="center">
+    <form id="UserForm" method="post" novalidate="novalidate">
+        <table id="tblAdd">
+            <tr>
+                <th><label for="LoginName">用户名</label></th>
+                <td><input class="easyui-textbox" id="LoginName" name="LoginName" data-options="required:true,validType:'length[1,32]'" /></td>
+            </tr>
+            <tr>
+                <th><label for="LoginPass">密码</label></th>
+                <td><input class="easyui-textbox" type="password" id="LoginPass" name="LoginPass" data-options="required:true,validType:'length[1,32]'" /></td>
+            </tr>
+            <tr>
+                <th><label for="CfmLoginPass">确认密码</label></th>
+                <td><input class="easyui-textbox" type="password" id="CfmLoginPass" name="CfmLoginPass" data-options="required:true" validtype="equalTo['LoginPass']" invalidmessage="两次输入密码不匹配" /></td>
+            </tr>
+            <tr>
+                <th><label for="RealName">姓名</label></th>
+                <td><input class="easyui-textbox" id="RealName" name="RealName" data-options="required:true,validType:'length[1,20]'" /></td>
+            </tr>
+            <tr>
+                <th><label for="Sex">性别</label></th>
+                <td>
+                    <select id="Sex" class="easyui-combobox">
+                        <option value="0">男</option>
+                        <option value="1">女</option>
+                        <option value="2">不详</option>
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <th><label for="Phone">电话</label></th>
+                <td><input class="easyui-numberbox" id="Phone" name="Phone" data-options="validType:'length[1,14]'" /></td>
+            </tr>
+            <tr>
+                <th><label for="Email">邮箱:</label></th>   <!--data-options="validType:'email'"-->
+                <td><input class="easyui-textbox" id="Email" name="Email" data-options="validType:'email'" /></td>
+            </tr>
+            <tr>
+                <td colspan="2" style="text-align:center; padding-top:10px">
+                    <a href="javascript:void(0)" class="easyui-linkbutton" id="btnRegist" iconcls="icon-ok">确定</a>
+                    <a href="javascript:void(0)" class="easyui-linkbutton" iconcls="icon-cancel" onclick="javascript:$('#AddUserDialog').dialog('close')">关闭</a>
+                </td>
+            </tr>
+        </table>
+    </form>
+</div>
+
+@*----------------------------设置修改的的弹出层--------------------------------*@
+<div id="UpdateUserDialog" class="easyui-dialog" style="width:400px;height:400px;padding:10px" iconcls="icon-save"
+     closed="true" resizable="true" modal="true" buttons="#dlg-buttons" align="center">
+    <form id="UpdateUserForm" method="post" novalidate="novalidate">
+        <table id="tblUpdate">
+            <tr>
+                <th><label for="uLoginName">用户名</label></th>
+                <td><input class="easyui-textbox" id="uLoginName" name="uLoginName" data-options="required:true,validType:'length[1,32]'" /></td>
+
+            </tr>
+            <tr>
+                <th><label for="uRealName">姓名</label></th>
+                <td><input class="easyui-textbox" id="uRealName" name="uRealName" data-options="required:true,validType:'length[1,20]'" /></td>
+            </tr>
+            <tr>
+                <th><label for="uSex">性别</label></th>
+                <td>
+                    <select id="uSex" class="easyui-combobox">
+                        <option value="0">男</option>
+                        <option value="1">女</option>
+                        <option value="2">不详</option>
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <th><label for="uPhone">电话</label></th>
+                <td><input class="easyui-numberbox" id="uPhone" name="uPhone" data-options="validType:'length[1,14]'" /></td>
+
+            </tr>
+            <tr>
+                <th><label for="uEmail">邮箱:</label></th>
+                <td><input class="easyui-textbox" id="uEmail" name="uEmail" data-options="validType:'email'" /></td>
+            </tr>
+            <tr>
+                <td colspan="2" style="text-align:center; padding-top:10px">
+                    <input type="hidden" id="UserId" name="UserId" />
+                    <a href="javascript:void(0)" class="easyui-linkbutton" id="btnUpdate" iconcls="icon-ok">确定</a>
+                    <a href="javascript:void(0)" class="easyui-linkbutton" iconcls="icon-cancel" onclick="javascript:$('#UpdateUserDialog').dialog('close')">关闭</a>
+                </td>
+            </tr>
+        </table>
+    </form>
+</div>
+
+@*----------------------------设置修改密码的的弹出层--------------------------------*@
+<div id="UpdateUserPasswdDialog" class="easyui-dialog" style="width:400px;height:260px;padding:10px" iconcls="icon-save"
+     closed="true" resizable="true" modal="true" buttons="#dlg-buttons" align="center">
+    <form id="UUpdateUserPasswdForm" method="post" novalidate="novalidate">
+        <table id="tblUpdatePwd">
+            <tr>
+                <th><label for="mLoginName">用户名</label></th>
+                <td><input class="easyui-textbox" id="mLoginName" name="mLoginName" data-options="readonly:true" /></td>
+
+            </tr>
+            <tr>
+                <th><label for="mLoginPass">密码</label></th>
+                <td><input class="easyui-textbox" type="password" id="mLoginPass" name="mLoginPass" data-options="required:true,validType:'length[1,32]'" /></td>
+            </tr>
+            <tr>
+                <th><label for="mCfmLoginPass">确认密码</label></th>
+                <td><input class="easyui-textbox" type="password" id="mCfmLoginPass" name="mCfmLoginPass" data-options="required:true" validtype="equalTo['mLoginPass']" invalidmessage="两次输入密码不匹配" /></td>
+            </tr>
+            <tr>
+                <td colspan="2" style="text-align:center; padding-top:10px">
+                    <a href="javascript:void(0)" class="easyui-linkbutton" id="btnUpdatePasswd" iconcls="icon-ok">确定</a>
+                    <a href="javascript:void(0)" class="easyui-linkbutton" iconcls="icon-cancel" onclick="javascript: $('#UpdateUserPasswdDialog').dialog('close')">关闭</a>
+                </td>
+            </tr>
+        </table>
+    </form>
+</div>
+
+<script type="text/javascript">
+    $(function () {
+        //初始化弹出窗体
+        initTable();
+
+        //绑定注册按钮的事件
+        BindRegistButtonClickEvent();
+
+        //绑定修改事件的信息
+        BindUpdateButtonClickEvent();
+
+        //自己写一个验证两次输入的密码相同的JavaScript代码
+        CheckPwdAndPwdOKiSEqualTo();
+
+        //搜索用户信息
+        SearchInfo();
+
+    });
+
+    //初始化表格
+    function initTable(queryData) {
+        $('#test').datagrid({
+            title: '用户管理',
+            iconCls: 'icon-more',
+            height: 530,
+            width: '100%',
+            nowrap: true,
+            autoRowHeight: true,
+            striped: true,
+            collapsible: false,
+            url: '/Back/System/GetUserList',
+            sortName: 'UserId',
+            sortOrder: 'asc',
+            //striped:true,
+            border: true,
+            remoteSort: false,
+            idField: 'UserId',
+            pagination: true,
+            rownumbers: false,
+            queryParams: queryData,
+            columns: [[
+                { field: 'ck', checkbox: true },
+                { field: 'UserId', title: '编号', width: 50, hidden: true },
+                { field: 'LoginName', title: '登录名', width: 100, sortable: true },
+                { field: 'RealName', title: "姓名", width: 60, sortable: true, align: "center" },
+                {
+                    field: 'Sex', title: "性别", width: 50, sortable: true, align: "center",
+                    formatter: function (value, row, index) {
+                        var str = '不详';
+                        if (value == 0) { str = '男'; }
+                        else if (value == 1) { str = '女'; }
+                        else { str = '不详'; }
+                        return str;
+                    }
+                },
+                { field: 'Phone', title: "电话", width: 80, sortable: true },
+                { field: 'Email', title: "邮箱", width: 125, sortable: true },
+                {
+                    field: 'CreateTime', title: "创建时间", width: 120, sortable: true, formatter: formatDatebox
+                },
+                {
+                    field: 'LoginTime', title: "登录时间", width: 120, sortable: true, formatter: formatDatebox
+                },
+                {
+                    field: 'LastLoginTime', title: "最后登录时间", width: 120, sortable: true, formatter: formatDatebox
+                },
+                { field: 'LoginCount', title: "登录次数", width: 60, sortable: true, align: "center" },
+                {
+                    field: 'IsEnabled', title: "是否启用", width: 100, sortable: true, align: "center",
+                    formatter: function (value, row, index) {
+                        if (value) {
+                            return '<a class="grid_visible" href="javascript:void(0)" >' + value + '</a>';
+                        } else {
+                            return '<a class="grid_unvisible" href="javascript:void(0)" >' + value + '</a>';
+                        }
+                    }
+                }
+            ]],
+            toolbar: [{
+                id: 'btnAdd',
+                text: '添加用户',
+                iconCls: 'icon-add',
+                handler: function () {
+                    //实现弹出添加用户信息的层
+                    ShowCreateUserDialog();
+                }
+            }, '-', {
+                id: 'btnEdit',
+                text: '修改用户',
+                iconCls: 'icon-edit',
+                handler: function () {
+                    //实现弹出修改用户信息的层
+                    ShowUpdateUserDialog();
+                }
+            }, '-', {
+                id: 'btnDelete',
+                text: '删除用户',
+                iconCls: 'icon-remove',
+                handler: function () {
+                    //确认只删除一条用户信息
+                    DeleteUserInfoByClick();
+                }
+            }, '-', {
+                id: 'btnPasswd',
+                text: '修改密码',
+                iconCls: 'icon-set',
+                handler: function () {
+                    ShowUpdatePasswdDialog();
+                }
+            }, '-', {
+                id: 'btnEnable',
+                text: '启用',
+                iconCls: 'icon-lock',
+                handler: function () {
+                    IsEnableUser();
+                }
+            }],
+            onLoadSuccess: function () {
+                $(".grid_visible").linkbutton({ text: '已启用', plain: true, iconCls: 'icon-ok' });
+                $(".grid_unvisible").linkbutton({ text: '未启用', plain: true, iconCls: 'icon-no' });
+            },
+            onBeforeLoad: function () {                
+                var userActions = JSON.parse("@JsonConvert.SerializeObject(Session[(Session["UserInfo"] as SysUser).LoginName + "action"])".replace(/&quot;/g, "\""));
+                var actions = JSON.parse("@JsonConvert.SerializeObject(Session["action"])".replace(/&quot;/g, "\""));
+                user.renderActions(userActions,actions);
+            }
+        });
+    }
+
+    //弹出添加用户的对话框
+    function ShowCreateUserDialog() {
+        //实现弹出添加用户信息的层
+        $('#AddUserDialog').dialog('open').dialog('setTitle', '添加用户信息');
+
+        //添加完成后清空文本框的值
+        ClearTextBox();
+    }
+
+    //注册用户添加事件
+    function BindRegistButtonClickEvent() {
+        $("#btnRegist").click(function () {
+            //验证所有的文本框是否通过用户的验证
+            var valid = $('#UserForm').form('validate');
+            if (valid == false) {
+                return false;
+            }
+
+            //创建传递的参数
+            var postdata = {
+                LoginName: $("#LoginName").textbox("getValue"),
+                LoginPass: $("#LoginPass").textbox('getValue'),
+                RealName: $("#RealName").textbox('getValue'),
+                Sex: $("#Sex").combobox("getValue"),
+                Phone: $("#Phone").numberbox("getValue"),
+                Email: $("#Email").textbox('getValue')
+            };
+
+            //发送异步请求到后台保存用户数据
+            $.post("/Back/System/SaveUser", postdata, function (data) {
+                if (data.Code == 1) {
+                    //添加成功，(1)关闭对话框，刷新表格
+                    $.messager.alert("友情提示", "添加成功!", "success");
+                    $('#AddUserDialog').dialog('close');
+                    $("#test").datagrid("reload");
+                } else if (data.Code == 2) {
+                    $.messager.alert("友情提示", "登录名已经存在!", "warning");
+                } else {
+                    $.messager.alert("友情提示", "添加失败，请您检查!", "warning");
+                }
+            });
+        });
+    }
+
+    //当添加或者修改完成后清空文本框中的值
+    function ClearTextBox() {
+        $("#LoginName").textbox('setValue','');
+        $("#LoginPass").textbox('setValue', '');
+        $('#CfmLoginPass').textbox('setValue', '');
+        $("#RealName").textbox('setValue', '');
+        $("#Sex").combobox("setValue", '0');
+        $("#Phone").numberbox("setValue", "");
+        $("#Email").textbox('setValue', '');
+    }
+
+    //实现多选删除信息
+    function DeleteUserInfoByClick() {
+        //获取到用户选定的某一列的ID号
+        var deleteUserInfoID = $("#test").datagrid("getSelections");
+        //判断用户选择了多少条数据
+        // //异步将删除的ID发送到后台，后台删除之后，返回前台OK，前台刷新表格
+        if (deleteUserInfoID.length >= 1) {
+            var ids = "";   //1,2,3,4
+            for (var i = 0; i < deleteUserInfoID.length; i++) {
+                ids += deleteUserInfoID[i].UserId + ",";
+            }
+            //去掉最后的一个,
+            ids = ids.substring(0, ids.length - 1);
+
+            //遍历出删除用户的信息
+            var UNameList = "";
+            for (var i = 0; i < deleteUserInfoID.length; i++) {
+                UNameList += deleteUserInfoID[i].LoginName + ",";
+            }
+            UNameList = UNameList.substring(0, UNameList.length - 1);
+            //var LoginUName = $("#test").datagrid("getSelections")[0].UName;
+            //发送异步请求删除数据
+            $.messager.confirm("删除信息", "您确认删除<font color='Red' size='3'>" + UNameList + "</font>用户吗？", function (r) {
+                if (r) {
+                    $.post("/Back/System/DeleteUsers", { UserIds: ids }, function (data) {
+                        if (data.Code == 1) {
+                            $.messager.alert("友情提示", "删除成功", "success");
+                            $("#test").datagrid("reload");
+                            $("#test").datagrid("clearSelections");
+                        } else {
+                            $.messager.alert("友情提示", "删除失败:" + data, "warning");
+                        }
+                    });
+                }
+            });
+        }
+        else {
+            $.messager.alert("友情提示", "请您选择要删除的数据");
+        }
+    }
+
+    function IsEnableUser() {
+        var items = $("#test").datagrid("getSelections");
+        if (items.length == 1) {
+            var msg = items[0].IsEnabled == 1 ? "禁用" : "启用";
+            $.post("/Back/System/EnableUser", {
+                UserName: items[0].LoginName,
+                IsEnable:items[0].IsEnabled
+            }, function (data) {
+                if (data.Code == 1) {
+                    $.messager.alert("友情提示", msg + "成功", "success");
+                    $("#test").datagrid("reload");
+                    $("#test").datagrid("clearSelections");
+                } else {
+                    $.messager.alert("友情提示", msg + "失败:" + data, "warning");
+                }
+            });
+        }
+        else {
+            $.messager.alert("友情提示", "请您选择要操作的数据", "warning");
+        }
+    }
+
+    //弹出修改用户的对话框
+    function ShowUpdateUserDialog() {
+        var UpdateUserInfoID = $("#test").datagrid("getSelections");
+        if (UpdateUserInfoID.length == 1) {
+            $("#UpdateUserDialog").dialog("open").dialog("setTitle", "修改用户信息");
+
+            //绑定显示修改的详细信息的内容
+            BingUpdateDetailsShowTextBox();
+        }
+        else {
+            $.messager.alert("友情提示", "每次只能修改一行数据，你已经选择了<font color='red' size='6'>" + UpdateUserInfoID.length + "</font>行");
+        }
+    }
+
+    //绑定修改用户的信息显示在用户的TextBox文本框中
+    function BingUpdateDetailsShowTextBox() {
+        var CheckID = $("#test").datagrid("getSelections")[0].UserId;
+        $.getJSON("/Back/System/GetUserDetails", { UserId: CheckID }, function (data) {
+            if (data.Code == 1) {
+                $("#UserId").val(CheckID);
+                $("#uLoginName").textbox("setValue",data.Content.LoginName);
+                $("#uRealName").textbox("setValue", data.Content.RealName);
+                $("#uSex").combobox("setValue", data.Content.Sex);
+                $("#uPhone").numberbox("setValue", data.Content.Phone);
+                $("#uEmail").textbox("setValue", data.Content.Email);
+            }
+        });
+    }
+
+    //修改用户的信息
+    function BindUpdateButtonClickEvent() {
+        $("#btnUpdate").click(function () {
+            //首先判断前台的验证是否通过
+            var valid = $('#UpdateUserForm').form('validate');
+            if (valid == false) {
+                return false;
+            }
+            var postData = {
+                UserId: $("#UserId").val(),
+                LoginName: $("#uLoginName").textbox("getValue"),
+                RealName: $("#uRealName").textbox("getValue"),
+                Sex: $("#uSex").combobox("getValue"),
+                Phone: $("#uPhone").numberbox("getValue"),
+                Email: $("#uEmail").textbox("getValue")
+            };
+
+            //使用异步实现修改用户信息
+            $.post("/Back/System/SaveUser", postData, function (data) {
+                if (data.Code == 1) {
+                    $.messager.alert("友情提示", "修改成功!", "success");
+                    $("#UpdateUserDialog").dialog('close');
+                    $("#test").datagrid('reload');
+                } else if (data.Code == 2) {
+                    $.messager.alert("友情提示", "登录名已经存在!", "warning");
+                } else {
+                    $.messager.alert("友情提示", "修改失败，请检查!", "warning");
+                }
+            });
+        });
+    }
+
+    //验证两次输入的密码必须一致
+    function CheckPwdAndPwdOKiSEqualTo() {
+        $.extend($.fn.validatebox.defaults.rules, {
+            //判断必须和某个字段相同
+            equalTo: {
+                validator: function (value, param) {
+                    return $('#' + param[0]).val() == value;
+                },
+                message: '字段不匹配'
+            }
+        });
+    }
+
+    //搜索数据信息
+    function SearchInfo() {
+        $("#btnSearch").click(function () {
+            var queryData = { LoginName: $("#txtLoginName").textbox("getValue"), Email: $("#txtEmail").textbox("getValue") };
+            initTable(queryData);
+            return false;
+        });
+    }
+
+    //修改密码
+    function ShowUpdatePasswdDialog() {
+        var UpdateUserInfoID = $("#test").datagrid("getSelections");
+        if (UpdateUserInfoID.length == 1) {
+            $("#UpdateUserPasswdDialog").dialog("open").dialog("setTitle", "修改用户密码");
+            $('#mLoginName').textbox("setValue", $("#test").datagrid("getSelections")[0].LoginName);
+            $("#btnUpdatePasswd").click(function () {
+                var valid = $('#UUpdateUserPasswdForm').form('validate');
+                if (valid == false) {
+                    return false;
+                }
+                $.post("/Back/System/ModifyPasswd", {
+                    UserName: $('#mLoginName').textbox('getValue'),
+                    Passwd: $('#mLoginPass').textbox('getValue')
+                }, function (data) {
+                    if (data.Code == 1) {
+                        $.messager.alert("友情提示", "修改成功!", "success");
+                        $("#UpdateUserPasswdDialog").dialog('close');
+                        $("#test").datagrid('reload');
+                    } else if (data.Code == 2) {
+                        $.messager.alert("友情提示", "登录名已经存在!", "warning");
+                    } else {
+                        $.messager.alert("友情提示", "修改失败，请检查!", "warning");
+                    }
+                });
+            })
+        }
+        else {
+            $.messager.alert("友情提示", "每次只能修改一行数据，你已经选择了<font color='red' size='6'>" + UpdateUserInfoID.length + "</font>行", "warning");
+        }
+    }
+</script>

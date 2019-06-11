@@ -1,0 +1,366 @@
+﻿<#@ template debug="false" hostspecific="false" language="C#" #>
+<#@ assembly name="System.Core.dll" #>
+<#@ assembly name="System.Data.dll" #>
+<#@ assembly name="System.Data.DataSetExtensions.dll" #>
+<#@ assembly name="System.Xml.dll" #>
+<#@ assembly name="MySql.Data" #>
+<#@ import namespace="System" #>
+<#@ import namespace="System.Xml" #>
+<#@ import namespace="System.Linq" #>
+<#@ import namespace="System.Text" #>
+<#@ import namespace="System.Data" #>
+<#@ import namespace=" System.Data.SqlClient" #>
+<#@ import namespace="MySql.Data.MySqlClient" #>
+<#@ import namespace="System.Collections.Generic" #>
+<#@ import namespace="System.IO" #>
+<#@ import namespace="System.Text.RegularExpressions" #><#+
+
+	#region GetDbTables
+    public class DbHelper
+    {
+
+		#region 去下划线,转大写
+        public static string ToSplitFirstUpper(string file)
+        {
+            string[] words = file.Split('_');
+            StringBuilder firstUpperWorld = new StringBuilder();
+            foreach (string word in words)
+            {
+                string firstUpper = ToFirstUpper(word);
+                firstUpperWorld.Append(firstUpper);
+            }
+            string firstUpperFile = firstUpperWorld.ToString().TrimEnd(new char[] { '_' });
+            return firstUpperFile;
+        }
+
+        // 将字符串设置成首字母大写
+        public static string ToFirstUpper(string field)
+        {
+            string first = field.Substring(0, 1).ToUpperInvariant();
+            string result = first;
+            if (field.Length > 1)
+            {
+                string after = field.Substring(1);
+                result = first + after;
+            }
+            return result;
+        }
+
+        #endregion
+
+        #region 生成简单的sql语句
+        public static string GetInsertSql(string connectionString, string database, string tableName)
+        {
+            var list = GetDbColumns(connectionString, database, tableName);
+            StringBuilder sb1 = new StringBuilder();
+            StringBuilder sb2 = new StringBuilder();
+            foreach (var item in list)
+            {
+                string field = item.Field;
+                if (field.ToLower() == "id") continue;
+                sb1.Append(field).Append(", ");
+                sb2.Append("?").Append(field).Append(", ");
+            }
+            string s1 = sb1.ToString().Trim(new char[] { ',', ' ' });
+            string s2 = sb2.ToString().Trim(new char[] { ',', ' ' });
+            return string.Format("INSERT INTO {0}({1}) VALUES({2})", tableName, s1, s2);
+
+        }
+
+        public static string GetParameter(string connectionString, string database, string tableName, bool hasId)
+        {
+            var list = GetDbColumns(connectionString, database, tableName);
+            StringBuilder sb = new StringBuilder();
+            sb.Append("MySqlParameter[] paras = new MySqlParameter[] { \r\n");
+            foreach (var item in list)
+            {
+                if (item.Field.ToLower() == "id" && !hasId) continue;
+                sb.AppendFormat("				 new MySqlParameter(\"{0}\", this.{1}),\r\n", item.Field, ToSplitFirstUpper(item.Field));
+            }
+            string s = sb.ToString().Trim(new char[] { ',', ' ', '\r', '\n' });
+            s = s + "\r\n			};\r\n";
+            return s;
+        }
+
+        public static string GetUpdateSql(string connectionString, string database, string tableName)
+        {
+            var list = GetDbColumns(connectionString, database, tableName);
+            StringBuilder sb1 = new StringBuilder();
+            foreach (var item in list)
+            {
+                string field = item.Field;
+                if (field.ToLower() == "id") continue;
+                sb1.Append(field).Append(" = ").Append("?").Append(field).Append(", ");
+
+
+            }
+            string s1 = sb1.ToString().Trim(new char[] { ',', ' ' });
+            return string.Format("UPDATE {0} SET {1} WHERE id = ?id", tableName, s1);
+
+        }
+
+        #endregion
+
+        #region GetDbTables
+
+        public static List<DbTable> GetDbTables(string connectionString, string database)
+        {
+
+            #region SQL
+            string sql = string.Format("SHOW TABLE STATUS FROM {0};", database);
+            #endregion
+            DataTable dt = GetDataTable(connectionString, sql);
+            return dt.Rows.Cast<DataRow>().Select(row => new DbTable
+            {
+                TableName = row.Field<string>("Name"),
+                Rows = row.Field<UInt64>("Rows"),
+                Comment = row.Field<string>("Comment")
+            }).ToList();
+        }
+        #endregion
+
+        #region GetDbColumns
+
+        public static List<DbColumn> GetDbColumns(string connectionString, string database, string tableName)
+        {
+            #region SQL
+            string sql = string.Format("SHOW FULL COLUMNS FROM {0} FROM {1};", tableName, database);
+            #endregion
+            DataTable dt = GetDataTable(connectionString, sql);
+            return dt.Rows.Cast<DataRow>().Select(row => new DbColumn
+            {
+                IsPrimaryKey = !String.IsNullOrEmpty(row.Field<string>("Key")),
+                Field = row.Field<string>("Field"),
+                Type = row.Field<string>("Type"),
+                Comment = row.Field<string>("Comment"),
+                IsNullable = row.Field<string>("NULL") == "YES"
+            }).ToList();
+        }
+
+        #endregion
+
+
+        #region GetDataTable
+
+        public static DataTable GetDataTable(string connectionString, string commandText, params SqlParameter[] parms)
+        {
+            using (MySqlConnection connection = new MySqlConnection(connectionString))
+            {
+                MySqlCommand command = connection.CreateCommand();
+                command.CommandText = commandText;
+                command.Parameters.AddRange(parms);
+                MySqlDataAdapter adapter = new MySqlDataAdapter(command);
+
+                DataTable dt = new DataTable();
+                adapter.Fill(dt);
+
+                return dt;
+            }
+        }
+
+        #endregion
+    }
+    #endregion
+
+    #region DbTable
+    /// <summary>
+    /// 表结构
+    /// </summary>
+    public sealed class DbTable
+    {
+        /// <summary>
+        /// 表名称
+        /// </summary>
+        public string TableName { get; set; }
+
+        /// <summary>
+        /// 行数
+        /// </summary>
+        public UInt64 Rows { get; set; }
+
+        /// <summary>
+        /// 描述信息
+        /// </summary>
+        public string Comment { get; set; }
+    }
+    #endregion
+
+    #region DbColumn
+    /// <summary>
+    /// 表字段结构
+    /// </summary>
+    public sealed class DbColumn
+    {
+        /// <summary>
+        /// 是否主键
+        /// </summary>
+        public bool IsPrimaryKey { get; set; }
+        /// <summary>
+        /// 字段名称
+        /// </summary>
+        public string Field { get; set; }
+        /// <summary>
+        /// 字段类型 int(11)
+        /// </summary>
+        public string Type { get; set; }
+        /// <summary>
+        /// 字段类型int
+        /// </summary>
+        public string ColumnType
+        {
+            get
+            {
+                return Type.IndexOf('(') == -1 ? Type : Type.Substring(0, Type.IndexOf('('));
+            }
+        }
+        /// <summary>
+        /// 数据库类型对应的C#类型
+        /// </summary>
+        public string CSharpType
+        {
+            get
+            {
+                return MysqlDbTypeMap.MapCsharpType(ColumnType);
+            }
+        }
+        /// <summary>
+        /// 
+        /// </summary>
+        public Type CommonType
+        {
+            get
+            {
+                return MysqlDbTypeMap.MapCommonType(ColumnType);
+            }
+        }
+        /// <summary>
+        /// 描述
+        /// </summary>
+        public string Comment { get; set; }
+        /// <summary>
+        /// 是否允许空
+        /// </summary>
+        public bool IsNullable { get; set; }
+
+        /// <summary>
+        /// 字符长度
+        /// </summary>
+        public int CharLength
+        {
+            get
+            {
+                Regex regex = new Regex(@"(?<=\()\d*?(?=\))", RegexOptions.Singleline);
+                if (regex.IsMatch(Type))
+                {
+                    Match match = regex.Match(Type);
+                    while (match != null && match.Success)
+                    {
+                        int charLength;
+                        if (Int32.TryParse(match.Value, out charLength))
+                        {
+                            return charLength;
+                        }
+                    }
+                }
+                return 0;
+            }
+        }
+    }
+    #endregion
+
+    #region SqlServerDbTypeMap
+
+    public class MysqlDbTypeMap
+    {
+        public static string MapCsharpType(string dbtype)
+        {
+            if (string.IsNullOrEmpty(dbtype)) return dbtype;
+            dbtype = dbtype.ToLower();
+            string csharpType = "object";
+            switch (dbtype)
+            {
+                case "bigint": csharpType = "long"; break;
+                case "binary": csharpType = "byte[]"; break;
+                case "bit": csharpType = "bool"; break;
+                case "char": csharpType = "string"; break;
+                case "date": csharpType = "DateTime"; break;
+                case "datetime": csharpType = "DateTime"; break;
+                case "datetime2": csharpType = "DateTime"; break;
+                case "datetimeoffset": csharpType = "DateTimeOffset"; break;
+                case "dityint": csharpType = "bool"; break;
+                case "decimal": csharpType = "decimal"; break;
+                case "float": csharpType = "double"; break;
+                case "image": csharpType = "byte[]"; break;
+                case "int": csharpType = "int"; break;
+                case "money": csharpType = "decimal"; break;
+                case "nchar": csharpType = "string"; break;
+                case "ntext": csharpType = "string"; break;
+                case "numeric": csharpType = "decimal"; break;
+                case "nvarchar": csharpType = "string"; break;
+                case "real": csharpType = "Single"; break;
+                case "smalldatetime": csharpType = "DateTime"; break;
+                case "smallint": csharpType = "short"; break;
+                case "smallmoney": csharpType = "decimal"; break;
+                case "sql_variant": csharpType = "object"; break;
+                case "sysname": csharpType = "object"; break;
+                case "text": csharpType = "string"; break;
+				case "longtext": csharpType = "string"; break;
+                case "time": csharpType = "TimeSpan"; break;
+                case "timestamp": csharpType = "byte[]"; break;
+                case "tinyint": csharpType = "byte"; break;
+                case "uniqueidentifier": csharpType = "Guid"; break;
+                case "varbinary": csharpType = "byte[]"; break;
+                case "varchar": csharpType = "string"; break;
+                case "xml": csharpType = "string"; break;
+                default: csharpType = "object"; break;
+            }
+            return csharpType;
+        }
+
+        public static Type MapCommonType(string dbtype)
+        {
+            if (string.IsNullOrEmpty(dbtype)) return Type.Missing.GetType();
+            dbtype = dbtype.ToLower();
+            Type commonType = typeof(object);
+            switch (dbtype)
+            {
+                case "bigint": commonType = typeof(long); break;
+                case "binary": commonType = typeof(byte[]); break;
+                case "bit": commonType = typeof(bool); break;
+                case "char": commonType = typeof(string); break;
+                case "date": commonType = typeof(DateTime); break;
+                case "datetime": commonType = typeof(DateTime); break;
+                case "datetime2": commonType = typeof(DateTime); break;
+                case "datetimeoffset": commonType = typeof(DateTimeOffset); break;
+                case "dityint": commonType = typeof(Boolean); break;
+                case "decimal": commonType = typeof(decimal); break;
+                case "float": commonType = typeof(double); break;
+                case "image": commonType = typeof(byte[]); break;
+                case "int": commonType = typeof(int); break;
+                case "money": commonType = typeof(decimal); break;
+                case "nchar": commonType = typeof(string); break;
+                case "ntext": commonType = typeof(string); break;
+                case "numeric": commonType = typeof(decimal); break;
+                case "nvarchar": commonType = typeof(string); break;
+                case "real": commonType = typeof(Single); break;
+                case "smalldatetime": commonType = typeof(DateTime); break;
+                case "smallint": commonType = typeof(short); break;
+                case "smallmoney": commonType = typeof(decimal); break;
+                case "sql_variant": commonType = typeof(object); break;
+                case "sysname": commonType = typeof(object); break;
+                case "text": commonType = typeof(string); break;
+                case "time": commonType = typeof(TimeSpan); break;
+                case "timestamp": commonType = typeof(byte[]); break;
+                case "tinyint": commonType = typeof(byte); break;
+                case "uniqueidentifier": commonType = typeof(Guid); break;
+                case "varbinary": commonType = typeof(byte[]); break;
+                case "varchar": commonType = typeof(string); break;
+                case "xml": commonType = typeof(string); break;
+                default: commonType = typeof(object); break;
+            }
+            return commonType;
+        }
+    }
+    #endregion
+
+#>

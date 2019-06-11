@@ -1,0 +1,227 @@
+﻿@using Newtonsoft.Json;
+@using QY.Stage.PocoModel;
+<div class="easyui-layout" style="width:100%;height:100%;">
+    <div data-options="region:'west',split:true,title:'用户',collapsible:false" style="width: 300px; padding: 5px; overflow: hidden;">
+        <input class="easyui-combobox" id="Roles" name="Roles" style="width:100%;height:26px;" />
+        <div style="margin-top:10px;">
+            <input type="hidden" id="RoleId" />
+            <table id="Users"></table>
+        </div>
+    </div>
+    <div data-options="region:'center',split:true,title:'',collapsible:false,border:false" style="width:100%;">
+        <div class="easyui-layout" style="width:100%;height:100%;">
+            <div data-options="region:'west',title:''" style="width: 80px; position: relative;">
+                <div style="position: absolute; top: 50%; left: 50%; width: 100%; -webkit-transform: translateX(-50%) translateY(-50%);">
+
+                    <div style=" text-align:center; padding-top:5px">
+                        <a href="javascript:void(0)" class="easyui-linkbutton" id="btnAdd" iconcls="icon-add">添加</a>
+                    </div>
+                    <div style=" text-align:center; padding-top:5px">
+                        <a href="javascript:void(0)" class="easyui-linkbutton" id="btnDelete" iconcls="icon-remove">删除</a>
+                    </div>
+                </div>
+            </div>
+            <div data-options="region:'center',title:'用户角色'" style=";padding:5px;">
+                <div>
+                    <table id="UserRole"></table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    $(function () {
+        initRoles();
+        initUsers();
+        initUserRoles({ RoleId: 0 });
+        bindEvents();
+        var userActions = JSON.parse("@JsonConvert.SerializeObject(Session[(Session["UserInfo"] as SysUser).LoginName + "action"])".replace(/&quot;/g, "\""));
+        var actions = JSON.parse("@JsonConvert.SerializeObject(Session["action"])".replace(/&quot;/g, "\""));
+        user.renderActions(userActions, actions);
+    });
+
+    function initRoles() {
+        var roles = [];
+        roles.push({ 'Value': 0, 'Text': '--选择角色--' });
+        $.post("/DataDictionary/GetSysRole", {}, function (data) {
+            if (data != null && data.length > 0) {
+                for (var i in data) {
+                    roles.push(data[i]);
+                }
+                $("#Roles").combobox({
+                    data: roles,
+                    valueField: 'Value',
+                    textField: 'Text',
+                    value: '0',
+                    onChange: function (n, o) {
+                        $('#RoleId').val(n);
+                        initUserRoles({ RoleId: n });
+                    }
+                });
+            }
+        });
+    }
+
+    function initRoles1() {
+        $("#Roles").combobox({
+            width: 300,
+            valueField: 'Value',
+            textField: 'Text',
+            groupField: 'group',
+            loader: function (param, success, error) {
+                $.ajax({
+                    url: "/Back/DataDictionary/GetSysRole",
+                    data: {},//传入的参数
+                    type: "POST",
+                    dataType: "json",
+                    beforeSend: function () {//发送请求前
+                        $("#Roles").addClass("combo-loading");
+                    },
+                    complete: function () {//请求完成后
+                        $("#Roles").removeClass("combo-loading");
+                    },
+                    success: function (data) {
+                        success(data);
+                    }
+                });
+            }
+
+        });
+    }
+
+    function initUsers() {
+        $('#Users').datagrid({
+            title: '',
+            iconCls: 'icon-blank',
+            height: 520,
+            width:'100%',
+            nowrap: true,
+            autoRowHeight: false,
+            striped: true,
+            collapsible: true,
+            url: '/Back/System/GetUsersNotUR',
+            sortName: 'UserId',
+            sortOrder: 'asc',
+            striped: true,
+            border: true,
+            remoteSort: false,
+            idField: 'UserId',
+            pagination: false,
+            rownumbers: false,
+            columns: [[
+                { field: 'ck', checkbox: true },
+                { field: 'UserId', title: '编号', width: 50, hidden: true },
+                { field: 'LoginName', title: '登录名', width: 80, sortable: true, align: "center" },
+                { field: 'RealName', title: "姓名", width: 60, align: "center" },
+            ]]
+        });
+    }
+
+    function initUserRoles(queryData) {
+        $('#UserRole').datagrid({
+            title: '',
+            iconCls: 'icon-blank',
+            height: 560,
+            width: '100%',
+            nowrap: true,
+            autoRowHeight: false,
+            striped: true,
+            collapsible: true,
+            url: '/Back/System/GetPatchUserRole',
+            sortName: 'UserId',
+            sortOrder: 'asc',
+            striped: true,
+            border: true,
+            remoteSort: false,
+            idField: 'UserId',
+            rownumbers: false,
+            queryParams: queryData,
+            columns: [[
+                { field: 'ck', checkbox: true },
+                { field: 'RoleId', title: '编号', width: 50, hidden: true },
+                { field: 'UserId', title: '编号', width: 50, sortable: true, hidden: true },
+                { field: 'RoleName', title: "角色", width: 100, align: "center" },
+                { field: 'LoginName', title: '登录名', width: 100, sortable: true },
+                { field: 'RealName', title: "姓名", width: 60, sortable: true, align: "center" },
+            ]]
+        });
+    }
+
+    function bindEvents() {
+        $('#btnAdd').click(function () {
+            AddUserRole();
+        });
+        $('#btnDelete').click(function () {
+            DeleteUserRole();
+        });
+    }
+
+    function AddUserRole() {
+        var RoleId = $('#Roles').combobox('getValue');
+        var users = $('#Users').datagrid('getSelections');
+        if (RoleId == "0") {
+            $.messager.alert("友情提示", "请选择角色", "warning");
+            return false;
+        }
+        if (users.length == 1) {
+            var ids = "";
+            for (var i = 0; i < users.length; i++) {
+                ids += users[i].UserId + ",";
+            }
+            ids = ids.substring(0, ids.length - 1);
+            $.post("/Back/System/AddUserRole", {
+                UserId: ids,
+                RoleId: RoleId
+            }, function (data) {
+                if (data.Code == 1) {
+                    $.messager.alert("友情提示", "添加成功", "success");
+                    $("#Users").datagrid("reload");
+                    $("#Users").datagrid("clearSelections");
+
+
+                    initUserRoles({ RoleId: RoleId });
+                }
+                else {
+                    $.messager.alert("友情提示", "添加失败:" + data, "warning");
+                }
+            });
+        }
+        else {
+            $.messager.alert("友情提示", "请您选择用户", "warning");
+        }
+    }
+
+    function DeleteUserRole() {
+        var RoleId = $('#Roles').combobox('getValue');
+        var userroles = $('#UserRole').datagrid('getSelections');
+        if (userroles.length >= 1) {
+            var UserIds = "", RoleIds = "";
+            for (var i = 0; i < userroles.length; i++) {
+                UserIds += userroles[i].UserId + ",";
+                RoleIds += userroles[i].RoleId + ",";
+            }
+            UserIds = UserIds.substring(0, UserIds.length - 1);
+            RoleIds = RoleIds.substring(0, RoleIds.length - 1);
+
+            $.post("/Back/System/DeleteUserRole", {
+                UserIds: UserIds,
+                RoleIds: RoleIds
+            }, function (data) {
+                if (data.Code == 1) {
+                    $.messager.alert("友情提示", "删除成功", "success");
+                    initUserRoles({ RoleId: RoleId });
+
+                    $("#Users").datagrid("reload");
+                    $("#Users").datagrid("clearSelections");
+                }
+                else {
+                    $.messager.alert("友情提示", "删除失败:" + data, "warning");
+                }
+            });
+        }
+        else {
+            $.messager.alert("友情提示", "请您选择需要删除用户角色", "warning")
+        }
+    }
+
+</script>

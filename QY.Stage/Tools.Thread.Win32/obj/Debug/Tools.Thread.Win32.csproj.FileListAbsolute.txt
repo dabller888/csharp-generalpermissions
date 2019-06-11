@@ -1,0 +1,8 @@
+D:\install\qy2017\黄冈\QY.Stage20171010完\QY.Stage\Tools.Thread.Win32\bin\Debug\Tools.Thread.Win32.exe
+D:\install\qy2017\黄冈\QY.Stage20171010完\QY.Stage\Tools.Thread.Win32\bin\Debug\Tools.Thread.Win32.pdb
+D:\install\qy2017\黄冈\QY.Stage20171010完\QY.Stage\Tools.Thread.Win32\obj\Debug\Tools.Thread.Win32.exe
+D:\install\qy2017\黄冈\QY.Stage20171010完\QY.Stage\Tools.Thread.Win32\obj\Debug\Tools.Thread.Win32.pdb
+D:\zl2018\easyui+NVelocity管理后台生成\QY.Stage\Tools.Thread.Win32\bin\Debug\Tools.Thread.Win32.exe
+D:\zl2018\easyui+NVelocity管理后台生成\QY.Stage\Tools.Thread.Win32\bin\Debug\Tools.Thread.Win32.pdb
+D:\zl2018\easyui+NVelocity管理后台生成\QY.Stage\Tools.Thread.Win32\obj\Debug\Tools.Thread.Win32.exe
+D:\zl2018\easyui+NVelocity管理后台生成\QY.Stage\Tools.Thread.Win32\obj\Debug\Tools.Thread.Win32.pdb

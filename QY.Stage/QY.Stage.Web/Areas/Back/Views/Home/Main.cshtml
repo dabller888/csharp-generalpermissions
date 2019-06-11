@@ -1,0 +1,391 @@
+﻿@using Newtonsoft.Json;
+@using QY.Stage.PocoModel;
+@{SysUser user = HttpContext.Current.Session["UserInfo"] as SysUser;}
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="edge" />
+    <link rel="shortcut icon" href="favicon.ico" />
+    <title>通用权限后台管理系统-T4代码生成</title>
+    <link href="/Content/jquery-easyui-1.5/themes/insdep/easyui.css" rel="stylesheet" type="text/css">
+    <link href="/Content/jquery-easyui-1.5/themes/insdep/easyui_animation.css" rel="stylesheet" type="text/css">
+    <link href="/Content/jquery-easyui-1.5/themes/insdep/easyui_plus.css" rel="stylesheet" type="text/css">
+    <link href="/Content/jquery-easyui-1.5/themes/insdep/insdep_theme_default.css" rel="stylesheet" type="text/css">
+    <link href="/Content/jquery-easyui-1.5/themes/insdep/icon.css" rel="stylesheet" type="text/css">
+    <link href="/Content/jquery-easyui-1.5/plugin/font-awesome-4.7.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+    <link href="/Content/site.css?v=3.0" rel="stylesheet" />
+
+    <script type="text/javascript" src="/Content/jquery-easyui-1.5/jquery.min.js"></script>
+    <script type="text/javascript" src="/Content/jquery-easyui-1.5/jquery.easyui.min.js"></script>
+    <script type="text/javascript" src="/Content/jquery-easyui-1.5/themes/insdep/jquery.insdep-extend.min.js"></script>
+    <script type="text/javascript" src="/Content/jquery.validate.extend.js"></script>
+    <script type="text/javascript" src="/Content/javascript.fn.extend.js"></script>
+    <script type="text/javascript" src="/Content/jquery.fn.extend.js?v=1.2"></script>
+    <script type="text/javascript" src="/Content/back.actions.js?v=1.0"></script>
+    <script type="text/javascript" src="/Content/base.loading.js"></script>
+    <style>
+        .theme-left-layout a, .theme-left-layout a:link, .theme-left-layout a:visited, .theme-left-layout a:hover, .theme-left-layout a:active {
+            color: #444444;
+        }
+
+            .theme-left-layout a:hover {
+                color: #000;
+            }
+
+            .theme-left-layout a.active {
+                color: #000;
+            }
+
+        #theme-login-layout .layout-panel-north .layout-body,
+        .theme-header-layout {
+            height: 46px !important;
+            background: #e08e0b url(/Content/jquery-easyui-1.5/themes/insdep/images/logo.png?v=201612011609) left center no-repeat;
+        }
+
+        .theme-left-layout {
+            background: #f9fafc;
+        }
+
+        .theme-navigate .l-btn-text {
+            color: #fff;
+            margin: 3px 5px;
+        }
+
+        .theme-navigate .l-btn:hover {
+            background: #f39c12;
+        }
+
+        .theme-navigate-user-button.l-btn-plain, .theme-navigate-user-button.l-btn-plain:hover, .theme-navigate-user-button.l-btn-plain .theme-navigate .l-btn:hover, .theme-navigate .m-btn-plain-active {
+            background: #f39c12;
+        }
+
+        .theme-left-layout .accordion-header .accordion-collapse {
+            color: none !important;
+        }
+
+        .theme-left-layout .accordion-header-selected .accordion-collapse {
+            color: #444444 !important;
+        }
+
+        .theme-left-layout .datagrid-row-selected, .theme-left-layout .datagrid-row-over, .theme-left-layout .accordion-header-selected .accordion .accordion-collapse:link, .accordion .accordion-collapse:visited, .accordion .accordion-collapse:hover, .accordion .accordion-collapse:active, .accordion .accordion-collapse:focus, .accordion .accordion-expand:link, .accordion .accordion-expand:visited, .accordion .accordion-expand:hover, .accordion .accordion-expand:active, .accordion .accordion-expand:focus {
+            background-color: #f7c16c !important;
+            color: #444444 !important;
+        }
+
+        .theme-left-layout .accordion .accordion-header {
+            background: #f7c16c;
+            color: #444444;
+        }
+
+        .theme-left-layout .panel-header, .theme-left-layout .panel-body, .theme-left-layout .accordion {
+            border-color: #e7eaec;
+        }
+
+        .theme-left-layout .theme-left-switch {
+            z-index: 9999;
+            cursor: pointer;
+            position: absolute;
+            left: auto;
+            right: 0;
+            top: 50%;
+            margin: -30px 0 0;
+            width: 26px;
+            height: 35px;
+            line-height: 35px;
+            text-align: center;
+            color: #7a7c7c;
+            background: #e7eaec;
+        }
+
+        .theme-left-layout .datalist .panel-body, .theme-left-layout .layout .panel-body {
+            background: transparent;
+            color: #444444;
+        }
+
+        .theme-left-user-panel dl dt img, .theme-navigate-user-panel dl dd img {
+            border-radius: 50%;
+            border: 2px solid #f39c12;
+            padding: 0;
+        }
+
+        /*html, body, a, a:link, a:visited, a:hover, a:active, select, input, label, button, textarea, h1, h2, h3, h4, h5, h6 {
+            font-family: Arial, "Microsoft YaHei", 微软雅黑;
+            font-style: normal;
+            font-size: 12px;
+            color: rgb(60, 60, 60);
+        }
+        a, a:link, a:visited, a:hover, a:active {
+            text-decoration: none;
+            cursor: pointer;
+            text-decoration: blink;
+            outline: none;
+        }*/
+    </style>
+
+
+<body>
+    <div id="master-layout">
+        <div data-options="region:'north',border:false,bodyCls:'theme-header-layout'">
+            <div class="theme-navigate">
+                <div class="left">
+                    <a href="#" class="easyui-linkbutton left-control-switch"><i class="fa fa-bars fa-lg"></i></a>
+                    <a href="#" class="easyui-menubutton theme-navigate-user-button"
+                       data-options="menu:'.theme-navigate-user-panel'">@user.LoginName</a>
+
+                    <div class="theme-navigate-user-panel">
+                        <dl>
+                            <dd>
+                                <img src="/Content/jquery-easyui-1.5/themes/insdep/images/portrait86x86.png" width="86" height="86">
+                                <b class="badge-prompt">@user.LoginName<i class="badge color-important">10</i></b>
+                                <span>@user.Email</span>
+                                <p>安全等级：<i class="text-success">@user.Address</i></p>
+                            </dd>
+                            <dt>
+                                <a href="javascript:;" class="theme-navigate-user-modify">修改资料</a>
+                                <a href="javascript:;" class="theme-navigate-user-logout" onclick="window.location.href='/Back/Login/SignOut'">注销</a>
+                            </dt>
+                        </dl>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!--开始左侧菜单-->
+        <div data-options="region:'west',border:false,bodyCls:'theme-left-layout'" style="width:220px;">
+
+
+            <!--正常菜单-->
+            <div class="theme-left-normal">
+                <!--theme-left-switch 如果不需要缩进按钮，删除该对象即可-->
+                <div class="left-control-switch theme-left-switch"><i class="fa fa-chevron-left fa-lg"></i></div>
+
+                <!--start class="easyui-layout"-->
+                <div class="easyui-layout" data-options="border:false,fit:true">
+                    <!--start region:'north'-->
+                    <div data-options="region:'north',border:false" style="height:100px;">
+                            <!--start theme-left-user-panel-->
+                            <div class="theme-left-user-panel">
+                                <dl>
+                                    <dt>
+                                        <img src="/Content/jquery-easyui-1.5/themes/insdep/images/portrait86x86.png" width="43" height="43">
+                                    </dt>
+                                    <dd>
+                                        <b class="badge-prompt">@user.LoginName <i class="badge color-important">0</i></b>
+                                        <span>@user.Email</span>
+                                        <p>安全等级：<i class="text-success">@user.Address</i></p>
+                                    </dd>
+
+                                </dl>
+                            </div>
+                            <!--end theme-left-user-panel-->
+                        </div>
+                    <!--end region:'north'-->
+                    <!--start region:'center'-->
+                    <div data-options="region:'center',border:false">
+
+                        <!--start easyui-accordion-->
+                        <div id="menu" class="easyui-accordion" data-options="border:false,fit:true">
+                            @foreach (var f in Session[(Session["UserInfo"] as SysUser).LoginName+"module"]as List<UserRoleModule>) {
+                                if (f.ModulePId == 0) { 
+                                    <div title="@f.ModuleName">
+                                        <ul class="easyui-datalist" data-options="border:false,fit:true">
+                                            @foreach (var s in Session[(Session["UserInfo"] as SysUser).LoginName + "module"] as List<UserRoleModule>) {
+                                                if (f.ModuleId == s.ModulePId) {
+                                                    <li><a href="javascript:void(0)" onclick="doRedirect('@s.ModuleUrl',this)">@s.ModuleName</a></li>
+                                            
+                                                }
+                                            }
+                                        </ul>
+                                    </div>                               
+                                }
+                            }
+
+                            @*<div title="系统管理">
+                                <ul class="easyui-datalist" data-options="border:false,fit:true">
+                                    <li><a href="javascript:void(0)" onclick="$.insdep.control('/Back/System/UserList')">用户管理</a></li>
+                                    <li><a href="javascript:void(0)" onclick="$.insdep.control('/Back/System/RoleList')">角色管理</a></li>
+                                    <li><a href="javascript:void(0)" onclick="$.insdep.control('/Back/System/ModuleList')">权限管理</a></li>
+                                    <li><a href="javascript:void(0)" onclick="$.insdep.control('/Back/System/ActionList')">功能管理</a></li>
+                                    <li><a href="javascript:void(0)" onclick="$.insdep.control('/Back/System/UserRole')">用户角色</a></li>
+                                    <li><a href="javascript:void(0)" onclick="$.insdep.control('/Back/System/RoleModule')">角色模块</a></li>
+                                    <li><a href="javascript:void(0)" onclick="$.insdep.control('/Back/System/ModuleAction')">模块功能</a></li>
+                                </ul>
+                            </div>
+                            <div title="老人管理">
+                                <ul class="easyui-datalist" data-options="border:false,fit:true">
+                                    <li><a href="javascript:void(0)" onclick="$.insdep.control('/Back/Elder/ElderList')">老人信息管理</a></li>
+                                </ul>
+                            </div>*@
+                        </div>
+                        <!--end easyui-accordion-->
+                    </div>
+                    <!--end region:'center'-->
+                </div>
+                <!--end class="easyui-layout"-->
+            </div>
+            <!--最小化菜单-->
+            <div class="theme-left-minimal">
+                <ul class="easyui-datalist" data-options="border:false,fit:true">
+                    <li>
+                        <i class="fa fa-home fa-2x"></i>
+                    </li>
+                    <li>
+                        <i class="fa fa-book fa-2x"></i>
+                    </li>
+                    <li>
+                        <i class="fa fa-pencil fa-2x"></i>
+                    </li>
+                    <li>
+                        <i class="fa fa-cog fa-2x"></i>
+                    </li>
+                    <li>
+                        <a class="left-control-switch">
+                            <i class="fa fa-chevron-right fa-2x"></i>
+                            <p>打开</p>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <!--结束左侧菜单-->
+        <div data-options="region:'center',border:false,href:''" id="control" style="background: #fff; overflow: hidden">
+            <div id="contentTabs" class="easyui-tabs" fit="true" border="false" style="padding:10px;width:100%;height:100%;">
+                <div title="欢迎页" style="padding:20px;display:none;">
+                    <iframe scrolling="auto" frameborder="0" src="/Back/Home/Info" style="width:100%;height:100%;"></iframe>
+                </div>
+            </div> 
+        </div>
+    </div>
+
+    <script>
+        $(function () {
+
+            /*布局部分*/
+            $('#master-layout').layout({
+                fit: true/*布局框架全屏*/
+            });
+
+            /*右侧菜单控制部分*/
+            var left_control_status = true;
+            var left_control_panel = $("#master-layout").layout("panel", 'west');
+
+            $(".left-control-switch").on("click", function () {
+                if (left_control_status) {
+                    left_control_panel.panel('resize', { width: 70 });
+                    left_control_status = false;
+                    $(".theme-left-normal").hide();
+                    $(".theme-left-minimal").show();
+                } else {
+                    left_control_panel.panel('resize', { width: 200 });
+                    left_control_status = true;
+                    $(".theme-left-normal").show();
+                    $(".theme-left-minimal").hide();
+                }
+                $("#master-layout").layout('resize', { width: '100%' })
+            });
+
+            /*右侧菜单控制结束*/
+            $(".theme-navigate-user-modify").on("click", function () {
+                $('.theme-navigate-user-panel').menu('hide');
+                $.insdep.window({ id: "personal-set-window", width: 400, height: 360, href: "/Back/System/UserInfo", title: "修改资料" });
+
+            });
+            //$.insdep.control("list.html");
+
+            //$(".easyui-accordion>li").on("click", function () {
+            //    alert('dsa')
+            //    var option = {
+            //        "region": "west",
+            //        "split": true,
+            //        "title": "title",
+            //        "width": 180,
+            //    };
+            //    $('#master-layout').layout('add', option);
+            //});
+        });
+
+        function doRedirect(url, obj) {
+            $('#menu a').each(function (i, o) {
+                $(o).removeClass('active');
+            });
+            $(obj).addClass('active');
+            $.insdep.control(url);
+            //addTab($(obj).text(), url);
+        }
+
+        //（1）通过tab的content的iframe方式加载，但是每个页面都要加载easyui的相关css,js
+        function addTab_(title, url) {
+            if ($('#contentTabs').tabs('exists', title)) {
+                $('#contentTabs').tabs('select', title);
+            } else {
+                var content = '<iframe scrolling="auto" frameborder="0"  src="' + url + '" style="width:100%;height:100%;"></iframe>';
+                
+                $('#contentTabs').tabs('add', {
+                    title: title,
+                    content: content,
+                    closable: true
+                });
+            }
+        }
+
+        //（2）通过tabs的content的href方式加载，类似signal page
+        function addTab(title, url) {
+            if ($('#contentTabs').tabs('exists', title)) {
+                $('#contentTabs').tabs('select', title);
+            } else {
+                $('#contentTabs').tabs('add', {
+                    title: title,
+                    href: url,
+                    closable: true
+                });
+            }
+        }
+
+        function tabCloseEven() {
+            //刷新
+            $('#mm-tabupdate').click(function () {
+                var currTab = $('#contentTabs').tabs('getSelected');
+                var content = $(currTab.panel('options').content);
+                $('#contentTabs').tabs('update', {
+                    tab: currTab,
+                    options: {
+                        content: content
+                    }
+                })
+            });
+        };
+
+        function initMenus() {
+            var menus = JSON.parse("@JsonConvert.SerializeObject(Session[(Session["UserInfo"] as SysUser).LoginName + "module"])".replace(/&quot;/g, "\""));
+            console.log(menus)
+            var str='';
+            for (var i in menus) {
+                if (menus[i].ModulePId == 0) {
+                    str += '<div title="' + menus[i].ModuleName + '">'
+                    str += '    <ul class="easyui-datalist" data-options="border:false,fit:true">'
+                    for (var j in menus) {
+                        if (menus[j].ModulePId == menus[i].ModuleId) {
+                            str += '        <li><a href="javascript:void(0)" onclick="$.insdep.control(\'' + menus[j].ModuleUrl + '\')">' + menus[j].ModuleName + '</a></li>'
+                        }
+                    }
+                    str += '    </ul>'
+                    str += '</div>';
+                }
+            }
+            $('#menu').html(str);
+
+        }
+    </script>
+    <!--第三方插件加载-->
+    <script src="/Content/jquery-easyui-1.5/plugin/justgage-1.2.2/raphael-2.1.4.min.js"></script>
+    <script src="/Content/jquery-easyui-1.5/plugin/justgage-1.2.2/justgage.js"></script>
+    <script src="/Content/jquery-easyui-1.5/plugin/Highcharts-5.0.0/js/highcharts.js"></script>
+    <script type="text/javascript" src="/Content/jquery-easyui-1.5/plugin/ueditor-1.4.3.3/ueditor.config.js"></script>
+    <script type="text/javascript" src="/Content/jquery-easyui-1.5/plugin/ueditor-1.4.3.3/ueditor.all.min.js"></script>
+    <link href="/Content/jquery-easyui-1.5/plugin/cropper-2.3.4/dist/cropper.min.css" rel="stylesheet" type="text/css">
+    <script src="/Content/jquery-easyui-1.5/plugin/cropper-2.3.4/dist/cropper.min.js"></script>
+    <!--第三方插件加载结束-->
+
+</body>
+</html>

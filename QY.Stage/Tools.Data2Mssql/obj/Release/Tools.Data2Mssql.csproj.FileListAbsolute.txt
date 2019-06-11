@@ -1,0 +1,13 @@
+D:\install\qy2017\黄冈\QY.Stage20171010完\QY.Stage\Tools.Data2Mssql\bin\Release\Tools.Data2Mssql.exe.config
+D:\install\qy2017\黄冈\QY.Stage20171010完\QY.Stage\Tools.Data2Mssql\bin\Release\Tools.Data2Mssql.exe
+D:\install\qy2017\黄冈\QY.Stage20171010完\QY.Stage\Tools.Data2Mssql\bin\Release\Tools.Data2Mssql.pdb
+D:\install\qy2017\黄冈\QY.Stage20171010完\QY.Stage\Tools.Data2Mssql\bin\Release\NPOI.dll
+D:\install\qy2017\黄冈\QY.Stage20171010完\QY.Stage\Tools.Data2Mssql\bin\Release\QY.Stage.Frameworks.Utility.dll
+D:\install\qy2017\黄冈\QY.Stage20171010完\QY.Stage\Tools.Data2Mssql\bin\Release\Newtonsoft.Json.dll
+D:\install\qy2017\黄冈\QY.Stage20171010完\QY.Stage\Tools.Data2Mssql\bin\Release\QY.Stage.Frameworks.Utility.pdb
+D:\install\qy2017\黄冈\QY.Stage20171010完\QY.Stage\Tools.Data2Mssql\obj\Release\Tools.Data2Mssql.Form1.resources
+D:\install\qy2017\黄冈\QY.Stage20171010完\QY.Stage\Tools.Data2Mssql\obj\Release\Tools.Data2Mssql.Properties.Resources.resources
+D:\install\qy2017\黄冈\QY.Stage20171010完\QY.Stage\Tools.Data2Mssql\obj\Release\Tools.Data2Mssql.csproj.GenerateResource.Cache
+D:\install\qy2017\黄冈\QY.Stage20171010完\QY.Stage\Tools.Data2Mssql\obj\Release\Tools.Data2Mssql.exe
+D:\install\qy2017\黄冈\QY.Stage20171010完\QY.Stage\Tools.Data2Mssql\obj\Release\Tools.Data2Mssql.pdb
+D:\install\qy2017\黄冈\QY.Stage20171010完\QY.Stage\Tools.Data2Mssql\obj\Release\Tools.Data2Mssql.csprojResolveAssemblyReference.cache

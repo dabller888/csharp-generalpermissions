@@ -1,0 +1,8 @@
+D:\install\qy2017\黄冈\QY.Stage20171010完\QY.Stage\NVelocity\bin\Debug\NVelocity.XML
+D:\install\qy2017\黄冈\QY.Stage20171010完\QY.Stage\NVelocity\bin\Debug\NVelocity.dll
+D:\install\qy2017\黄冈\QY.Stage20171010完\QY.Stage\NVelocity\bin\Debug\NVelocity.pdb
+D:\install\qy2017\黄冈\QY.Stage20171010完\QY.Stage\NVelocity\bin\Debug\NVelocity.dll.CodeAnalysisLog.xml
+D:\install\qy2017\黄冈\QY.Stage20171010完\QY.Stage\NVelocity\bin\Debug\NVelocity.dll.lastcodeanalysissucceeded
+D:\install\qy2017\黄冈\QY.Stage20171010完\QY.Stage\NVelocity\obj\Debug\NVelocity.dll
+D:\install\qy2017\黄冈\QY.Stage20171010完\QY.Stage\NVelocity\obj\Debug\NVelocity.pdb
+D:\install\qy2017\黄冈\QY.Stage20171010完\QY.Stage\NVelocity\obj\Debug\NVelocity.csprojResolveAssemblyReference.cache

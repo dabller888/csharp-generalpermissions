@@ -1,0 +1,252 @@
+//
+// Macro definitions. Parameters may be specified and the replacement text terminates with the end of
+// line (watch trailing blanks).
+//
+#define st_DEFAULT          0
+#define st_COMMENT          1
+#define st_IDENTIFIER       2
+#define st_STRING           3
+#define st_NUMBER           4
+#define st_SYMBOL           5
+#define st_RESERVED         6
+#define st_COMMENT_LINE     7
+#define st_COMMENT_HTML     8
+
+#define ht_URL              10
+#define ht_SPECIAL          11
+#define ht_TAGNAME          12
+#define ht_ATTRIBUTE        13
+#define ht_EQUAL            14
+
+
+#define st_TAGSTART         41
+#define st_TAGEND           42
+#define st_SCRIPTSTART      43
+#define st_SCRIPTEND        44
+
+#define st_CSTRING          51
+#define st_PSTRING          52
+
+#define ss_START            60
+#define ss_INTAG            61
+#define ss_STRING           62
+#define ss_RESERVED         63
+#define ss_IDENTIFIER       64
+#define ss_ATTRIBUTES       65
+
+#define _non_alpha_         '[^_A-Za-z0-9]'
+#define _all_chars_         '[\x00-\xFF]'
+#define _no_quotes_         '[\x00-\x21\x23-\x26\x28-\xFF]'
+#define _no_chars_          '[]'
+#define _dont_care_         _all_chars_
+
+%%language
+Name                        = 'HTML'
+Gutter                      = 0 
+
+EditableStyles              ('Reserved word', st_RESERVED),
+                            ('Comment',       st_COMMENT),
+                            ('Identifier',    st_IDENTIFIER),
+                            ('String',        st_STRING),
+                            ('Number',        st_NUMBER),
+                            ('Symbols',       st_SYMBOL),
+                            ('Default',       st_DEFAULT)
+
+StartState                  = ss_START
+
+%%words
+'<'                _dont_care_       st_TAGSTART     [ss_START]
+'>'                _dont_care_       st_TAGEND       [ss_INTAG]
+'<!--'             _dont_care_       st_COMMENT_HTML [ss_START]
+'<script'          _dont_care_       st_SCRIPTSTART  [ss_INTAG]
+'</script'         _dont_care_       st_SCRIPTEND    [ss_START]
+
+'='                _dont_care_              ht_EQUAL                   [ss_ATTRIBUTES]
+'a'                _non_alpha_              ht_TAGNAME                 [ss_INTAG]
+'address'          _non_alpha_              ht_TAGNAME                 [ss_INTAG]
+'align'            _non_alpha_              ht_ATTRIBUTE               [ss_INTAG]
+'alt'              _non_alpha_              ht_ATTRIBUTE               [ss_INTAG]
+'applet'           _non_alpha_              ht_TAGNAME                 [ss_INTAG]
+'b'                _non_alpha_              ht_TAGNAME                 [ss_INTAG]
+'basefont'         _non_alpha_              ht_TAGNAME                 [ss_INTAG]
+'big'              _non_alpha_              ht_TAGNAME                 [ss_INTAG]
+'blink'            _non_alpha_              ht_TAGNAME                 [ss_INTAG]
+'blockquote'       _non_alpha_              ht_TAGNAME                 [ss_INTAG]
+'body'             _non_alpha_              ht_TAGNAME                 [ss_INTAG]
+'br'               _non_alpha_              ht_TAGNAME                 [ss_INTAG]
+'caption'          _non_alpha_              ht_TAGNAME                 [ss_INTAG]
+'center'           _non_alpha_              ht_TAGNAME                 [ss_INTAG]
+'cite'             _non_alpha_              ht_TAGNAME                 [ss_INTAG]
+'code'             _non_alpha_              ht_TAGNAME                 [ss_INTAG]
+'codebase'         _non_alpha_              ht_ATTRIBUTE               [ss_ATTRIBUTES]
+'dd'               _non_alpha_              ht_TAGNAME                 [ss_INTAG]
+'dir'              _non_alpha_              ht_TAGNAME                 [ss_INTAG]
+'div'              _non_alpha_              ht_TAGNAME                 [ss_INTAG]
+'dl'               _non_alpha_              ht_TAGNAME                 [ss_INTAG]
+'doctype'          _non_alpha_              ht_TAGNAME                 [ss_INTAG]
+'dt'               _non_alpha_              ht_TAGNAME                 [ss_INTAG]
+'em'               _non_alpha_              ht_TAGNAME                 [ss_INTAG]
+'embed'            _non_alpha_              ht_TAGNAME                 [ss_INTAG]
+'font'             _non_alpha_              ht_TAGNAME                 [ss_INTAG]
+'form'             _non_alpha_              ht_TAGNAME                 [ss_INTAG]
+'frame'            _non_alpha_              ht_TAGNAME                 [ss_INTAG]
+'frameset'         _non_alpha_              ht_TAGNAME                 [ss_INTAG]
+'h'                _non_alpha_              ht_TAGNAME                 [ss_INTAG]
+'h1'               _non_alpha_              ht_TAGNAME                 [ss_INTAG]
+'h2'               _non_alpha_              ht_TAGNAME                 [ss_INTAG]
+'h3'               _non_alpha_              ht_TAGNAME                 [ss_INTAG]
+'h4'               _non_alpha_              ht_TAGNAME                 [ss_INTAG]
+'h5'               _non_alpha_              ht_TAGNAME                 [ss_INTAG]
+'h6'               _non_alpha_              ht_TAGNAME                 [ss_INTAG]
+'head'             _non_alpha_              ht_TAGNAME                 [ss_INTAG]
+'height'           _non_alpha_              ht_ATTRIBUTE               [ss_ATTRIBUTES]
+'hr'               _non_alpha_              ht_TAGNAME                 [ss_INTAG]
+'href'             _non_alpha_              ht_ATTRIBUTE               [ss_ATTRIBUTES]
+'hspace'           _non_alpha_              ht_ATTRIBUTE               [ss_ATTRIBUTES]
+'html'             _non_alpha_              ht_TAGNAME                 [ss_INTAG]
+'i'                _non_alpha_              ht_TAGNAME                 [ss_INTAG]
+'img'              _non_alpha_              ht_TAGNAME                 [ss_INTAG]
+'input'            _non_alpha_              ht_TAGNAME                 [ss_INTAG]
+'isindex'          _non_alpha_              ht_TAGNAME                 [ss_INTAG]
+'kbd'              _non_alpha_              ht_TAGNAME                 [ss_INTAG]
+'li'               _non_alpha_              ht_TAGNAME                 [ss_INTAG]
+'link'             _non_alpha_              ht_TAGNAME                 [ss_INTAG]
+'mark'             _non_alpha_              ht_TAGNAME                 [ss_INTAG]
+'marquee'          _non_alpha_              ht_TAGNAME                 [ss_INTAG]
+'menu'             _non_alpha_              ht_TAGNAME                 [ss_INTAG]
+'meta'             _non_alpha_              ht_TAGNAME                 [ss_INTAG]
+'methods'          _non_alpha_              ht_ATTRIBUTE               [ss_ATTRIBUTES]
+'name'             _non_alpha_              ht_ATTRIBUTE               [ss_ATTRIBUTES]
+'nextid'           _non_alpha_              ht_TAGNAME                 [ss_INTAG]
+'nobr'             _non_alpha_              ht_TAGNAME                 [ss_INTAG]
+'noframes'         _non_alpha_              ht_TAGNAME                 [ss_INTAG]
+'ol'               _non_alpha_              ht_TAGNAME                 [ss_INTAG]
+'option'           _non_alpha_              ht_TAGNAME                 [ss_INTAG]
+'p'                _non_alpha_              ht_TAGNAME                 [ss_INTAG]
+'pre'              _non_alpha_              ht_TAGNAME                 [ss_INTAG]
+'samp'             _non_alpha_              ht_TAGNAME                 [ss_INTAG]
+'select'           _non_alpha_              ht_TAGNAME                 [ss_INTAG]
+'small'            _non_alpha_              ht_TAGNAME                 [ss_INTAG]
+'sound'            _non_alpha_              ht_TAGNAME                 [ss_INTAG]
+'strike'           _non_alpha_              ht_TAGNAME                 [ss_INTAG]
+'strong'           _non_alpha_              ht_TAGNAME                 [ss_INTAG]
+'sub'              _non_alpha_              ht_TAGNAME                 [ss_INTAG]
+'sup'              _non_alpha_              ht_TAGNAME                 [ss_INTAG]
+'rel'              _non_alpha_              ht_ATTRIBUTE               [ss_ATTRIBUTES]
+'rev'              _non_alpha_              ht_ATTRIBUTE               [ss_ATTRIBUTES]
+'table'            _non_alpha_              ht_TAGNAME                 [ss_INTAG]
+'target'           _non_alpha_              ht_ATTRIBUTE               [ss_ATTRIBUTES]
+'td'               _non_alpha_              ht_TAGNAME                 [ss_INTAG]
+'textarea'         _non_alpha_              ht_TAGNAME                 [ss_INTAG]
+'th'               _non_alpha_              ht_TAGNAME                 [ss_INTAG]
+'title'            _non_alpha_              ht_TAGNAME                 [ss_INTAG]
+'tr'               _non_alpha_              ht_TAGNAME                 [ss_INTAG]
+'tt'               _non_alpha_              ht_TAGNAME                 [ss_INTAG]
+'u'                _non_alpha_              ht_TAGNAME                 [ss_INTAG]
+'ul'               _non_alpha_              ht_TAGNAME                 [ss_INTAG]
+'urn'              _non_alpha_              ht_ATTRIBUTE               [ss_ATTRIBUTES]
+'value'            _non_alpha_              ht_ATTRIBUTE               [ss_ATTRIBUTES]
+'var'              _non_alpha_              ht_TAGNAME                 [ss_INTAG]
+'vspace'           _non_alpha_              ht_ATTRIBUTE               [ss_ATTRIBUTES]
+'wbr'              _non_alpha_              ht_TAGNAME                 [ss_INTAG]
+'width'            _non_alpha_              ht_ATTRIBUTE               [ss_ATTRIBUTES]
+
+'&szlig;'          _dont_care_              ht_SPECIAL
+'&aacute;'         _dont_care_              ht_SPECIAL
+'&agrave;'         _dont_care_              ht_SPECIAL
+'&acirc;'          _dont_care_              ht_SPECIAL
+'&atilde;'         _dont_care_              ht_SPECIAL
+'&aring;'          _dont_care_              ht_SPECIAL
+'&auml;'           _dont_care_              ht_SPECIAL
+'&aelig;'          _dont_care_              ht_SPECIAL
+'&ccedil;'         _dont_care_              ht_SPECIAL
+'&copy;'           _dont_care_              ht_SPECIAL
+'&eacute;'         _dont_care_              ht_SPECIAL
+'&egrave;'         _dont_care_              ht_SPECIAL
+'&ecirc;'          _dont_care_              ht_SPECIAL
+'&eth;'            _dont_care_              ht_SPECIAL
+'&euml;'           _dont_care_              ht_SPECIAL
+'&gt;'             _dont_care_              ht_SPECIAL
+'&iacute;'         _dont_care_              ht_SPECIAL
+'&igrave;'         _dont_care_              ht_SPECIAL
+'&icirc;'          _dont_care_              ht_SPECIAL
+'&iuml;'           _dont_care_              ht_SPECIAL
+'&lt;'             _dont_care_              ht_SPECIAL
+'&nbsp;'           _dont_care_              ht_SPECIAL
+'&ntilde;'         _dont_care_              ht_SPECIAL
+'&oacute;'         _dont_care_              ht_SPECIAL
+'&ograve;'         _dont_care_              ht_SPECIAL
+'&ocirc;'          _dont_care_              ht_SPECIAL
+'&otilde;'         _dont_care_              ht_SPECIAL
+'&ouml;'           _dont_care_              ht_SPECIAL
+'&oslash;'         _dont_care_              ht_SPECIAL
+'&reg;'            _dont_care_              ht_SPECIAL
+'&thorn;'          _dont_care_              ht_SPECIAL
+'&trade;'          _dont_care_              ht_SPECIAL
+'&uacute;'         _dont_care_              ht_SPECIAL
+'&ugrave;'         _dont_care_              ht_SPECIAL
+'&ucirc;'          _dont_care_              ht_SPECIAL
+'&uuml;'           _dont_care_              ht_SPECIAL
+'&yacute;'         _dont_care_              ht_SPECIAL
+'&yuml;'           _dont_care_              ht_SPECIAL
+'http://'          _dont_care_              ht_URL                  [ss_START ss_INTAG ss_STRING ss_ATTRIBUTES]
+'ftp://'           _dont_care_              ht_URL                  [ss_START ss_INTAG ss_STRING ss_ATTRIBUTES]
+'mailto:'          _dont_care_              ht_URL                  [ss_START ss_INTAG ss_STRING ss_ATTRIBUTES]
+'news:'            _dont_care_              ht_URL                  [ss_START ss_INTAG ss_STRING ss_ATTRIBUTES]
+'telnet://'        _dont_care_              ht_URL                  [ss_START ss_INTAG ss_STRING ss_ATTRIBUTES]
+'gopher://'        _dont_care_              ht_URL                  [ss_START ss_INTAG ss_STRING ss_ATTRIBUTES]
+'nntp://'          _dont_care_              ht_URL                  [ss_START ss_INTAG ss_STRING ss_ATTRIBUTES]
+'wais://'          _dont_care_              ht_URL                  [ss_START ss_INTAG ss_STRING ss_ATTRIBUTES]
+'newsrc://'        _dont_care_              ht_URL                  [ss_START ss_INTAG ss_STRING ss_ATTRIBUTES]
+'file://'          _dont_care_              ht_URL                  [ss_START ss_INTAG ss_STRING ss_ATTRIBUTES]
+
+
+
+%%handler
+st_COMMENT_HTML          _all_chars_?                  '->'           _use_
+
+%%tokens
+
+InState ss_INTAG
+(
+  st_IDENTIFIER           '[a-zA-Z_$#0-9=?/:%!]' '[a-zA-Z_$#0-9=?/:%!]'? '[^a-zA-Z_$#0-9=?/:%!]' _discard_
+  st_CSTRING              '[\x22]'      _all_chars_? '[\x22]'         _use_
+  st_PSTRING              '[\x27]'      _all_chars_? '[\x27]'         _use_
+)
+
+InState ss_ATTRIBUTES
+ (
+  st_IDENTIFIER           '[a-zA-Z_$#0-9=?/:%!]' '[a-zA-Z_$#0-9=?/:%!]'? '[^a-zA-Z_$#0-9=?/:%!]' _discard_
+  st_CSTRING              '[\x22]'      _all_chars_? '[\x22]'         _use_
+  st_PSTRING              '[\x27]'      _all_chars_? '[\x27]'         _use_
+ )
+
+
+%%map
+st_TAGSTART        st_IDENTIFIER
+st_TAGEND          st_IDENTIFIER
+st_DEFAULT         st_STRING
+st_IDENTIFIER      st_IDENTIFIER
+st_STRING          st_STRING
+st_CSTRING         st_STRING
+st_PSTRING         st_STRING
+st_COMMENT         st_COMMENT
+st_COMMENT_HTML    st_COMMENT
+st_RESERVED        st_RESERVED
+st_SYMBOL          st_SYMBOL
+
+ht_URL             st_IDENTIFIER
+ht_SPECIAL         st_COMMENT
+ht_TAGNAME         st_RESERVED
+ht_ATTRIBUTE       st_RESERVED
+ht_EQUAL           st_SYMBOL
+
+
+%%states
+st_TAGSTART      (+[ss_INTAG])
+st_TAGEND        (-[ss_INTAG])
+//st_CSTRING     (+[ss_STRING] -[ss_RESERVED + ss_DEFAULT])
+//st_RESERVED    (+[ss_RESERVED] -[ss_STRING + ss_DEFAULT])
+//st_PSTRING     (+[ss_STRING] -[ss_RESERVED + ss_IDENTIFIER])
+//st_IDENTIFIER  (+[ss_IDENTIFIER] -[ss_RESERVED + ss_STRING])
+

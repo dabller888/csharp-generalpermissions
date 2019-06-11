@@ -1,0 +1,54 @@
+﻿[
+  {
+    "id": 1,
+    "text": "系统管理",
+    "children": [
+      {
+        "id": 2,
+        "text": "系统用户管理",
+        "children": []
+      },
+      {
+        "id": 3,
+        "text": "系统角色管理",
+        "children": []
+      },
+      {
+        "id": 4,
+        "text": "系统模块管理",
+        "children": []
+      },
+      {
+        "id": 5,
+        "text": "系统功能管理",
+        "children": []
+      },
+      {
+        "id": 6,
+        "text": "角色模块管理",
+        "children": []
+      },
+      {
+        "id": 7,
+        "text": "模块功能管理",
+        "children": []
+      },
+      {
+        "id": 8,
+        "text": "用户角色管理",
+        "children": []
+      }
+    ]
+  },
+  {
+    "id": 9,
+    "text": "老人管理",
+    "children": [
+      {
+        "id": 10,
+        "text": "老人信息管理",
+        "childrenyy": []
+      }
+    ]
+  }
+]

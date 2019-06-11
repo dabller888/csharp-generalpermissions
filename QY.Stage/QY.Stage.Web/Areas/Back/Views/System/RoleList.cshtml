@@ -1,0 +1,268 @@
+﻿@using Newtonsoft.Json;
+@using QY.Stage.PocoModel;
+
+<script type="text/javascript">
+
+        $(function () {
+            //初始化弹出窗体
+            initTable();
+
+            //绑定注册按钮的事件
+            BindRegistButtonClickEvent();
+
+            //绑定修改事件的信息
+            BindUpdateButtonClickEvent();
+
+        });
+
+        //初始化表格
+        function initTable(queryData) {
+            $('#test').datagrid({
+                title: '角色管理',
+                iconCls: 'icon-more',
+                height: 600,
+                width: '100%',
+                nowrap: true,
+                autoRowHeight: false,
+                striped: true,
+                collapsible: false,
+                url: '/System/GetRoleList',
+                sortName: 'RoleId',
+                sortOrder: 'asc',
+                //striped:true,
+                border: true,
+                remoteSort: false,
+                idField: 'RoleId',
+                pagination: true,
+                rownumbers: false,
+                queryParams: queryData,
+                columns: [[
+                    { field: 'ck', checkbox: true },
+					{ field: 'RoleId', title: '角色编号', width: 80, hidden: true },
+					{ field: 'RolePId', title: '上级编号', width: 80, sortable: true },
+					{ field: 'RoleName', title: '角色名称', width: 100, sortable: true },
+                    {
+                        field: 'CreateTime', title: "创建时间", width: 120, sortable: true, formatter: formatDatebox
+                    }
+                ]],
+
+                toolbar: [{
+                    id: 'btnAdd',
+                    text: '添加角色',
+                    iconCls: 'icon-add',
+                    handler: function () {
+                        ShowCreateRoleDialog();
+                    }
+                }, '-', {
+                    id: 'btnEdit',
+                    text: '修改角色',
+                    iconCls: 'icon-edit',
+                    handler: function () {
+                        ShowUpdateRoleDialog();
+                    }
+                }, '-', {
+                    id: 'btnDelete',
+                    text: '删除角色',
+                    iconCls: 'icon-remove',
+                    handler: function () {
+                        DeleteRoleInfoByClick();
+                    }
+                }],
+                onBeforeLoad: function () {                
+                    var userActions = JSON.parse("@JsonConvert.SerializeObject(Session[(Session["UserInfo"] as SysUser).LoginName + "action"])".replace(/&quot;/g, "\""));
+                    var actions = JSON.parse("@JsonConvert.SerializeObject(Session["action"])".replace(/&quot;/g, "\""));
+                    user.renderActions(userActions,actions);
+                }
+            });
+        }
+
+        //弹出添加角色的对话框
+        function ShowCreateRoleDialog() {
+            $('#AddRoleDialog').dialog('open').dialog('setTitle', '添加角色信息');
+            ClearTextBox();
+        }
+
+        function BindRegistButtonClickEvent() {
+            $("#btnRegist").click(function () {
+                var valid = $('#RoleForm').form('validate');
+                if (valid == false) {
+                    return false;
+                }
+                $.post("/System/SaveRole", {
+                    RoleName: $("#RoleName").textbox("getValue"),
+                    RoleDesc: $("#RoleDesc").textbox("getValue")
+                }, function (data) {
+                    if (data.Code == 1) {
+                        $.messager.alert("友情提示", "添加成功!", "success");
+                        $('#AddRoleDialog').dialog('close');
+                        $("#test").datagrid("reload");
+                    } else if (data.Code == 2) {
+                        $.messager.alert("友情提示", "角色名称已存在!", "warning");
+                    }else {
+                        $.messager.alert("友情提示", "添加失败，请您检查!", "error");
+                    }
+                });
+            });
+        }
+
+        function ClearTextBox() {
+            $("#RoleName").textbox("setValue","");
+            $("#RoleDesc").textbox("setValue","");
+        }
+
+        //实现多选删除信息
+        function DeleteRoleInfoByClick() {
+            //获取到用户选定的某一列的ID号
+            var deleteRoleID = $("#test").datagrid("getSelections");
+            //判断用户选择了多少条数据
+            // //异步将删除的ID发送到后台，后台删除之后，返回前台OK，前台刷新表格
+            if (deleteRoleID.length >= 1) {
+                var ids = "";   //1,2,3,4
+                for (var i = 0; i < deleteRoleID.length; i++) {
+                    ids += deleteRoleID[i].RoleId + ",";
+                }
+                //去掉最后的一个,
+                ids = ids.substring(0, ids.length - 1);
+
+                //遍历出删除用户的信息
+                var RoleNameList = "";
+                for (var i = 0; i < deleteRoleID.length; i++) {
+                    RoleNameList += deleteRoleID[i].RoleName + ",";
+                }
+                RoleNameList = RoleNameList.substring(0, RoleNameList.length - 1);
+                //var LoginUName = $("#test").datagrid("getSelections")[0].UName;
+                //发送异步请求删除数据
+                $.messager.confirm("删除信息", "您确认删除<font color='Red' size='3'>" + RoleNameList + "</font>用户吗？", function (DeleteUserInfo) {
+                    if (DeleteUserInfo) {
+                        $.post("/System/DeleteRoles", { RoleIds: ids }, function (data) {
+                            if (data.Code == 1) {
+                                $.messager.alert("友情提示", "删除成功", "success");
+                                $("#test").datagrid("reload");
+
+                                //当删除完成的时候清除掉所选择的长度，防止下次选择的时候还记录了上次的内容
+                                //第一种方法
+                                //deleteUserInfoID.length = "";
+                                //第二种方法
+                                $("#test").datagrid("clearSelections");
+                            }
+                            else {
+                                $.messager.alert("友情提示", "删除失败:" + data, "warning");
+                            }
+                        });
+                    }
+                });
+            }
+            else {
+                $.messager.alert("友情提示", "请您选择要删除的数据", "warning");
+            }
+        }
+
+        //弹出修改用户的对话框
+        function ShowUpdateRoleDialog() {
+            var UpdateRoleID = $("#test").datagrid("getSelections");
+            if (UpdateRoleID.length == 1) {
+                $("#UpdateRoleDialog").dialog("open").dialog("setTitle", "修改角色信息");
+
+                //绑定显示修改的详细信息的内容
+                BingUpdateDetailsShowTextBox();
+            }
+            else {
+                $.messager.alert("友情提示", "每次只能修改一行数据，你已经选择了<font color='red' size='6'>" + UpdateRoleID.length + "</font>行", "warning");
+            }
+        }
+
+        //绑定修改用户的信息显示在用户的TextBox文本框中
+        function BingUpdateDetailsShowTextBox() {
+            //首先获取选中的用户的ID
+            var CheckID = $("#test").datagrid("getSelections")[0].RoleId;
+            $.getJSON("/System/GetRoleDetails", { RoleId: CheckID }, function (data) {
+                if (data.Code == 1) {
+                    $("#RoleId").val(CheckID);
+                    $("#uRoleName").textbox("setValue",data.Content.RoleName);
+                    $("#uRoleDesc").textbox("setValue",data.Content.RoleDesc);
+                } else {
+                    $.messager.alert("友情提示", "没有找到相关项!", "warning");
+                }
+            });
+        }
+
+        //修改用户的信息
+        function BindUpdateButtonClickEvent() {
+            $("#btnUpdate").click(function () {
+                //首先判断前台的验证是否通过
+                var valid = $('#UpdateRoleForm').form('validate');
+                if (valid == false) {
+                    return false;
+                }
+                //使用异步实现修改用户信息
+                $.post("/System/SaveRole", {
+                    RoleId: $("#RoleId").val(),
+                    RoleName: $("#uRoleName").textbox("getValue"),
+                    RoleDesc: $("#uRoleDesc").textbox("getValue")
+                }, function (data) {
+                    if (data.Code == 1) {
+                        $.messager.alert("友情提示", "修改角色成功!", "success");
+                        $("#UpdateRoleDialog").dialog('close');
+                        $("#test").datagrid('reload');
+                    } else if (data.Code == 2) {
+                        $.messager.alert("友情提示", "角色名称已存在!", "warning");
+                    } else {
+                        $.messager.alert("友情提示", "修改失败，请您检查!", "error");
+                    }
+                });
+            });
+        }
+</script>
+
+
+@*-------------------------- 实现对角色数据的显示-------------------------*@
+<div>
+    <table id="test"></table>
+</div>
+
+@*----------------------------设置添加的弹出层--------------------------------*@
+<div id="AddRoleDialog" class="easyui-dialog" style="width:400px;height:300px;padding:10px" iconcls="icon-save"
+     closed="true" resizable="true" modal="true" buttons="#dlg-buttons" align="center">
+    <form id="RoleForm" method="post" novalidate="novalidate">
+        <table id="tblAdd">
+            <tr>
+                <th><label for="RoleName">名称</label></th>
+                <td><input class="easyui-textbox" id="RoleName" name="RoleName" data-options="required:true,validType:'length[1,64]'" /></td>
+            </tr>
+            <tr>
+                <th><label for="RoleDesc">描述</label></th>
+                <td><input class="easyui-textbox" id="RoleDesc" name="RoleDesc" style="width:90%;height:60px;" data-options="validType:'length[1,32]',multiline:true"></td>
+            </tr>
+            <tr>
+                <td colspan="2" style="text-align:center; padding-top:10px">
+                    <a href="javascript:void(0)" class="easyui-linkbutton" id="btnRegist" iconcls="icon-ok">确定</a>
+                    <a href="javascript:void(0)" class="easyui-linkbutton" iconcls="icon-cancel" onclick="javascript:$('#AddRoleDialog').dialog('close')">关闭</a>
+                </td>
+            </tr>
+        </table>
+    </form>
+</div>
+
+@*----------------------------设置修改的的弹出层--------------------------------*@
+<div id="UpdateRoleDialog" class="easyui-dialog" style="width:400px;height:300px;padding:10px" iconcls="icon-save"
+     closed="true" resizable="true" modal="true" buttons="#dlg-buttons" align="center">
+    <form id="UpdateRoleForm" method="post" novalidate="novalidate">
+        <table id="tblUpdate">
+            <tr>
+                <th><label for="uRoleName">名称</label></th>
+                <td><input class="easyui-textbox" id="uRoleName" name="uRoleName" data-options="required:true,validType:'length[1,64]'" /></td>
+            </tr>
+            <tr>
+                <th><label for="uRoleDesc">描述</label></th>
+                <td><input class="easyui-textbox" id="uRoleDesc" name="uRoleDesc" style="width:90%;height:60px;" data-options="validType:'length[1,32]',multiline:true"></td>
+            </tr>
+            <tr>
+                <td colspan="2" style="text-align:center; padding-top:10px">
+                    <input type="hidden" id="RoleId" name="RoleId" />
+                    <a href="javascript:void(0)" class="easyui-linkbutton" id="btnUpdate" iconcls="icon-ok">确定</a>
+                    <a href="javascript:void(0)" class="easyui-linkbutton" iconcls="icon-cancel" onclick="javascript:$('#UpdateRoleDialog').dialog('close')">关闭</a>
+                </td>
+            </tr>
+        </table>
+    </form>
+</div>

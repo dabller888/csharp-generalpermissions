@@ -1,0 +1,7 @@
+D:\install\qy2017\黄冈\QY.Stage20171010完\QY.Stage\Tools.Encrypt.Win32\bin\Release\Tools.Encrypt.Win32.exe
+D:\install\qy2017\黄冈\QY.Stage20171010完\QY.Stage\Tools.Encrypt.Win32\bin\Release\Tools.Encrypt.Win32.pdb
+D:\install\qy2017\黄冈\QY.Stage20171010完\QY.Stage\Tools.Encrypt.Win32\bin\Release\Snowflake.Net.dll
+D:\install\qy2017\黄冈\QY.Stage20171010完\QY.Stage\Tools.Encrypt.Win32\bin\Release\Snowflake.Net.pdb
+D:\install\qy2017\黄冈\QY.Stage20171010完\QY.Stage\Tools.Encrypt.Win32\obj\Release\Tools.Encrypt.Win32.exe
+D:\install\qy2017\黄冈\QY.Stage20171010完\QY.Stage\Tools.Encrypt.Win32\obj\Release\Tools.Encrypt.Win32.pdb
+D:\install\qy2017\黄冈\QY.Stage20171010完\QY.Stage\Tools.Encrypt.Win32\obj\Release\Tools.Encrypt.Win32.csprojResolveAssemblyReference.cache

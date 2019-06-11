@@ -1,0 +1,97 @@
+object TChart
+  Left = 0
+  Top = 33
+  Width = 761
+  Height = 555
+  Gradient.EndColor = 15003890
+  Gradient.StartColor = 11385533
+  Gradient.Visible = True
+  Title.Visible = False
+  BottomAxis.LabelsAngle = 90
+  Align = alClient
+  PopupMenu = ChartPopupMenu
+  TabOrder = 1
+  PrintMargins = (
+    15
+    18
+    15
+    18)
+  object TLineSeries
+    Marks.Callout.Brush.Color = clBlack
+    Marks.Visible = False
+    Title = 'WORK_NO'
+    Pointer.InflateMargins = True
+    Pointer.Style = psRectangle
+    Pointer.Visible = False
+    XValues.Name = 'X'
+    XValues.Order = loAscending
+    YValues.Name = 'Y'
+    YValues.Order = loNone
+  end
+  object TLineSeries
+    Marks.Callout.Brush.Color = clBlack
+    Marks.Visible = False
+    Title = 'XZWORK_NO'
+    Pointer.InflateMargins = True
+    Pointer.Style = psRectangle
+    Pointer.Visible = False
+    XValues.Name = 'X'
+    XValues.Order = loAscending
+    YValues.Name = 'Y'
+    YValues.Order = loNone
+  end
+  object TLineSeries
+    Marks.Callout.Brush.Color = clBlack
+    Marks.Visible = False
+    Title = 'SYWORK_NO'
+    Pointer.InflateMargins = True
+    Pointer.Style = psRectangle
+    Pointer.Visible = False
+    XValues.Name = 'X'
+    XValues.Order = loAscending
+    YValues.Name = 'Y'
+    YValues.Order = loNone
+  end
+  object TLineSeries
+    Marks.Callout.Brush.Color = clBlack
+    Marks.Visible = False
+    Title = 'TUIXIU_NO'
+    Pointer.InflateMargins = True
+    Pointer.Style = psRectangle
+    Pointer.Visible = False
+    XValues.Name = 'X'
+    XValues.Order = loAscending
+    YValues.Name = 'Y'
+    YValues.Order = loNone
+  end
+  object TLineSeries
+    Marks.Callout.Brush.Color = clBlack
+    Marks.Visible = False
+    Title = 'CAR_NO'
+    Pointer.InflateMargins = True
+    Pointer.Style = psRectangle
+    Pointer.Visible = False
+    XValues.Name = 'X'
+    XValues.Order = loAscending
+    YValues.Name = 'Y'
+    YValues.Order = loNone
+  end
+  object TLineSeries
+    Marks.Callout.Brush.Color = clBlack
+    Marks.Visible = False
+    Title = 'ID_NO'
+    Pointer.InflateMargins = True
+    Pointer.Style = psRectangle
+    Pointer.Visible = False
+    XValues.Name = 'X'
+    XValues.Order = loAscending
+    YValues.Name = 'Y'
+    YValues.Order = loNone
+  end
+  object ChartTool1: TPageNumTool
+    Active = False
+    Callout.Brush.Color = clBlack
+    Callout.Arrow.Visible = False
+    Text = 'Page %d of %d'
+  end
+end

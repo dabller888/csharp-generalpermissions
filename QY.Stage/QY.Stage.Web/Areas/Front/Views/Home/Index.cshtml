@@ -1,0 +1,20 @@
+﻿<script src="~/Areas/Front/Content/jquery.min.js"></script>
+<h2>Front</h2>
+
+<script>
+    $(function () {
+        $.ajax({
+            url: "/api/Front/User/GetUserApi",
+            type: 'GET',
+            datatype: 'json',
+            data: {id:1},
+            success: function (data) {
+                console.log(JSON.stringify(data))
+            },
+            error: function (e) {
+
+            }
+        })
+    })
+
+</script>

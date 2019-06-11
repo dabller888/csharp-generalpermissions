@@ -1,0 +1,7 @@
+#macro ( age $a )
+    #if($a<18)
+        Minor
+    #else
+        Major
+    #end
+#end

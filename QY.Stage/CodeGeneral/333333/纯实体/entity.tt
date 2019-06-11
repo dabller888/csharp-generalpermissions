@@ -1,0 +1,58 @@
+﻿<#@ template debug="false" hostspecific="true" language="C#" #>
+<#@ assembly name="System.Data" #>
+<#@ assembly name="System.Data.DataSetExtensions" #>
+<#@ assembly name="System.xml" #>
+<#@ import namespace="System.Collections.Generic" #>
+<#@ import namespace="System.Data.SqlClient" #>
+<#@ import namespace="System.Data" #>
+<#@ assembly name="System.Core" #>
+<#@ import namespace="System.Linq" #>
+
+<#@include file="$(ProjectDir)\DbHelper.ttinclude"#> 
+
+//  导入MultipleOutputHelper.ttinclude文件
+<#@include file="$(ProjectDir)\MultipleOutputHelper.ttinclude"#> 
+
+<#      SqlConnection conn = new SqlConnection(config.ConnectionString);
+        conn.Open();
+    
+        string selectQuery ="SET FMTONLY ON; select * from @tableName; SET FMTONLY OFF;";
+        SqlCommand command = new SqlCommand(selectQuery,conn);
+        SqlDataAdapter ad = new SqlDataAdapter(command);
+        System.Data.DataSet ds = new DataSet();
+  
+        var manager = Manager.Create(Host, GenerationEnvironment);  
+
+        System.Data.DataTable schema = conn.GetSchema("Tables");
+        foreach(System.Data.DataRow row in schema.Rows)
+        {    
+			if(row["TABLE_NAME"].ToString().Equals("VIEW_MarServItem"))
+				continue;
+            ds.Tables.Clear();
+            string tb_name= row["TABLE_NAME"].ToString();       
+			command.CommandText = selectQuery.Replace("@tableName",row["TABLE_NAME"].ToString());
+            ad.FillSchema(ds, SchemaType.Mapped,tb_name);  
+            manager.StartNewFile(tb_name+".cs");#>
+using System;
+
+namespace QY.Stage.PocoModel {
+    public partial class <#=tb_name#> {    
+        <#
+        PushIndent("        ");
+        foreach (DbColumn dc in DbHelper.GetDbColumns(config.ConnectionString,config.DbDatabase,tb_name)) 
+        {
+			WriteLine("/// <summary>");
+			WriteLine("/// "+dc.Remark);
+			WriteLine("/// </summary>");
+            WriteLine("public " +dc.CSharpType+ (dc.CommonType.IsValueType && dc.IsNullable ? "? ": " ") + dc.ColumnName + " { get; set; }");
+        }
+        PopIndent();
+        #>
+    }
+}    
+<#
+        manager.EndBlock();    
+         }            
+        conn.Close();  
+       manager.Process(true);  
+        #>

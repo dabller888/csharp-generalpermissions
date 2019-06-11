@@ -1,0 +1,64 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Controllers xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <!--系统控制器-->
+  <System>    
+    <Actions>
+      <!--用户-->
+      <GetUserList>*</GetUserList>
+      <GetUserDetails>edit|show</GetUserDetails>
+      <SaveUser>add|edit</SaveUser>
+      <DeleteUsers>delete</DeleteUsers>
+      <ModifyPasswd>passwd</ModifyPasswd>
+      <EnableUser>enable</EnableUser>
+      
+      <DeleteUserRole>delete</DeleteUserRole>
+      <AddUserRole>add</AddUserRole>
+      <GetUsersNotUR>*</GetUsersNotUR>
+      <GetPatchUserRole>*</GetPatchUserRole>
+
+      <!--角色-->
+      <GetRoleList>*</GetRoleList>
+      <GetRoleDetails>edit|show</GetRoleDetails>
+      <SaveRole>add|edit</SaveRole>
+      <DeleteRoles>delete</DeleteRoles>
+      
+      <GetAllModuleActionAndSelected>*</GetAllModuleActionAndSelected>
+      <AddRoleModuleAction>add</AddRoleModuleAction>
+
+      <!--模块-->
+      <GetModuleList>*</GetModuleList>
+      <GetModuleDetails>edit|show</GetModuleDetails>
+      <SaveModule>add|edit</SaveModule>
+      <DeleteModules>delete</DeleteModules>
+      
+      <GetModuleNotMA>*</GetModuleNotMA>
+      <GetModuleAction>*</GetModuleAction>
+      <AddModuleAction>add</AddModuleAction>
+      <DeleteModuleAction>delete</DeleteModuleAction>
+
+      <!--功能-->
+      <GetActionList>*</GetActionList>
+      <GetActionDetails>edit|show</GetActionDetails>
+      <SaveAction>add|edit</SaveAction>
+      <DeleteActions>delete</DeleteActions>
+      
+    </Actions>    
+  </System>
+  <!--老人信息管理-->
+  <Elder>
+    <Actions>
+      <GetElderList>*</GetElderList>
+      <AddElder>add</AddElder>
+      <GetElderDetails>edit|show</GetElderDetails>
+      <SaveElder>edit</SaveElder>
+      <DeleteElders>delete</DeleteElders>
+    </Actions>
+  </Elder>
+  <!--公共-->
+  <DataDictionary>
+    <Actions>
+      <GetSysModule>*</GetSysModule>
+      <GetSysRole>*</GetSysRole>
+    </Actions>
+  </DataDictionary>
+</Controllers>

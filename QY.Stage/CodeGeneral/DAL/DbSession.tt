@@ -1,0 +1,34 @@
+﻿<#@ template language="C#" debug="false" hostspecific="true"#>
+<#@ output extension=".cs"#>
+<#@ assembly name="System.Data" #>
+<#@ assembly name="System.Data.DataSetExtensions" #>
+<#@ assembly name="System.xml" #>
+<#@ import namespace="System.Collections.Generic" #>
+<#@ import namespace="System.Data.SqlClient" #>
+<#@ import namespace="System.Data" #>
+<#@ assembly name="System.Core" #>
+<#@ import namespace="System.Linq" #>
+<#@include file="$(ProjectDir)\DbHelper.ttinclude"#>
+using QY.Stage.IDAL;
+namespace QY.Stage.DAL
+{
+    public partial interface DbSession : IDbSession
+    {
+<#      
+		SqlConnection conn = new SqlConnection(config.ConnectionString);
+        conn.Open();    
+        string selectQuery ="SET FMTONLY ON; select * from @tableName; SET FMTONLY OFF;";
+        SqlCommand command = new SqlCommand(selectQuery,conn);
+        SqlDataAdapter ad = new SqlDataAdapter(command);
+        System.Data.DataSet ds = new DataSet();
+        System.Data.DataTable schema = conn.GetSchema("Tables");
+        foreach(System.Data.DataRow row in schema.Rows)
+        {
+            string tb_name= row["TABLE_NAME"].ToString();
+			PushIndent("		");
+			WriteLine("public I"+tb_name+"Repository "+tb_name+"Repository{ get { return new "+tb_name+"Repository(); } }");
+			PopIndent();
+        }
+#>
+	}
+}

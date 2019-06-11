@@ -1,0 +1,25 @@
+﻿描述：
+1.主页需加入菜单Tab
+2.View过滤器已加入权限，Go的过滤器未加入权限验证
+3.删除用户，角色，权限，模块需做级联删除，以保证数据完整性
+4.日志（应用程序，controller/action，数据库访问）
+5.Security Test
+
+
+
+6.授权接口
+owin auth2.0  webapi
+
+
+
+
+
+bugs:
+1.EF中contains中有字段有空值处理(用lambda)
+
+
+
+
+数据签名：
+AppInfo（appid,appkey,appsecret,）
+

@@ -1,0 +1,331 @@
+﻿@using Newtonsoft.Json;
+@using QY.Stage.PocoModel;
+<script type="text/javascript">
+    $(function () {
+        //初始化弹出窗体
+        initTable();
+
+        //绑定注册按钮的事件
+        BindRegistButtonClickEvent();
+
+        //绑定修改事件的信息
+        BindUpdateButtonClickEvent();
+        initModules();
+    });
+
+    //初始化表格
+    function initTable(queryData) {
+        $('#test').datagrid({
+            title: '功能管理',
+            iconCls: 'icon-more',
+            height: 600,
+            width: '100%',
+            nowrap: true,
+            autoRowHeight: false,
+            striped: true,
+            collapsible: false,
+            url: '/Back/System/GetActionList',
+            sortName: 'ActionId',
+            sortOrder: 'asc',
+            //striped:true,
+            border: true,
+            remoteSort: false,
+            idField: 'ActionId',
+            pagination: true,
+            rownumbers: false,
+            queryParams: queryData,
+            columns: [[
+                { field: 'ck', checkbox: true },
+                { field: 'ActionId', title: '功能编号', width: 80, hidden: true },
+                { field: 'ModuleId', title: '模块名称', width: 80, sortable: true },
+                { field: 'ActionName', title: '功能名称', width: 80, sortable: true },
+                { field: 'ButtonCode', title: '功能编码', width: 100, sortable: true },
+                { field: 'ParaName', title: '参数编码', width: 100, sortable: true },
+                {
+                    field: 'ActionType', title: '类型', width: 100, sortable: true,
+                    formatter: function (value, row, index) {
+                        if (value == 0) { str = '视图'; }
+                        else { str = '操作'; }
+                        return str;
+                    }
+                }
+            ]],
+
+            toolbar: [{
+                id: 'btnAdd',
+                text: '添加功能',
+                iconCls: 'icon-add',
+                handler: function () {
+                    ShowCreateActionDialog();
+                }
+            }, '-', {
+                id: 'btnEdit',
+                text: '修改功能',
+                iconCls: 'icon-edit',
+                handler: function () {
+                    ShowUpdateActionDialog();
+                }
+            }, '-', {
+                id: 'btnDelete',
+                text: '删除功能',
+                iconCls: 'icon-remove',
+                handler: function () {
+                    DeleteActionInfoByClick();
+                }
+            }],
+            onBeforeLoad: function () {
+                var userActions = JSON.parse("@JsonConvert.SerializeObject(Session[(Session["UserInfo"] as SysUser).LoginName + "action"])".replace(/&quot;/g, "\""));
+                var actions = JSON.parse("@JsonConvert.SerializeObject(Session["action"])".replace(/&quot;/g, "\""));
+                user.renderActions(userActions, actions);
+            }
+        });
+    }
+
+    function initModules() {
+        $.post("/Back/DataDictionary/GetSysModuleTree", {}, function (data) {
+            if (data != null && data.length > 0) {
+                var modules = JSON.stringify(data).replace(/Id/g, 'id').replace(/Text/g, 'text').replace(/Children/g, 'children');
+                console.log(modules)
+                $('#ModuleId').combotree('loadData', JSON.parse(modules));
+                $('#uModuleId').combotree('loadData', JSON.parse(modules));
+            }
+        });
+    }
+
+    //弹出添加角色的对话框
+    function ShowCreateActionDialog() {
+        $('#AddActionDialog').dialog('open').dialog('setTitle', '添加功能信息');
+        ClearTextBox();
+    }
+
+    function BindRegistButtonClickEvent() {
+        $("#btnRegist").click(function () {
+            var valid = $('#ActionForm').form('validate');
+            if (valid == false) {
+                return false;
+            }
+            $.post("/Back/System/SaveAction", {
+                ModuleId: $("#ModuleId").combotree("getValue"),
+                ActionName: $("#ActionName").textbox("getValue"),
+                ButtonCode: $("#ButtonCode").textbox("getValue"),
+                ParaName: $("#ParaName").textbox("getValue"),
+                ActionType: $("#ActionType").combobox("getValue")
+            }, function (data) {
+                if (data.Code == 1) {
+                    $.messager.alert("友情提示", "添加成功!", "success");
+                    $('#AddActionDialog').dialog('close');
+                    $("#test").datagrid("reload");
+                } else if (data.Code == 2) {
+                    $.messager.alert("友情提示", "功能名称已存在!", "warning");
+                } else {
+                    $.messager.alert("友情提示", "添加失败，请您检查!", "warning");
+                }
+            });
+        });
+    }
+
+    function ClearTextBox() {
+        $("#ModuleId").combotree("setValue", "");
+        $("#ActionName").textbox("setValue", "");
+        $("#ButtonCode").textbox("setValue", "");
+        $("#ParaName").textbox("setValue", "");
+        $("#ActionType").combobox("setValue", "");
+    }
+
+    //实现多选删除信息
+    function DeleteActionInfoByClick() {
+        //获取到用户选定的某一列的ID号
+        var deleteActionID = $("#test").datagrid("getSelections");
+        //判断用户选择了多少条数据
+        // //异步将删除的ID发送到后台，后台删除之后，返回前台OK，前台刷新表格
+        if (deleteActionID.length >= 1) {
+            var ids = "";   //1,2,3,4
+            for (var i = 0; i < deleteActionID.length; i++) {
+                ids += deleteActionID[i].ActionId + ",";
+            }
+            //去掉最后的一个,
+            ids = ids.substring(0, ids.length - 1);
+
+            //遍历出删除用户的信息
+            var ActionNameList = "";
+            for (var i = 0; i < deleteActionID.length; i++) {
+                ActionNameList += deleteActionID[i].ActionName + ",";
+            }
+            ActionNameList = ActionNameList.substring(0, ActionNameList.length - 1);
+            //var LoginUName = $("#test").datagrid("getSelections")[0].UName;
+            //发送异步请求删除数据
+            $.messager.confirm("删除信息", "您确认删除<font color='Red' size='3'>" + ActionNameList + "</font>用户吗？", function (DeleteUserInfo) {
+                if (DeleteUserInfo) {
+                    $.post("/System/DeleteActions", { ActionIds: ids }, function (data) {
+                        console.log(JSON.stringify(data))
+                        if (data.Code == 1) {
+                            $.messager.alert("友情提示", "删除成功", "success");
+                            $("#test").datagrid("reload");
+
+                            //当删除完成的时候清除掉所选择的长度，防止下次选择的时候还记录了上次的内容
+                            //第一种方法
+                            //deleteUserInfoID.length = "";
+                            //第二种方法
+                            $("#test").datagrid("clearSelections");
+                        }
+                        else {
+                            $.messager.alert("友情提示", "删除失败:" + data, "warning");
+                        }
+                    });
+                }
+            });
+        }
+        else {
+            $.messager.alert("友情提示", "请您选择要删除的数据", "warning");
+        }
+    }
+
+    //弹出修改用户的对话框
+    function ShowUpdateActionDialog() {
+        var UpdateActionID = $("#test").datagrid("getSelections");
+        if (UpdateActionID.length == 1) {
+            $("#UpdateActionDialog").dialog("open").dialog("setTitle", "修改功能信息");
+
+            //绑定显示修改的详细信息的内容
+            BingUpdateDetailsShowTextBox();
+        }
+        else {
+            $.messager.alert("友情提示", "每次只能修改一行数据，你已经选择了<font color='red' size='6'>" + UpdateActionID.length + "</font>行", "warning");
+        }
+    }
+
+    //绑定修改用户的信息显示在用户的TextBox文本框中
+    function BingUpdateDetailsShowTextBox() {
+        //首先获取选中的用户的ID
+        var CheckID = $("#test").datagrid("getSelections")[0].ActionId;
+        $.getJSON("/System/GetActionDetails", { ActionId: CheckID }, function (data) {
+            if (data.Code == 1) {
+                $("#uActionId").val(CheckID);
+                $("#uModuleId").combotree("setValue", data.Content.ModuleId);
+                $("#uActionName").textbox("setValue", data.Content.ActionName);
+                $("#uButtonCode").textbox("setValue", data.Content.ButtonCode);
+                $("#uParaName").textbox("setValue", data.Content.ParaName);
+                $("#uActionType").combobox("setValue", data.Content.ActionType);
+            } else {
+                $.messager.alert("友情提示", "没有找到相关项!", "warning");
+            }
+        });
+    }
+
+    //修改用户的信息
+    function BindUpdateButtonClickEvent() {
+        $("#btnUpdate").click(function () {
+            //首先判断前台的验证是否通过
+            var valid = $('#UpdateActionForm').form('validate');
+            if (valid == false) {
+                return false;
+            }
+            //使用异步实现修改用户信息
+            $.post("/System/SaveAction", {
+                ActionId: $("#uActionId").val(),
+                ModuleId: $("#uModuleId").combotree("getValue"),
+                ActionName: $("#uActionName").textbox("getValue"),
+                ButtonCode: $("#uButtonCode").textbox("getValue"),
+                ParaName: $("#uParaName").textbox("getValue"),
+                ActionType: $("#uActionType").combobox("getValue")
+            }, function (data) {
+                if (data.Code == 1) {
+                    $.messager.alert("友情提示", "修改功能成功!", "success");
+                    $("#UpdateActionDialog").dialog('close');
+                    $("#test").datagrid('reload');
+                } else if (data.Code == 2) {
+                    $.messager.alert("友情提示", "功能名称已存在!", "warning");
+                } else {
+                    $.messager.alert("友情提示", "修改失败，请您检查!", "warning");
+                }
+            });
+        });
+    }
+
+</script>
+
+
+@*-------------------------- 实现对角色数据的显示-------------------------*@
+<div>
+    <table id="test"></table>
+</div>
+
+@*----------------------------设置添加的弹出层--------------------------------*@
+<div id="AddActionDialog" class="easyui-dialog" style="width:400px;height:350px;padding:10px" iconcls="icon-save" closed="true" resizable="true" modal="true" buttons="#dlg-buttons" align="center">
+    <form id="ActionForm" method="post" novalidate="novalidate">
+        <table id="tblAdd">
+            <tr>
+                <th><label for="ModuleId">模块名称</label></th>
+                <td><input class="easyui-combotree" id="ModuleId" name="ModuleId" style="width:200px;"></td>
+            </tr>
+            <tr>
+                <th><label for="ActionType">类型</label></th>
+                <td>
+                    <select id="ActionType" class="easyui-combobox">
+                        <option value="0">视图</option>
+                        <option value="1">操作</option>
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <th><label for="ActionName">功能名称&nbsp;&nbsp;</label></th>
+                <td><input class="easyui-textbox" id="ActionName" name="ActionName" data-options="required:true,validType:'length[1,64]'" /></td>
+            </tr>
+            <tr>
+                <th><label for="ButtonCode">功能编码</label></th>
+                <td><input class="easyui-textbox" id="ButtonCode" name="ButtonCode" data-options="required:true,validType:'length[1,64]'" /></td>
+            </tr>
+            <tr>
+                <th><label for="ParaName">参数编码</label></th>
+                <td><input class="easyui-textbox" id="ParaName" name="ParaName" style="width:100%;" data-options="validType:'length[0,32]'"></td>
+            </tr>
+            <tr>
+                <td colspan="2" style="text-align:center; padding-top:10px">
+                    <a href="javascript:void(0)" class="easyui-linkbutton" id="btnRegist" iconcls="icon-ok">确定</a>
+                    <a href="javascript:void(0)" class="easyui-linkbutton" iconcls="icon-cancel" onclick="javascript:$('#AddActionDialog').dialog('close')">关闭</a>
+                </td>
+            </tr>
+        </table>
+    </form>
+</div>
+
+@*----------------------------设置修改的的弹出层--------------------------------*@
+<div id="UpdateActionDialog" class="easyui-dialog" style="width:400px;height:350px;padding:10px" iconcls="icon-save" closed="true" resizable="true" modal="true" buttons="#dlg-buttons" align="center">
+    <form id="UpdateActionForm" method="post" novalidate="novalidate">
+        <table id="tblUpdate">
+            <tr>
+                <th><label for="uModuleId">模块名称</label></th>
+                <td><input class="easyui-combotree" id="uModuleId" name="uModuleId" style="width:200px;"></td>
+            </tr>
+            <tr>
+                <th><label for="uActionType">类型</label></th>
+                <td>
+                    <select id="uActionType" class="easyui-combobox">
+                        <option value="0">视图</option>
+                        <option value="1">操作</option>
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <th><label for="uActionName">功能名称&nbsp;&nbsp;</label></th>
+                <td><input class="easyui-textbox" id="uActionName" name="uActionName" data-options="required:true,validType:'length[1,64]'" /></td>
+            </tr>
+            <tr>
+                <th><label for="uButtonCode">功能编码</label></th>
+                <td><input class="easyui-textbox" id="uButtonCode" name="uButtonCode" data-options="required:true,validType:'length[1,64]'" /></td>
+            </tr>
+            <tr>
+                <th><label for="uParaName">参数编码</label></th>
+                <td><input class="easyui-textbox" id="uParaName" name="uParaName" style="width:100%;" data-options="validType:'length[0,32]'"></td>
+            </tr>
+            <tr>
+                <td colspan="2" style="text-align:center; padding-top:10px">
+                    <input type="hidden" id="uActionId" name="uActionId" />
+                    <a href="javascript:void(0)" class="easyui-linkbutton" id="btnUpdate" iconcls="icon-ok">确定</a>
+                    <a href="javascript:void(0)" class="easyui-linkbutton" iconcls="icon-cancel" onclick="javascript:$('#UpdateActionDialog').dialog('close')">关闭</a>
+                </td>
+            </tr>
+        </table>
+    </form>
+</div>
+

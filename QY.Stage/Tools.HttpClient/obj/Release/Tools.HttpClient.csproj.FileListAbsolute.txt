@@ -1,0 +1,11 @@
+D:\install\qy2017\黄冈\QY.Stage20171010完\QY.Stage\Tools.HttpClient\bin\Release\Tools.HttpClient.exe
+D:\install\qy2017\黄冈\QY.Stage20171010完\QY.Stage\Tools.HttpClient\bin\Release\Tools.HttpClient.pdb
+D:\install\qy2017\黄冈\QY.Stage20171010完\QY.Stage\Tools.HttpClient\bin\Release\Newtonsoft.Json.dll
+D:\install\qy2017\黄冈\QY.Stage20171010完\QY.Stage\Tools.HttpClient\bin\Release\QY.Stage.Frameworks.Utility.dll
+D:\install\qy2017\黄冈\QY.Stage20171010完\QY.Stage\Tools.HttpClient\bin\Release\QY.Stage.Frameworks.Utility.pdb
+D:\install\qy2017\黄冈\QY.Stage20171010完\QY.Stage\Tools.HttpClient\obj\Release\Tools.HttpClient.csprojResolveAssemblyReference.cache
+D:\install\qy2017\黄冈\QY.Stage20171010完\QY.Stage\Tools.HttpClient\obj\Release\Tools.HttpClient.frmHttpClient.resources
+D:\install\qy2017\黄冈\QY.Stage20171010完\QY.Stage\Tools.HttpClient\obj\Release\Tools.HttpClient.Properties.Resources.resources
+D:\install\qy2017\黄冈\QY.Stage20171010完\QY.Stage\Tools.HttpClient\obj\Release\Tools.HttpClient.csproj.GenerateResource.Cache
+D:\install\qy2017\黄冈\QY.Stage20171010完\QY.Stage\Tools.HttpClient\obj\Release\Tools.HttpClient.exe
+D:\install\qy2017\黄冈\QY.Stage20171010完\QY.Stage\Tools.HttpClient\obj\Release\Tools.HttpClient.pdb

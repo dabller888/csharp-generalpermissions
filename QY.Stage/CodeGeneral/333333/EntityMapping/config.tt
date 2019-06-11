@@ -1,0 +1,87 @@
+﻿<#@ template debug="false" hostspecific="true" language="C#" #>
+<#@ assembly name="System.Data" #>
+<#@ assembly name="System.Data.DataSetExtensions" #>
+<#@ assembly name="System.xml" #>
+<#@ import namespace="System.Collections.Generic" #>
+<#@ import namespace="System.Data.SqlClient" #>
+<#@ import namespace="System.Data" #>
+<#@ assembly name="System.Core" #>
+<#@ import namespace="System.Linq" #>
+
+<#@include file="$(ProjectDir)\DbHelper.ttinclude"#>
+
+<#@include file="$(ProjectDir)\Tools.ttinclude"#> 
+
+//  导入MultipleOutputHelper.ttinclude文件
+<#@include file="$(ProjectDir)\MultipleOutputHelper.ttinclude"#> 
+
+<#      SqlConnection conn = new SqlConnection(config.ConnectionString);
+        conn.Open();
+    
+        string selectQuery ="SET FMTONLY ON; select * from @tableName; SET FMTONLY OFF;";
+        SqlCommand command = new SqlCommand(selectQuery,conn);
+        SqlDataAdapter ad = new SqlDataAdapter(command);
+        System.Data.DataSet ds = new DataSet();
+  
+        var manager = Manager.Create(Host, GenerationEnvironment);  
+
+        System.Data.DataTable schema = conn.GetSchema("Tables");
+        foreach(System.Data.DataRow row in schema.Rows)
+        {    
+            ds.Tables.Clear();
+            string tb_name= row["TABLE_NAME"].ToString();       
+			command.CommandText = selectQuery.Replace("@tableName",row["TABLE_NAME"].ToString());
+            ad.FillSchema(ds, SchemaType.Mapped,tb_name);  
+            manager.StartNewFile(tb_name+"Configuration.cs");#>
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Data.Entity.ModelConfiguration;
+namespace QY.Stage.PocoModel.Configurations {
+    public class <#= tb_name#>Configuration : EntityTypeConfiguration<<#= tb_name#>> {
+		public <#= tb_name#>Configuration() {
+			<#
+			PushIndent("			");			
+			WriteLine("// Primary Key");
+			WriteLine("this.HasKey("+StringExt.GetMappingPKs(tb_name)+");");
+			WriteLine("");
+			WriteLine("// Properties");
+			foreach (DbColumn dc in DbHelper.GetDbColumns(config.ConnectionString,config.DbDatabase,tb_name)) 
+			{
+				if(!dc.IsNullable){
+					if(dc.IsPrimaryKey)
+					{
+						string str = string.Format("this.Property(t => t.{0})", dc.ColumnName);
+						str+=".IsRequired()";
+						if(!dc.IsNullable && dc.CommonType == typeof(string))	str+=string.Format(".HasMaxLength({0})", dc.CharLength);
+						str+=";";
+						WriteLine(str);
+					}else{
+						string str = string.Format("this.Property(t => t.{0})", dc.ColumnName);
+						str+=".IsRequired()";
+						if(!dc.IsNullable && dc.CommonType == typeof(string))	str+=string.Format(".HasMaxLength({0})", dc.CharLength);
+						str+=";";
+						WriteLine(str);
+					}
+                }
+			}
+			WriteLine("");			
+			WriteLine("// Table && Column Mappings");			
+			WriteLine("this.ToTable(\""+tb_name+"\");");
+			foreach (DbColumn dc in DbHelper.GetDbColumns(config.ConnectionString,config.DbDatabase,tb_name)) 
+			{
+				WriteLine(string.Format("this.Property(t => t.{0}).HasColumnName(\"{0}\");",dc.ColumnName));
+			}
+			PopIndent();
+			#>
+		}
+    }
+}
+    
+<#
+        manager.EndBlock();    
+         }            
+        conn.Close();  
+       manager.Process(true);  
+        #>

@@ -1,0 +1,132 @@
+﻿@using Newtonsoft.Json;
+@using QY.Stage.PocoModel;
+<div class="easyui-layout" style="width:300px;height:600px;">
+    <div data-options="region:'north',split:false,collapsible:false,iconCls:'icon-ok'" title="角色" style="width: 40%; height: 120px;padding:5px;text-align:center;">
+        <input class="easyui-combobox" id="roles" name="roles" style="width: 100%; height: 26px;">
+        <div style="padding-top:5px;">
+            <input type="hidden" id="RoleId" />
+            <a href="javascript:void(0)" class="easyui-linkbutton" id="btnAdd" iconCls="icon-add">保存</a>
+        </div>
+    </div>
+    <div data-options="region:'center',collapsible:false,iconCls:'icon-ok'" title="角色模块功能" style="width:40%;padding:5px;">
+        <ul id="et" class="easyui-tree"></ul>
+    </div>
+</div>
+<script type="text/javascript">
+    $(function () {
+        loadRoles();
+        bindEvents();
+        var userActions = JSON.parse("@JsonConvert.SerializeObject(Session[(Session["UserInfo"] as SysUser).LoginName + "action"])".replace(/&quot;/g, "\""));
+        var actions = JSON.parse("@JsonConvert.SerializeObject(Session["action"])".replace(/&quot;/g, "\""));
+        user.renderActions(userActions, actions);
+    });
+
+    function loadTG(RoleId) {
+        $("#et").tree({
+            url: '/Back/System/GetAllModuleActionAndSelected',
+            checkbox: true,
+            animate: true,
+            lines: true,
+            cascadeCheck: false,
+            queryParams: { RoleId: RoleId },
+            onCheck: function (node, checked) {
+                if (checked) {
+                    var parentNode = $("#et").tree('getParent', node.target);
+                    if (parentNode != null) {
+                        $("#et").tree('check', parentNode.target);
+                    }
+                } else {
+                    var childNode = $("#et").tree('getChildren', node.target);
+                    if (childNode.length > 0) {
+                        for (var i = 0; i < childNode.length; i++) {
+                            $("#et").tree('uncheck', childNode[i].target);
+                        }
+                    }
+                }
+            }
+        });
+    }
+
+    function loadRoles() {
+        var roles = [];
+        roles.push({ 'Value': 0, 'Text': '--选择角色--' });
+        $.post("/DataDictionary/GetSysRole", {}, function (data) {
+            if (data != null && data.length > 0) {
+                for (var i in data) {
+                    roles.push(data[i]);
+                }
+                $("#roles").combobox({
+                    data: roles,
+                    valueField: 'Value',
+                    textField: 'Text',
+                    value: '0',
+                    onChange: function (n, o) {
+                        $('#RoleId').val(n);
+                        loadTG(n);
+                    }
+                });
+            }
+        });
+    }
+
+    function getSelectedItems() {
+        var roots = $('#et').tree('getRoots');
+        var secNodes = null, thirNodes = null, arr = [];
+        var roleId = parseInt($('#RoleId').val());
+
+        for (var i in roots) {
+            if (roots[i].checked) {
+                secNodes = $('#et').tree('getChildren', roots[i].target);
+                for (var j in secNodes) {
+                    if (secNodes[j].checked) {
+                        thirNodes = $('#et').tree('getChildren', secNodes[j].target);
+                        for (var k in thirNodes) {
+                            if (thirNodes[k].checked) {
+                                if (j == 0 && k == 0)
+                                    arr.push({ 'RoleId': roleId, 'ModuleId': roots[i].id, 'ActionId': 0 });
+                                arr.push({ 'RoleId': roleId, 'ModuleId': secNodes[j].id, 'ActionId': thirNodes[k].id });
+                                //str += '{"RoleId":' + roleId + ',"ModuleId":' + secNodes[k].id + ',"ActionId":' + thirNodes[k].id + '}';
+                            }
+                        }
+                    }
+                }
+
+            }
+        }
+        return JSON.stringify(arr);
+    }
+
+    function getChecked() {
+        var node = $('#et').tree('getSelected');
+        console.log(node);
+
+        node = $('#et').tree('getRoot');
+        console.log(node);
+
+
+        var arr = [];
+        var checkeds = $('#et').tree('getChecked', 'checked');
+        for (var i = 0; i < checkeds.length; i++) {
+            arr.push(checkeds[i].id);
+        }
+        alert(arr.join(','));
+    }
+
+    function bindEvents() {
+        $('#btnAdd').click(function () {
+            var mas = getSelectedItems();
+            $.post("/Back/System/AddRoleModuleAction", {
+                RoleModuleIds: mas
+            }, function (data) {
+                if (data.Code == 1) {
+                    $.messager.alert("友情提示", "保存成功", "success");
+                    $("#et").tree("reload");
+                }
+                else {
+                    $.messager.alert("友情提示", "保存失败:" + data, "warning");
+                }
+            });
+        });
+    }
+
+</script>

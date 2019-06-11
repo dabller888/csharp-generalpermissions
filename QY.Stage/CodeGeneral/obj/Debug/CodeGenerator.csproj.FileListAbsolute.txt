@@ -1,0 +1,5 @@
+D:\install\qy2017\侨亚大舞台\QY.Stage.Web\CodeGeneral\obj\Debug\CodeGenerator.csprojResolveAssemblyReference.cache
+D:\install\qy2017\侨亚大舞台\QY.Stage\CodeGeneral\obj\Debug\CodeGenerator.csprojResolveAssemblyReference.cache
+D:\install\qy2017\黄冈\QY.Stage\CodeGeneral\obj\Debug\CodeGenerator.csprojResolveAssemblyReference.cache
+D:\install\qy2017\黄冈\QY.Stage20171010完\QY.Stage\CodeGeneral\obj\Debug\CodeGenerator.csprojResolveAssemblyReference.cache
+D:\zl2018\easyui+NVelocity管理后台生成\QY.Stage\CodeGeneral\obj\Debug\CodeGenerator.csprojResolveAssemblyReference.cache

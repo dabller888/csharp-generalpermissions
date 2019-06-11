@@ -1,0 +1,8 @@
+D:\install\qy2017\黄冈\QY.Stage20171010完\QY.Stage\QY.Stage.Frameworks.Web\bin\Release\QY.Stage.Frameworks.Web.dll
+D:\install\qy2017\黄冈\QY.Stage20171010完\QY.Stage\QY.Stage.Frameworks.Web\bin\Release\QY.Stage.Frameworks.Web.pdb
+D:\install\qy2017\黄冈\QY.Stage20171010完\QY.Stage\QY.Stage.Frameworks.Web\bin\Release\QY.Stage.Frameworks.Utility.dll
+D:\install\qy2017\黄冈\QY.Stage20171010完\QY.Stage\QY.Stage.Frameworks.Web\bin\Release\Newtonsoft.Json.dll
+D:\install\qy2017\黄冈\QY.Stage20171010完\QY.Stage\QY.Stage.Frameworks.Web\bin\Release\QY.Stage.Frameworks.Utility.pdb
+D:\install\qy2017\黄冈\QY.Stage20171010完\QY.Stage\QY.Stage.Frameworks.Web\obj\Release\QY.Stage.Frameworks.Web.dll
+D:\install\qy2017\黄冈\QY.Stage20171010完\QY.Stage\QY.Stage.Frameworks.Web\obj\Release\QY.Stage.Frameworks.Web.pdb
+D:\install\qy2017\黄冈\QY.Stage20171010完\QY.Stage\QY.Stage.Frameworks.Web\obj\Release\QY.Stage.Frameworks.Web.csprojResolveAssemblyReference.cache

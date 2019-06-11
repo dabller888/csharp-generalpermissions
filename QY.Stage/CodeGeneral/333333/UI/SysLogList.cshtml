@@ -1,0 +1,289 @@
+@using Newtonsoft.Json;
+@using QY.Stage.PocoModel;
+
+@*-----列表-----*@
+<div>
+    <table id="test"></table>
+</div>
+@*-----添加层-----*@
+<div id="AddDialog" class="easyui-dialog" style="width:400px;height:300px;padding:10px" iconcls="icon-save" closed="true" resizable="true" modal="true" buttons="#dlg-buttons" align="center">
+    <form id="AddForm" method="post" novalidate="novalidate">
+        <table id="AddTable">
+			<tr>
+                <th><label for="OperType">OperType</label></th>
+                <td><input class="easyui-textbox" id="OperType" name="OperType" data-options="required:true,validType:'length[1,4]'" /></td>
+                </tr>
+                <tr>
+                <th><label for="LogDesc">LogDesc</label></th>
+                <td><input class="easyui-textbox" id="LogDesc" name="LogDesc" data-options="validType:'length[1,200]'" /></td>
+                </tr>
+                <tr>
+                <th><label for="UserId">UserId</label></th>
+                <td><input class="easyui-textbox" id="UserId" name="UserId" data-options="required:true,validType:'length[1,4]'" /></td>
+                </tr>
+                <tr>
+                <th><label for="IPAddress">IPAddress</label></th>
+                <td><input class="easyui-textbox" id="IPAddress" name="IPAddress" data-options="validType:'length[1,60]'" /></td>
+                </tr>
+                <tr>
+                <th><label for="MacAddress">MacAddress</label></th>
+                <td><input class="easyui-textbox" id="MacAddress" name="MacAddress" data-options="validType:'length[1,16]'" /></td>
+                </tr>
+                <tr>
+                <th><label for="OperTime">OperTime</label></th>
+                <td><input class="easyui-textbox" id="OperTime" name="OperTime" data-options="required:true,validType:'length[1,8]'" /></td>
+                </tr>
+                <tr>
+                <th><label for="IsDeleted">IsDeleted</label></th>
+                <td><input class="easyui-textbox" id="IsDeleted" name="IsDeleted" data-options="required:true,validType:'length[1,4]'" /></td>
+                </tr>
+            <tr>
+                <td colspan="2" style="text-align:center; padding-top:10px">
+                    <a href="javascript:void(0)" class="easyui-linkbutton" id="btnRegist" iconcls="icon-ok">确定</a>
+                    <a href="javascript:void(0)" class="easyui-linkbutton" iconcls="icon-cancel" onclick="javascript: $('#AddDialog').dialog('close')">关闭</a>
+                </td>
+            </tr>
+        </table>
+    </form>
+
+</div>
+
+@*-----修改层-----*@
+<div id="UpdateDialog" class="easyui-dialog" style="width:400px;height:300px;padding:10px" iconcls="icon-save" closed="true" resizable="true" modal="true" buttons="#dlg-buttons" align="center">
+    <form id="UpdateForm" method="post" novalidate="novalidate">
+        <table id="UpdateTable">
+            <tr>
+                <th><label for="mOperType">OperType</label></th>
+                <td><input class="easyui-textbox" id="mOperType" name="mOperType" data-options="required:true,validType:'length[1,4]'" /></td>
+                </tr>
+                <tr>
+                <th><label for="mLogDesc">LogDesc</label></th>
+                <td><input class="easyui-textbox" id="mLogDesc" name="mLogDesc" data-options="validType:'length[1,200]'" /></td>
+                </tr>
+                <tr>
+                <th><label for="mUserId">UserId</label></th>
+                <td><input class="easyui-textbox" id="mUserId" name="mUserId" data-options="required:true,validType:'length[1,4]'" /></td>
+                </tr>
+                <tr>
+                <th><label for="mIPAddress">IPAddress</label></th>
+                <td><input class="easyui-textbox" id="mIPAddress" name="mIPAddress" data-options="validType:'length[1,60]'" /></td>
+                </tr>
+                <tr>
+                <th><label for="mMacAddress">MacAddress</label></th>
+                <td><input class="easyui-textbox" id="mMacAddress" name="mMacAddress" data-options="validType:'length[1,16]'" /></td>
+                </tr>
+                <tr>
+                <th><label for="mOperTime">OperTime</label></th>
+                <td><input class="easyui-textbox" id="mOperTime" name="mOperTime" data-options="required:true,validType:'length[1,8]'" /></td>
+                </tr>
+                <tr>
+                <th><label for="mIsDeleted">IsDeleted</label></th>
+                <td><input class="easyui-textbox" id="mIsDeleted" name="mIsDeleted" data-options="required:true,validType:'length[1,4]'" /></td>
+                </tr>
+            <tr>
+                <td colspan="2" style="text-align:center; padding-top:10px">
+                    <input type="hidden" id="mLogId" name="mLogId" />
+                    <a href="javascript:void(0)" class="easyui-linkbutton" id="btnUpdate" iconcls="icon-ok">确定</a>
+                    <a href="javascript:void(0)" class="easyui-linkbutton" iconcls="icon-cancel" onclick="javascript:$('#UpdateDialog').dialog('close')">关闭</a>
+                </td>
+            </tr>
+        </table>
+    </form>
+</div>
+<script type="text/javascript">
+    $(function () {
+        initTable();
+        bindEvents();
+    });
+
+    //初始化表格
+    function initTable(queryData) {
+        $('#test').datagrid({
+            title: '管理',
+            iconCls: 'icon-more',
+            height: 600,
+            width:'100%',
+            nowrap: true,
+            autoRowHeight: false,
+            striped: true,
+            collapsible: false,
+            url: '/Back/SysLog/List',
+            sortName: 'LogId',
+            sortOrder: 'asc',
+            //striped:true,
+            border: true,
+            remoteSort: false,
+            idField: 'LogId',
+            pagination: true,
+            rownumbers: false,
+            queryParams: queryData,
+            columns: [[
+                { field: 'ck', checkbox: true },
+				{ field: 'LogId', title: '', width: 80, hidden: true },
+                { field: 'OperType', title: '', width: 80, sortable: true },
+                { field: 'LogDesc', title: '', width: 80, sortable: true },
+                { field: 'UserId', title: '', width: 80, sortable: true },
+                { field: 'IPAddress', title: '', width: 80, sortable: true },
+                { field: 'MacAddress', title: '', width: 80, sortable: true },
+                { field: 'OperTime', title: '', width: 80, sortable: true },
+                { field: 'IsDeleted', title: '', width: 80, sortable: true }
+            ]],
+            toolbar: [{
+                id: 'btnAdd',
+                text: '添加',
+                iconCls: 'icon-add',
+                handler: function () {
+                    ShowAddDialog();
+                }
+            }, '-', {
+                id: 'btnEdit',
+                text: '修改',
+                iconCls: 'icon-edit',
+                handler: function () {
+                    ShowUpdateDialog();
+                }
+            }, '-', {
+                id: 'btnDelete',
+                text: '删除',
+                iconCls: 'icon-remove',
+                handler: function () {
+                    DeleteByIds();
+                }
+            }],
+            onBeforeLoad: function () {                
+                var userActions = JSON.parse("@JsonConvert.SerializeObject(Session[(Session["UserInfo"] as SysUser).LoginName + "action"])".replace(/&quot;/g, "\""));
+                var actions = JSON.parse("@JsonConvert.SerializeObject(Session["action"])".replace(/&quot;/g, "\""));
+                user.renderActions(userActions,actions);
+            }
+        });
+        $("#test").datagrid("clearSelections");
+    }
+
+    function ShowAddDialog() {
+        $('#AddDialog').dialog('open').dialog('setTitle', '添加信息');
+        ClearTextBox();
+    }
+    function ClearTextBox() {        
+		$('#OperType').textbox('setValue','');
+        $('#LogDesc').textbox('setValue','');
+        $('#UserId').textbox('setValue','');
+        $('#IPAddress').textbox('setValue','');
+        $('#MacAddress').textbox('setValue','');
+        $('#OperTime').textbox('setValue','');
+        $('#IsDeleted').textbox('setValue','');
+    }
+    function DeleteByIds() {
+        var items = $("#test").datagrid("getSelections");
+        if (items.length >= 1) {
+            var ids = "";
+            for (var i = 0; i < items.length; i++) {
+                ids += items[i].LogId + ",";
+            }
+            ids = ids.substring(0, ids.length - 1);
+            $.messager.confirm("删除信息", "您确认删除所选项吗？", function (flag) {
+                if (flag) {
+                    $.post("/Back/SysLog/Delete", { LogIds: ids }, function (data) {
+                        if (data.Code == 1) {
+                            $.messager.alert("友情提示", "删除成功", "success");
+                            $("#test").datagrid("reload");
+                            $("#test").datagrid("clearSelections");
+                        }
+                        else {
+                            $.messager.alert("友情提示", "删除失败:" + data, "warning");
+                        }
+                    });
+                }
+            });
+        }
+        else {
+            $.messager.alert("友情提示", "请您选择要删除的数据", "warning");
+        }
+    }
+
+    function ShowUpdateDialog() {
+        var items = $("#test").datagrid("getSelections");
+        if (items.length == 1) {
+            $("#UpdateDialog").dialog("open").dialog("setTitle", "修改信息");
+            //渲染表单
+            var checkId = $("#test").datagrid("getSelections")[0].RoleId;
+            $.getJSON("/Back/SysLog/Detail", { LogId: checkId }, function (data) {
+                if (data.Code == 1) {
+                    $("#uRoleId").val(checkId);
+					$('#mOperType').textbox('setValue',data.Content.OperType);
+                    $('#mLogDesc').textbox('setValue',data.Content.LogDesc);
+                    $('#mUserId').textbox('setValue',data.Content.UserId);
+                    $('#mIPAddress').textbox('setValue',data.Content.IPAddress);
+                    $('#mMacAddress').textbox('setValue',data.Content.MacAddress);
+                    $('#mOperTime').textbox('setValue',data.Content.OperTime);
+                    $('#mIsDeleted').textbox('setValue',data.Content.IsDeleted);
+                } else {
+                    $.messager.alert("友情提示", "没有找到相关项!", "warning");
+                }
+            });
+        }
+        else {
+            $.messager.alert("友情提示", "每次只能修改一行数据，你已经选择了<font color='red' size='6'>" + items.length + "</font>行", "warning");
+        }
+    }
+
+    function bindEvents() {
+        //添加
+        $("#btnRegist").click(function () {
+            var valid = $('#AddForm').form('validate');
+            if (valid == false) {
+                return false;
+            }
+            $.post("/Back/SysLog/Add", {
+                OperType: $('#OperType').textbox('getValue'),
+                LogDesc: $('#LogDesc').textbox('getValue'),
+                UserId: $('#UserId').textbox('getValue'),
+                IPAddress: $('#IPAddress').textbox('getValue'),
+                MacAddress: $('#MacAddress').textbox('getValue'),
+                OperTime: $('#OperTime').textbox('getValue'),
+                IsDeleted: $('#IsDeleted').textbox('getValue')
+            }, function (data) {
+                if (data.Code == 1) {
+                    $.messager.alert("友情提示", "添加成功!", "success");
+                    $('#AddRoleDialog').dialog('close');
+                    $("#test").datagrid("reload");
+                    $("#test").datagrid("clearSelections");
+                } else if (data.Code == 2) {
+                    $.messager.alert("友情提示", "角色名称已存在!", "warning");
+                } else {
+                    $.messager.alert("友情提示", "添加失败，请您检查!", "error");
+                }
+            });
+        });
+
+        //修改
+        $("#btnUpdate").click(function () {
+            var valid = $('#UpdateForm').form('validate');
+            if (valid == false) {
+                return false;
+            }
+            $.post("/Back/SysLog/Save", {
+                LogId: $('#LogId').val(),
+                LogId: $('#LogId').textbox('getValue'),
+                OperType: $('#OperType').textbox('getValue'),
+                LogDesc: $('#LogDesc').textbox('getValue'),
+                UserId: $('#UserId').textbox('getValue'),
+                IPAddress: $('#IPAddress').textbox('getValue'),
+                MacAddress: $('#MacAddress').textbox('getValue'),
+                OperTime: $('#OperTime').textbox('getValue'),
+                IsDeleted: $('#IsDeleted').textbox('getValue')
+            }, function (data) {
+                if (data.Code == 1) {
+                    $.messager.alert("友情提示", "修改成功!", "success");
+                    $("#UpdateRoleDialog").dialog('close');
+                    $("#test").datagrid('reload');
+                    $("#test").datagrid("clearSelections");
+                } else if (data.Code == 2) {
+                    $.messager.alert("友情提示", "名称已存在!", "warning");
+                } else {
+                    $.messager.alert("友情提示", "修改失败，请您检查!", "error");
+                }
+            });
+        });
+    }
+</script>
+

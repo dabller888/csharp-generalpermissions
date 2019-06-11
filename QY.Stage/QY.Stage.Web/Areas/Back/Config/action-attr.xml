@@ -1,0 +1,66 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Controllers xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <!--系统控制器-->
+  <Controller key="System">
+    <!--用户-->
+    <Action name="GetUserList" value="*" />
+    <Action name="GetUserDetails" value="edit|show" />
+    <Action name="SaveUser" value="add|edit" />
+    <Action name="DeleteUsers" value="delete" />
+    <Action name="ModifyPasswd" value="passwd" />
+    <Action name="EnableUser" value="enable" />
+    <Action name="DeleteUserRole" value="delete" />
+    <Action name="AddUserRole" value="add" />
+    <Action name="GetUsersNotUR" value="*" />
+    <Action name="GetPatchUserRole" value="*" />
+    <!--角色-->
+    <Action name="GetRoleList" value="*" />
+    <Action name="GetRoleDetails" value="edit|show" />
+    <Action name="SaveRole" value="add|edit" />
+    <Action name="DeleteRoles" value="delete" />
+    <Action name="GetAllModuleActionAndSelected" value="*" />
+    <Action name="AddRoleModuleAction" value="add" />
+    <!--模块-->
+    <Action name="GetModuleList" value="*" />
+    <Action name="GetModuleDetails" value="edit|show" />
+    <Action name="SaveModule" value="add|edit" />
+    <Action name="DeleteModules" value="delete" />
+    <Action name="GetModuleNotMA" value="*" />
+    <Action name="GetModuleAction" value="*" />
+    <Action name="AddModuleAction" value="add" />
+    <Action name="DeleteModuleAction" value="delete" />
+    <!--功能-->
+    <Action name="GetActionList" value="*" />
+    <Action name="GetActionDetails" value="edit|show" />
+    <Action name="SaveAction" value="add|edit" />
+    <Action name="DeleteActions" value="delete" />
+  </Controller>
+
+  <!--老人信息管理-->
+  <Controller key="Elder">
+    <Action name="GetElderList" value="*" />
+    <Action name="GetElderDetails" value="edit|show" />
+    <Action name="AddElder" value="add" />
+    <Action name="SaveElder" value="edit" />
+    <Action name="DeleteElders" value="delete" />
+  </Controller>
+  
+  <Controller key="Login">
+    <Action name="SignOut" value="*" />
+  </Controller>
+
+  <Controller key="Home">
+    <Action name="Info" value="*" />
+  </Controller>
+
+  <!--公共-->
+  <Controller key="DataDictionary">
+    <Action name="GetSysModule" value="*" />
+    <Action name="GetSysRole" value="*" />
+  </Controller>
+  
+</Controllers>
+
+<!--XPath查找
+//Controller[@key={控制器名}]/Action[@name={方法名}]
+-->

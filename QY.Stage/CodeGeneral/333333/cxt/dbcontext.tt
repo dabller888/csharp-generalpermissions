@@ -1,0 +1,54 @@
+﻿<#@ output extension=".cs"#>
+<#@ assembly name="System.Data" #>
+<#@ assembly name="System.Data.DataSetExtensions" #>
+<#@ assembly name="System.xml" #>
+<#@ import namespace="System.Collections.Generic" #>
+<#@ import namespace="System.Data.SqlClient" #>
+<#@ import namespace="System.Data" #>
+<#@ assembly name="System.Core" #>
+<#@ import namespace="System.Linq" #>
+<#@include file="$(ProjectDir)\DbHelper.ttinclude"#>
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Data.Entity;
+using QY.Stage.PocoModel;
+using QY.Stage.PocoModel.Configurations;
+
+namespace QY.Stage.Frameworks.DAL { 
+<#
+	SqlConnection conn = new SqlConnection(config.ConnectionString);
+    conn.Open();    
+    string selectQuery ="SET FMTONLY ON; select * from @tableName; SET FMTONLY OFF;";
+    SqlCommand command = new SqlCommand(selectQuery,conn);
+    SqlDataAdapter ad = new SqlDataAdapter(command);
+    System.Data.DataSet ds = new DataSet();
+    System.Data.DataTable schema = conn.GetSchema("Tables");    
+#>
+	public class DbContextBase : DbContext {
+        public DbContextBase() : base("name=AppContext") { }
+		<#
+			foreach(System.Data.DataRow row in schema.Rows)
+			{
+				string tb_name= row["TABLE_NAME"].ToString();
+				PushIndent("        ");
+				WriteLine("public DbSet<"+tb_name+"> "+tb_name+" { get; set; }");
+				PopIndent();
+			}		
+		#>
+        protected override void OnModelCreating(DbModelBuilder modelBuilder) {
+            Database.SetInitializer<DbContextBase>(null);
+			<#
+				foreach(System.Data.DataRow row in schema.Rows)
+				{
+					string tb_name= row["TABLE_NAME"].ToString();
+					PushIndent("            ");
+					WriteLine("modelBuilder.Configurations.Add(new "+tb_name+"Configuration());");
+					PopIndent();
+				}		
+			#>
+            base.OnModelCreating(modelBuilder);
+        }
+    }
+}

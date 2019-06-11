@@ -1,0 +1,578 @@
+appa.htm
+appb.htm
+Management Server TracingLogging
+Tracing of the Management Server
+
+Logging of the Management Server
+Reporting Servlet Tracing and Logging
+Enterprise Manager Client Application Tracing
+Enabling Tracing Deliberately
+Paging Server Tracing
+SQL Engine Tracing
+appc.htm
+appd.htm
+Language Setting
+NLS_LANG Setting
+appe.htm
+appf.htm
+Reporting Problems to Oracle Support Services
+MetaLink
+Changing the Permissions on the omsconfig.properties File
+Troubleshooting the Management Server
+Management Server May Not Run Correctly from a Non-Default Oracle Home
+Management Server Does Not Start
+oemctl Batch File
+Changing the Repository User Password
+Setting the Format of Dates
+appg.htm
+ch1.htm
+Certifications
+Table 1-1  Operating System Support
+System and Hardware Requirements
+Oracle Enterprise Manager Client
+Table 1-3  Console, Management Packs, and Integrated Applications
+Management Server or Management Server and Client
+Table 1-4  Management Server or Management Server and Client
+Enterprise Manager Web Site
+Table 1-5  Enterprise Manager Web Site
+Java Runtime Environment (JRE)
+ch2.htm
+Adding Databases to the Tree in the Standalone Console
+Figure 2-4  Add Databases to Tree
+Standalone Repository
+Create a Tablespace for Standalone Repository
+ch3.htm
+Configuring a Local Management Server To Use a New Release 9i Repository
+Change Database SID
+Figure 3-8  Change Database SID
+Select Database for Repository
+Figure 3-9  Select Database for Repository
+Repository Login Information
+Figure 3-10  Repository Login Information
+Select Repository User Tablespaces
+Controlling the Management Server After Configuration
+Checking the Status of the Management Server
+ch4.htm
+Discovering Nodes in Your Environment
+Enabling the Job System
+Creating a New Windows NT User Account
+Assigning Privileges to an Existing Windows NT User Account
+Starting the Enterprise Manager Paging Server
+Configuring the Enterprise Manager Paging Server
+Figure 4-11  Add Paging Carrier Dialog
+Configuring the Console If Using a Dialup Line
+IMPORTANT:
+ch5.htm
+ch6.htm
+index.htm
+preface.htm
+Conventions
+Conventions in Text
+Conventions in Code Examples
+Conventions for Microsoft Windows Operating Systems
+Accessibility of Code Examples in Documentation
+rcf.htm
+title.htm
+toc.htm
+Conventions for Windows Operating Systems
+Documentation Accessibility
+appxtype.htm
+Datatype Mappings in Rowsets and Parameters
+Table A-1  Datatype Mappings
+Properties Supported
+Data Source Properties
+Table A-2  DBPROPSET_DATASOURCE Properties
+Data Source Info Properties
+Table A-3  DBPROPSET_DATASOURCEINFO Properties
+Initialization and Authorization Properties
+Table A-4  DBPROPSET_DBINIT Properties
+Session Properties
+Table A-5  DBPROPSET_SESSION Properties
+Rowset Properties
+Table A-6  DBPROPSET_ROWSET Properties
+Rowset Property Implications
+MetaData Columns Supported
+intro.htm
+Overview of OLE DB
+OLE DB Design
+Figure 1-1  OLE DB Flow
+OLE DB Data Providers
+OLE DB Data Consumers
+using.htm
+OraOLEDB Provider Specific Features
+Data Source
+OraOLEDB-specific Connection String Attributes
+OS Authentication
+Example: Connecting to an Oracle Database Using ADO
+Commands
+Stored Procedures
+Example: Stored Procedure Returning Multiple Rowsets
+PLSQL Package
+ADO Program
+Rowsets
+Schema Rowsets
+Date Formats
+Case of Object Names
+LOB Support
+Unicode Support
+Unicode Support Setup
+Database Setup
+Errors
+OLE DB .NET Data Provider Compatibility
+Using OraOLEDB Custom Properties
+Using OraOLEDB with Visual Basic
+Setting Up the Oracle Database
+Step 1   Build the sample tables:
+glossary.htm
+PLSQL
+whatsnew.htm
+New Features in Oracle Provider for OLE DB for Release 9.2
+a_attributes.htm
+a_crawler.htm
+a_globalization.htm
+a_instances.htm
+a_queries.htm
+a_schedules.htm
+a_sources.htm
+a_users.htm
+a_webaccess.htm
+admin.htm
+agentapi.htm
+classpath.htm
+configure_server.htm
+crawler.htm
+email.htm
+install.htm
+install_exist.htm
+install_midtier.htm
+install_psp.htm
+install_remote.htm
+install_server.htm
+load.htm
+login.htm
+migrate.htm
+mlb_read.htm
+over.htm
+plsqlapi.htm
+qsyntax.htm
+qsyntax901.htm
+queryapi.htm
+queryapp.htm
+rac.htm
+remotecrawler.htm
+sample_agent_readme.htm
+sample_readme.htm
+sso_user.htm
+stoplists.htm
+taglib.htm
+tdsissues.htm
+tuning_crawling.htm
+secure.htm
+2.1  Authenticating Users
+2.1.1  Basic (Database Controlled Authentication)
+config.htm
+4.2  Database Access Descriptor settings
+Table 4-3  DAD Settings through the Gateway Configuration Page
+4.2.1  DAD Settings Accessible through the Configuration File
+Table 4-4  DAD Settings in the Configuration File
+4.3  Cache settings
+4.3.1  PLSQL Caching
+Table 4-5  PLSQL Cache Settings
+apptroub.htm
+OAS Compatibility
+cpyr.htm
+feature.htm
+1.4   Invoking the PLSQL Gateway
+Table 1-1  Invoking the PLSQL Gateway Parameters
+1.4.1  POST and GET Methods
+1.6  Parameter passing
+1.6.1  Parameter Passing by Name (Overloaded parameters)
+1.6.1.1  Overloading and PLSQL Arrays
+1.7  File Upload and Download
+1.7.1  Document Table Definition
+1.7.2  Old Style Document Table Definition
+1.10  Common Gateway Interface (CGI) Environment Variables
+3.1  System Requirements
+3.5  Configuring the Oracle HTTP Server Listener
+3.5.1  apachectl file
+Table 3-2  apachectl file Parameters
+noexist.htm
+tutorial.htm
+6.1  Creating and Loading the Stored Procedure into the Database
+wvsvgl01.htm
+wvsvgl02.htm
+wvsvgl03.htm
+toolkit.htm
+5.2  Packages in the Toolkit
+HTML utilities enable you to retrieve the values of CGI environment variables and perform URL redirects.
+5.2.1  htp and htf packages
+5.2.5  owa_content
+5.2.6  owa_cache
+5.3  Conventions for parameter names in the toolkit
+Table 5-1
+appwebdb.htm
+B.1  OAS Compatibility
+B.1.1  Using the mod_plsql without the pls in the URL
+B.1.2  Using Flexible Parameters and the Exclamation Mark
+B.2  Logging
+B.3  Controlling Database Processes for Each mod_plsql Request
+B.4  Connection Pooling in mod_plsql
+B.4.1  Install a Separate Apache Listener for mod_plsql Requests
+B.5  Debugging
+B.5.1  Error Code 503 (Service Temporarily Unavailable)
+B.6  Symbols Displaying Incorrectly with Netscape 6
+B.7  Overhead Problems
+B.7.1  The Describe Overhead
+B.7.2  Avoiding the Describe Overhead
+B.7.3  The Flexible Parameter Passing (four parameter) Overhead
+B.7.4  Avoiding the Flexible Parameter Passing Overhead
+B.8  Setting up PLSQL to Work with WebDB
+caching.htm
+3.2   Validation Technique
+3.2.3  Using the Validation Technique for PLSQL Gateway
+3.2.4  Second Request using the Validation Technique
+4.2  Accessing the Global Settings
+4.2.1  Global Settings Accessible through the Configuration File
+Table 4-2  Global Settings in the Configuration File
+4.3  Accessing Database Access Descriptor settings
+4.3.1  DAD Settings Accessible through the Configuration File
+4.4  Accessing the Cache settings
+4.4.1  PLSQL Caching
+1.2  PLSQL Gateway Configurations
+1.2.1   Stateless (Reset Package)
+1.2.2  Stateless (Preserve Package)
+1.2.3  Stateful
+1.4    Invoking the PLSQL Gateway
+Table 1-2  Invoking the PLSQL Gateway Parameters
+1.4.1  POST, GET and HEAD Methods
+1.7.5  File Upload
+1.7.5.1  Document Parts Upload
+1.9  Common Gateway Interface (CGI) Environment Variables
+Table 1-5  CGI Environment Variables
+5.1  System Requirements
+5.5  Configuring the Oracle HTTP Server Listener
+5.5.1  apachectl file
+Table 5-2  apachectl file Parameters
+perftun.htm
+Table 6-2  Performance Tuning Worksheet
+Related Oracle Documents
+Oracle Services and Support
+Oracle Technology Network
+New Features in Oracle9i Application Server, Release 1.0.2.2
+Table 0-1  New Features
+advance.htm
+About Oracle Components in Noninteractive Mode
+Running Oracle Enterprise Manager Configuration Assistant in Silent Mode
+Silently Running Oracle Enterprise Manager Configuration Assistant During an Installation Session
+componen.htm
+Oracle9i Database Components
+Table A-1  Oracle9i Database Components Availability
+Oracle9i Client Components
+Table A-2  Oracle9i Client Components Availability
+Oracle9i Management and Integration Components
+Table A-3  Oracle9i Management and Integration Components Availability
+Component Descriptions
+Table A-4  Component Descriptions
+confmeth.htm
+gblsupp.htm
+About NLS_LANG Parameters
+Commonly Used Values for NLS_LANG
+Table E-1  NLS_LANG Parameter Values
+NLS_LANG Settings in MS-DOS Mode and Batch Mode
+Table E-2  Oracle Character Sets for Operating System Locales
+connect identifier
+net service name
+OPS$
+SID
+UNC
+Installation Differences Between Windows and UNIX
+Table 4-1  Key Differences between UNIX and Windows Installations
+Choosing an Installation Type
+Oracle Internet Directory Installations
+Installing Oracle Internet Directory for the First Time
+Table 4-11  Oracle Internet Directory Values Set at Installation
+Deinstalling Oracle Components and Services
+Stopping Oracle Services on Windows Platforms
+Stopping and Removing Oracle Internet Directory Services
+Stopping and Removing Oracle Management Server Service Registry Entry
+Removing Oracle Keys From the Registry on Windows NT, Windows 2000, and Windows XP
+Removing Oracle Keys from the Registry on Windows 98
+legato.htm
+postcfg.htm
+About NTFS File System and Windows Registry Permissions
+File Permissions
+File Permissions Set by Database Configuration Assistant
+File Permissions Set by Database Upgrade Assistant
+Patch Set Information
+Table 6-1  Patch Set Information
+Validating Invalid PLSQL Modules
+Individual Component Postinstallation Configuration Tasks
+Oracle Internet Directory
+UNIX Emulation Utility
+Oracle Performance Monitor for Windows NT
+PLSQL External Procedures
+preorac.htm
+Real Application Clusters Installation Requirements
+RAM
+Real Application Clusters Overview
+Table B-1  Logical Drive Disk Sizes for Database Configuration Assistant
+Real Application Clusters Preinstallation Tasks
+Task 3: Creating a Cluster
+Before you Begin
+Deleting Oracle Operating System Dependent Clusterware
+reqs.htm
+Top-Level Component System Requirements
+Oracle9i System Requirements
+Protocol Support
+Hardware Requirements
+Space Requirements
+Component Certifications
+Windows XP
+Database Upgrade Requirements
+Upgrading Releases 7.3.4 and 8.0.6
+Oracle Command Line Tools with the Migration Utility
+Table 2-4  Oracle Command Line Tools
+Table 2-5  ORADIM Versions
+startrdb.htm
+Usernames and Passwords Overview
+Unlocking and Changing Passwords
+Table 5-1  SQL Commands for Administering Accounts and Passwords
+Reviewing Usernames and Passwords
+Table 5-2  Administrative Usernames and Passwords
+Tablespaces and Datafiles Overview
+Table 5-3  Tablespaces and Datafiles
+tgs.htm
+System Requirements for Oracle Transparent Gateways
+Gateway System Requirements
+Microsoft SQL Server Gateway System Requirements
+Table C-1  Microsoft SQL Server Gateway System Requirements
+Sybase Gateway System Requirements
+Table C-2  Sybase Gateway System Requirements
+Teradata Gateway System Requirements
+Table C-3  Teradata Gateway System Requirements
+Gateway Installation Worksheets
+Microsoft SQL Server Worksheet
+Table C-7  Microsoft SQL Server Installation Worksheet
+Sybase Worksheet
+Table C-8  Sybase Installation Worksheet
+Teradata Worksheet
+Table C-9  Teradata Installation Worksheet
+Oracle9i Release 2 (9.2) New Features in Oracle9i for Windows
+Enhanced Security
+Oracle Provider for OLE DB
+Oracle9i Release 2 (9.2) Deprecated and Desupported Components
+Oracle9i Release 1 (9.0.1) New Features in Oracle9i for Windows
+Oracle9i release 1 (9.0.1) Deprecated and Desupported Components
+1  Oracle9i Preinstallation Requirements
+1.3  Accessibility Software Recommendations
+2  Installation Issues
+2.1  Known Installation Problem with Regsvr32 on Windows NT
+2.10  Dynamic SGA and Multiple Block Size is not Supported with Very Large Memory (VLM)
+2.11  Installing Oracle Workflow Builder
+2.15  Oracle Real Application Clusters and Oracle Database Upgrade Assistant
+2.16  Oracle Real Application Clusters Instance Management Using Database Configuration Assistant
+4  Product-Related Issues
+4.4  Oracle Performance Monitor for Windows NT
+4.11  Object Type Translator (OTT)
+4.12  Oracle9i Network, Directory, and Security Issues
+4.12.2  Active Directory
+4.12.2.2  Upgrading Oracle Schema and Oracle Context in Active Directory
+5  Documentation Accessibility
+5.0.5  Accessibility of Code Examples in Documentation
+apa.htm
+UNIX Directory Structures for Real Application Clusters
+appxsrvm.htm
+Understanding Discovery
+The UNIX oratab File and the Windows NT and Windows 2000 Registry
+UNIX and oratab
+Windows NT and Windows 2000
+SRVM Configuration Repository
+The listener.ora File
+How SRVCTL Operations Associate Listeners with Instances
+Troubleshooting Discovery
+cfgdsk.htm
+Configuring Shared Disk Subsystems for Real Application Clusters
+Additional Raw Devices Required by the DBCA
+DBCA Database Configuration Options
+Recommended Tablespace and File Capacities
+Table 2-1   Minimum Tablespace Sizes
+Configuring Logical Devices
+Configuring Raw Volumes for Real Application Clusters on UNIX
+Table 2-2   Recommended Names for Oracle Database Files for Two-Instance Configurations
+Table 2-3   UNIX ASCII File Contents for the Oracle Universal Installer
+UNIX Preinstallation Steps
+Configuring Logical Drives on Windows NT and Windows 2000
+Table 2-4   Symbolic Link Names for Preconfigured Database Types
+dbcacrea.htm
+INSTANCE_NAME
+INSTANCE_NUMBER
+LDAP
+LMD process
+LMON
+RMAN (Recovery Manager)
+SRVCTL Utility
+SYSDBA
+SYSOPER
+haconfig.htm
+Transparent Application Failover
+FAILOVER_MODE Parameters
+TAF Implementation
+Implementing TAF with Connect-Time Failover and Client Load Balancing
+Retrying Connections
+Transparent Application Failover Verification
+Configuring Clients for Real Application Clusters
+Testing the Oracle Net Configuration
+mancrea.htm
+Setting CREATE DATABASE Options for Cluster-Enabled Environments
+Changing Values for CREATE DATABASE Options
+Database Objects to Support Clusters
+Creating Additional Undo Tablespaces
+Using Private Rollback Segments
+Configuring the Online Redo Log for Real Application Clusters
+Creating Threads
+Creating a Database Manually
+Manually Create the Database
+Task 2: Specify the Database and Instance Parameter Settings
+Table 5-1   Component Settings for Manual Database Creation
+Table 5-2   Database Name, Domain, Global Name, and SID Prefix Example Settings
+Table 5-4   Host and Node Name, Thread ID and SID
+Task 5: Set ORACLE_SID for Each Node
+UNIX
+Task 6: Create the Server Parameter File
+Task 7: Create the Password Files
+Task 9: Create the Database
+oeminst.htm
+Server Management Architecture
+Table 7-1  SRVM Instance Management Utilities
+Configuring Enterprise Manager for Real Application Clusters Management
+Task 2: Specify Preferred Credentials for Nodes and Database
+Task 4: Grant SYSDBA or SYSOPER Privileges to a Database User
+oui.htm
+Starting the Oracle Universal Installer
+Table 3-1  Privilege Verification Methods
+Figure 3-1  Oracle Universal Installer Cluster Node Selection Page
+params.htm
+Using The Server Parameter File in Real Application Clusters
+Location of The Server Parameter File
+Migrating to the Server Parameter File in Real Application Clusters Environments
+Procedures for Migrating to the Server Parameter File
+Backing Up the Server Parameter File
+part1.htm
+part2.htm
+part3.htm
+part4.htm
+part5.htm
+racinlof.htm
+racinlot.htm
+undrstnd.htm
+UNIX Operating System Configurations
+Database Components Created Using the Database Configuration Assistant
+Tablespaces and Datafiles
+Table 8-1  Tablespace Names used by Oracle Real Application Clusters Databases
+Table 8-2   Windows NT and Windows 2000 Symbolic Link Names
+Net Service Names (tnsnames.ora File)
+arch.htm
+Adding MIME Types
+Setting the iSQL*Plus Timeout Parameter
+global.htm
+histscn.htm
+httpauth.htm
+iseconf.htm
+isenew.htm
+lgdbascn.htm
+logindba.htm
+loginscn.htm
+option.htm
+passwd.htm
+passwdep.htm
+prefscn.htm
+qkstrt.htm
+reports.htm
+Creating a Dynamic Report
+Creating a Dynamic Report with Parameters
+Creating a Dynamic Report with Parameters and Login Details
+security.htm
+stats.htm
+Server Environment
+Client Details
+statsscn.htm
+substit.htm
+syntax.htm
+Examples
+SET APPI[NFO]{ON|OFF|text}
+Example
+SET ARRAY[SIZE] {15|n}
+SET AUTO[COMMIT]{ON|OFF|IMM[EDIATE]|n}
+SET AUTOP[RINT] {ON|OFF}
+SET AUTORECOVERY [ON|OFF]
+SET AUTOT[RACE] {ON|OFF|TRACE[ONLY]} [EXP[LAIN]] [STAT[ISTICS]]
+SET BLO[CKTERMINATOR] {.|c|ON|OFF}
+SET CMDS[EP] {;|c|ON|OFF}
+SET COLSEP {_|text}
+SET COM[PATIBILITY]{V7|V8|NATIVE}
+SET CON[CAT] {.|c|ON|OFF}
+SET COPYC[OMMIT] {0|n}
+SET COPYTYPECHECK {ON|OFF}
+SET DEF[INE] {&|c|ON|OFF}
+SET DESCRIBE [DEPTH {1|n|ALL}][LINENUM {ON|OFF}][INDENT {ON|OFF}]
+SET ECHO {ON|OFF}
+SET EMB[EDDED] {ON|OFF}
+SET ESC[APE] {\|c|ON|OFF}
+SET FEED[BACK] {6|n|ON|OFF}
+SET FLAGGER {OFF|ENTRY |INTERMED[IATE]|FULL}
+SET HEA[DING] {ON|OFF}
+SET HEADS[EP] {||c|ON|OFF}
+SET INSTANCE [instance_path|LOCAL]
+SET LIN[ESIZE] {150|n}
+SET LOBOF[FSET] {n|1}
+SET LOBOFFSET
+SET LOGSOURCE [pathname]
+SET LONG {80|n}
+SET LONGC[HUNKSIZE] {80|n}
+SET MARK[UP] HTML [ON|OFF] [HEAD text] [BODY text] [TABLE text] [ENTMAP {ON|OFF}][SPOOL {ON|OFF}] [PRE[FORMAT] {ON|OFF}]
+SET NULL text
+SET NUMF[ORMAT] format
+SET NUM[WIDTH] {10|n}
+SET PAGES[IZE] {24|n}
+SET RECSEPCHAR {_|c}
+SET RECSEP {WR[APPED]|EA[CH]|OFF}
+SET SERVEROUT[PUT] {ON|OFF} [SIZE n] [FOR[MAT] {WRA[PPED]|WOR[D_WRAPPED]|TRU[NCATED]}]
+SET SQLC[ASE] {MIX[ED]|LO[WER]|UP[PER]}
+SET SQLPLUSCOMPAT[IBILITY] {x.y[.z]}
+SET SQLT[ERMINATOR] {;|c|ON|OFF}
+SET TIMI[NG] {ON|OFF}
+SET UND[ERLINE] {-|c|ON|OFF}
+SET VER[IFY] {ON|OFF}
+SET WRA[P] {ON|OFF}
+ui.htm
+Breadcrumbs
+OKCancel
+Privilege:
+Login
+use.htm
+Connecting to a Remote Database Using the CONNECT Command
+Substitution Variables Screen
+OK
+The Configuration Dialog
+URL
+Adding a Server
+variable.htm
+work.htm
+workdba.htm
+添加 MIME 类型
+设置 iSQL*Plus 超时参数
+创建动态报告
+使用各种参数来创建动态报告
+使用各种参数和登录详细资料来创建动态报告
+服务器环境
+客户机详细资料
+示例
+“面包屑”
+确定取消
+权限：
+登录
+使用 CONNECT 命令连接到远程数据库
+“替换变量”屏幕
+取消
+“配置”对话框
+添加服务器

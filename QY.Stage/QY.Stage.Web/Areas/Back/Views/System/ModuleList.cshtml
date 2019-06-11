@@ -1,0 +1,325 @@
+﻿@using Newtonsoft.Json;
+@using QY.Stage.PocoModel;
+<script type="text/javascript">
+
+        $(function () {
+            //初始化弹出窗体
+            initTable();
+
+            //绑定注册按钮的事件
+            BindRegistButtonClickEvent();
+
+            //绑定修改事件的信息
+            BindUpdateButtonClickEvent();
+
+            //初始化下拉框
+            initDropDown();
+        });
+
+        //初始化表格
+        function initTable(queryData) {
+            $('#test').datagrid({
+                title: '模块管理',
+                iconCls: 'icon-more',
+                height: 600,
+                width: '100%',
+                nowrap: true,
+                autoRowHeight: false,
+                striped: true,
+                collapsible: true,
+                url: '/System/GetModuleList',
+                sortName: 'ModuleId',
+                sortOrder: 'asc',
+                //striped:true,
+                border: true,
+                remoteSort: false,
+                idField: 'ModuleId',
+                pagination: true,
+                rownumbers: false,
+                queryParams: queryData,
+                columns: [[
+                    { field: 'ck', checkbox: true },
+					{ field: 'ModuleId', title: '模块编号', width: 80, hidden: true },
+					{ field: 'ModulePId', title: '上级编号', width: 80, sortable: true },
+					{ field: 'ModuleName', title: '模块名称', width: 120, sortable: true },
+					{ field: 'ModuleUrl', title: '模块地址', width: 200, sortable: true },
+					{ field: 'ModuleLever', title: '等级', width: 50, align: "center" },
+					{ field: 'OrderNo', title: '排序号', width: 50, align: "center" }
+                ]],
+
+                toolbar: [{
+                    id: 'btnAdd',
+                    text: '添加模块',
+                    iconCls: 'icon-add',
+                    handler: function () {
+                        ShowCreateModuleDialog();
+                    }
+                }, '-', {
+                    id: 'btnEdit',
+                    text: '修改模块',
+                    iconCls: 'icon-edit',
+                    handler: function () {
+                        ShowUpdateModuleDialog();
+                    }
+                }, '-', {
+                    id: 'btnDelete',
+                    text: '删除模块',
+                    iconCls: 'icon-remove',
+                    handler: function () {
+                        DeleteModuleInfoByClick();
+                    }
+                }],
+                onBeforeLoad: function () {                
+                    var userActions = JSON.parse("@JsonConvert.SerializeObject(Session[(Session["UserInfo"] as SysUser).LoginName + "action"])".replace(/&quot;/g, "\""));
+                    var actions = JSON.parse("@JsonConvert.SerializeObject(Session["action"])".replace(/&quot;/g, "\""));
+                    user.renderActions(userActions,actions);
+                }
+            });
+        }
+
+        function initDropDown() {
+            $('#ModulePId').combobox({
+                url: '/DataDictionary/GetSysModule',
+                valueField: 'Value',
+                textField: 'Text',
+                editable: false,
+                value: '0'
+            });
+            $('#uModulePId').combobox({
+                url: '/DataDictionary/GetSysModule',
+                valueField: 'Value',
+                textField: 'Text',
+                editable: false,
+                value: '0'
+            });
+        }
+
+        //弹出添加角色的对话框
+        function ShowCreateModuleDialog() {
+            $('#AddModuleDialog').dialog('open').dialog('setTitle', '添加模块信息');
+            ClearTextBox();
+        }
+
+        function BindRegistButtonClickEvent() {
+            $("#btnRegist").click(function () {
+                var valid = $('#ModuleForm').form('validate');
+                if (valid == false) {
+                    return false;
+                }
+                $.post("/System/SaveModule", {
+                    ModulePId: $("#ModulePId").combobox("getValue"),
+                    ModuleName: $("#ModuleName").textbox("getValue"),
+                    ModuleUrl: $("#ModuleUrl").textbox("getValue"),
+                    ModuleLever: $("#ModuleLever").textbox("getValue"),
+                    OrderNo: $("#OrderNo").textbox("getValue")
+                }, function (data) {
+                    if (data.Code == 1) {
+                        $.messager.alert("友情提示", "添加成功!", "success");
+                        $('#AddModuleDialog').dialog('close');
+                        $("#test").datagrid("reload");
+                        initDropDown();
+                    } else if (data.Code == 2) {
+                        $.messager.alert("友情提示", "模块名称已存在!", "warning");
+                    } else {
+                        $.messager.alert("友情提示", "添加失败，请您检查!", "warning");
+                    }
+                });
+            });
+        }
+
+        function ClearTextBox() {
+            $("#ModulePId").combobox("setValue", "0");
+            $("#ModuleName").textbox("setValue", "");
+            $("#ModuleUrl").textbox("setValue", "");
+            $("#ModuleLever").textbox("setValue", "");
+            $("#OrderNo").textbox("setValue", "");
+        }
+
+        //实现多选删除信息
+        function DeleteModuleInfoByClick() {
+            //获取到用户选定的某一列的ID号
+            var deleteModuleID = $("#test").datagrid("getSelections");
+            //判断用户选择了多少条数据
+            // //异步将删除的ID发送到后台，后台删除之后，返回前台OK，前台刷新表格
+            if (deleteModuleID.length >= 1) {
+                var ids = "";   //1,2,3,4
+                for (var i = 0; i < deleteModuleID.length; i++) {
+                    ids += deleteModuleID[i].ModuleId + ",";
+                }
+                //去掉最后的一个,
+                ids = ids.substring(0, ids.length - 1);
+
+                //遍历出删除用户的信息
+                var ModuleNameList = "";
+                for (var i = 0; i < deleteModuleID.length; i++) {
+                    ModuleNameList += deleteModuleID[i].ModuleName + ",";
+                }
+                ModuleNameList = ModuleNameList.substring(0, ModuleNameList.length - 1);
+                //var LoginUName = $("#test").datagrid("getSelections")[0].UName;
+                //发送异步请求删除数据
+                $.messager.confirm("删除信息", "您确认删除<font color='Red' size='3'>" + ModuleNameList + "</font>用户吗？", function (DeleteUserInfo) {
+                    if (DeleteUserInfo) {
+                        $.post("/System/DeleteModules", { ModuleIds: ids }, function (data) {
+                            console.log(JSON.stringify(data))
+                            if (data.Code == 1) {
+                                $.messager.alert("友情提示", "删除成功", "success");
+                                $("#test").datagrid("reload");
+
+                                //当删除完成的时候清除掉所选择的长度，防止下次选择的时候还记录了上次的内容
+                                //第一种方法
+                                //deleteUserInfoID.length = "";
+                                //第二种方法
+                                $("#test").datagrid("clearSelections");
+                            }
+                            else {
+                                $.messager.alert("友情提示", "删除失败:" + data, "warning");
+                            }
+                        });
+                    }
+                });
+            }
+            else {
+                $.messager.alert("友情提示", "请您选择要删除的数据", "warning");
+            }
+        }
+
+        //弹出修改用户的对话框
+        function ShowUpdateModuleDialog() {
+            var UpdateModuleID = $("#test").datagrid("getSelections");
+            if (UpdateModuleID.length == 1) {
+                $("#UpdateModuleDialog").dialog("open").dialog("setTitle", "修改模块信息");
+
+                //绑定显示修改的详细信息的内容
+                BingUpdateDetailsShowTextBox();
+            }
+            else {
+                $.messager.alert("友情提示", "每次只能修改一行数据，你已经选择了<font color='red' size='6'>" + UpdateModuleID.length + "</font>行", "warning");
+            }
+        }
+
+        //绑定修改用户的信息显示在用户的TextBox文本框中
+        function BingUpdateDetailsShowTextBox() {
+            //首先获取选中的用户的ID
+            var CheckID = $("#test").datagrid("getSelections")[0].ModuleId;
+            $.getJSON("/System/GetModuleDetails", { ModuleId: CheckID }, function (data) {
+                console.log(JSON.stringify(data))
+                if (data.Code == 1) {
+                    $("#ModuleId").val(CheckID);
+                    $("#uModulePId").combobox("setValue", data.Content.ModulePId);
+                    $("#uModuleName").textbox("setValue",data.Content.ModuleName);
+                    $("#uModuleUrl").textbox("setValue", data.Content.ModuleUrl);
+                    $("#uModuleLever").textbox("setValue", data.Content.ModuleLever);
+                    $("#uOrderNo").textbox("setValue", data.Content.OrderNo);
+                } else {
+                    $.messager.alert("友情提示", "没有找到相关项!", "warning");
+                }
+            });
+        }
+
+        //修改用户的信息
+        function BindUpdateButtonClickEvent() {
+            $("#btnUpdate").click(function () {
+                //首先判断前台的验证是否通过
+                var valid = $('#UpdateModuleForm').form('validate');
+                if (valid == false) {
+                    return false;
+                }
+                //使用异步实现修改用户信息
+                $.post("/System/SaveModule", {
+                    ModuleId: $("#ModuleId").val(),
+                    ModulePId: $("#uModulePId").combobox("getValue"),
+                    ModuleName: $("#uModuleName").textbox("getValue"),
+                    ModuleUrl: $("#uModuleUrl").textbox("getValue"),
+                    ModuleLever: $("#uModuleLever").textbox("getValue"),
+                    OrderNo: $("#uOrderNo").textbox("getValue")
+                }, function (data) {
+                    if (data.Code == 1) {
+                        $("#UpdateModuleDialog").dialog('close');
+                        $("#test").datagrid('reload');
+                        $.messager.alert("友情提示", "修改模块成功!", "success");
+                        initDropDown();
+                    } else if (data.Code == 2) {
+                        $.messager.alert("友情提示", "模块名称已存在!", "warning");
+                    } else {
+                        $.messager.alert("友情提示", "修改失败，请您检查!", "warning");
+                    }
+                });
+            });
+        }
+</script>
+
+@*-------------------------- 实现对角色数据的显示-------------------------*@
+<div>
+    <table id="test"></table>
+</div>
+
+@*----------------------------设置添加的弹出层--------------------------------*@
+<div id="AddModuleDialog" class="easyui-dialog" style="width:400px;height:360px;padding:10px" iconcls="icon-save"
+     closed="true" resizable="true" modal="true" buttons="#dlg-buttons" align="center">
+    <form id="ModuleForm" method="post" novalidate="novalidate">
+        <table id="tblAdd">
+            <tr>
+                <th><label for="ModulePId">父级名称</label></th>
+                <td><input class="easyui-combobox" id="ModulePId" name="ModulePId" /></td>
+            </tr>
+            <tr>
+                <th><label for="ModuleName">名称</label></th>
+                <td><input class="easyui-textbox" id="ModuleName" name="ModuleName" data-options="required:true,validType:'length[1,64]'" /></td>
+            </tr>
+            <tr>
+                <th><label for="ModuleUrl">模块地址</label></th>
+                <td><input class="easyui-textbox" id="ModuleUrl" name="ModuleUrl" data-options="validType:'length[0,64]'" /></td>
+            </tr>
+            <tr>
+                <th><label for="ModuleLever">模块等级</label></th>
+                <td><input class="easyui-textbox" id="ModuleLever" name="ModuleLever" data-options="required:true,validType:'length[1,64]'" /></td>
+            </tr>
+            <tr>
+                <th><label for="OrderNo">排序号</label></th>
+                <td><input class="easyui-textbox" id="OrderNo" name="OrderNo" data-options="required:true,validType:'length[1,64]'" /></td>
+            </tr>
+            <tr>
+                <td colspan="2" style="text-align:center; padding-top:10px">
+                    <a href="javascript:void(0)" class="easyui-linkbutton" id="btnRegist" iconcls="icon-ok">确定</a>
+                    <a href="javascript:void(0)" class="easyui-linkbutton" iconcls="icon-cancel" onclick="javascript:$('#AddModuleDialog').dialog('close')">关闭</a>
+                </td>
+            </tr>
+        </table>
+    </form>
+</div>
+
+@*----------------------------设置修改的的弹出层--------------------------------*@
+<div id="UpdateModuleDialog" class="easyui-dialog" style="width:400px;height:380px;padding:10px" iconcls="icon-save"
+     closed="true" resizable="true" modal="true" buttons="#dlg-buttons" align="center">
+    <form id="UpdateModuleForm" method="post" novalidate="novalidate">
+        <table id="tblUpdate">
+            <tr>
+                <th><label for="uModulePId">父级名称</label></th>
+                <td><input class="easyui-combobox" id="uModulePId" name="uModulePId" /></td>
+            </tr>
+            <tr>
+                <th><label for="uModuleName">名称</label></th>
+                <td><input class="easyui-textbox" id="uModuleName" name="uModuleName" data-options="required:true,validType:'length[1,64]'" /></td>
+            </tr>
+            <tr>
+                <th><label for="uModuleUrl">模块地址</label></th>
+                <td><input class="easyui-textbox" id="uModuleUrl" name="uModuleUrl" data-options="validType:'length[0,200]'" /></td>
+            </tr>
+            <tr>
+                <th><label for="uModuleLever">模块等级</label></th>
+                <td><input class="easyui-textbox" type="number" id="uModuleLever" name="uModuleLever" data-options="required:true" /></td>
+            </tr>
+            <tr>
+                <th><label for="uOrderNo">排序号</label></th>
+                <td><input class="easyui-textbox" type="number" id="uOrderNo" name="uOrderNo" data-options="required:true" /></td>
+            </tr>
+            <tr>
+                <td colspan="2" style="text-align:center; padding-top:10px">
+                    <input type="hidden" id="ModuleId" name="ModuleId" />
+                    <a href="javascript:void(0)" class="easyui-linkbutton" id="btnUpdate" iconcls="icon-ok">确定</a>
+                    <a href="javascript:void(0)" class="easyui-linkbutton" iconcls="icon-cancel" onclick="javascript:$('#UpdateModuleDialog').dialog('close')">关闭</a>
+                </td>
+            </tr>
+        </table>
+    </form>
+</div>

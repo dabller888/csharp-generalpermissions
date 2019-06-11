@@ -1,0 +1,232 @@
+﻿<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="edge" />
+    <link rel="shortcut icon" href="favicon.ico" />
+    <title>通用权限后台管理系统-T4代码生成-登录</title>
+    <link href="/Content/jquery-easyui-1.5/themes/insdep/easyui.css" rel="stylesheet" type="text/css">
+    <link href="/Content/jquery-easyui-1.5/themes/insdep/easyui_animation.css" rel="stylesheet" type="text/css">
+    <link href="/Content/jquery-easyui-1.5/themes/insdep/easyui_plus.css" rel="stylesheet" type="text/css">
+    <link href="/Content/jquery-easyui-1.5/themes/insdep/insdep_theme_default.css" rel="stylesheet" type="text/css">
+    <link href="/Content/jquery-easyui-1.5/themes/insdep/icon.css" rel="stylesheet" type="text/css">
+
+    <script type="text/javascript" src="/Content/jquery-easyui-1.5/jquery.min.js"></script>
+    <script type="text/javascript" src="/Content/jquery-easyui-1.5/jquery.easyui.min.js"></script>
+    <script type="text/javascript" src="/Content/jquery-easyui-1.5/themes/insdep/jquery.insdep-extend.min.js"></script>
+    <script type="text/javascript" src="/Content/jquery.loading.js"></script>
+    <style>
+        .icon-username {
+            background: url('/Content/img/icon-1.png') no-repeat center center;
+            /*background-color: #dbe4f3;*/
+        }
+
+        .icon-passwd {
+            background: url('/Content/img/icon-2.png') no-repeat center center;
+        }
+
+        .icon-verify {
+            background: url('/Content/img/icon-3.png') no-repeat center center;
+        }
+
+
+        .theme-login-layout {
+            background: rgba(235, 182, 100, 0.31);
+        }
+
+        .theme-login-header {
+            height: 40px;
+            padding: 100px 0 30px;
+            position: relative;
+            text-align: center;
+        }
+
+            .theme-login-header p {
+                font-size: 28px;
+                color: rgba(243, 137, 24, 0.9);
+                font-weight: 700;
+                padding: 0;
+            }
+
+        #theme-login-form {
+            width: 500px;
+            margin: 0 auto 0 auto;
+            background: rgba(255, 214, 132, 0.54);
+            overflow: hidden;
+            clear: both;
+            padding: 60px 0;
+            position: relative;
+        }
+
+            #theme-login-form dl dd {
+                margin-bottom: 20px;
+            }
+
+                #theme-login-form dl dd:last-child {
+                    margin-bottom: 0;
+                }
+
+        .theme-login-form dl dd:nth-child(3) img {
+            position: absolute;
+            margin: 5px 0;
+            margin-left: 20px;
+        }
+
+            .theme-login-form dl dd:nth-child(3) img:hover {
+                cursor: pointer;
+            }
+
+        .theme-login-form .submit {
+            width: 100%;
+            background-color: rgba(242, 89, 13, 0.76);
+            font-size: 18px;
+        }
+
+        #_easyui_textbox_input1 {
+            margin-left: 30px !important;
+        }
+
+        .validatebox-tip-content {
+            display: inline-block;
+            position: absolute;
+            top: 110px;
+            left: 650px;
+            padding: 3px 5px;
+            border: 1px solid #CC9933;
+            background: #FFFFCC;
+            z-index: 9900001;
+            font-size: 12px;
+        }
+    </style>
+</head>
+
+<body class="theme-login-layout">
+
+    <div class="theme-login-header">
+        <p>通用权限后台管理系统-T4代码生成</p>
+    </div>
+    <div id="theme-login-form">
+        <form id="LoginForm" name="LoginForm" class="theme-login-form" method="post">
+            <dl>
+                <dd><input id="username" name="username" class="theme-login-text" data-options="iconCls:'icon-username',iconWidth:30,iconAlign:'left'" style="width:100%;" /></dd>
+                <dd><input id="password" name="password" class="theme-login-text" data-options="iconCls:'icon-passwd',iconWidth:30,iconAlign:'left'" style="width:100%;" /></dd>
+                <dd>
+                    <input class="theme-login-text" id="code" name="code" data-options="iconCls:'icon-verify',iconWidth:30,iconAlign:'left'" style="width:60%;" />
+                    <img src="/Login/GetVerifyCode?ID=1" id="imgCode" alt="单击可刷新" onclick="ClickRemoveChangeCode()" />
+
+                </dd>
+                <dd style="text-align:center"><a class="submit" href="javascript:;">登  录</a></dd>
+
+            </dl>
+        </form>
+    </div>
+
+    @*<div class="theme-login-footer">
+        <dl>
+            <dd>
+                &copy 2007 -
+                <script>var year = new Date(); document.write(year.getFullYear());</script> 湖北侨亚养老产业股份有限公司
+            </dd>
+        </dl>
+    </div>*@
+    <script>
+        $(function () {
+
+            $.extend($.fn.validatebox.defaults.tipOptions, {
+                onShow: function () {
+                    $(this).tooltip("tip").css({ backgroundColor: "#ff7e00", border: "none", color: "#fff" });
+                }
+            })
+
+            /*布局部分*/
+            $('#theme-login-layout').layout({
+                fit: true/*布局框架全屏*/
+            });
+
+            $('#username').textbox({
+                prompt: '请输入用户名',
+                required: true,
+                missingMessage: "请输入用户名"
+            });
+            $('#password').textbox({
+                type: "password",
+                prompt: '请输入密码',
+                required: true,
+                missingMessage: "请输入密码"
+            });
+            $('#code').textbox({
+                prompt: '请输入验证码',
+                required: true,
+                missingMessage: "请输入验证码"
+            })
+
+            $('.submit').linkbutton({
+
+            });
+
+            $('.submit').click(function () {
+                var valid = $('#LoginForm').form('validate');
+                if (valid == false) {
+                    return false;
+                }
+                $.ajax({
+                    url: '/Back/Login/SignIn',
+                    type: 'POST',
+                    datatype: 'json',
+                    data: {
+                        UserName: $('#username').val(),
+                        Passwd: $('#password').val(),
+                        ImgCode: $('#code').val(),
+                    },
+                    beforeSend: function () {
+                        mask.open();
+                    },
+                    success: function (data) {
+                        mask.close();
+                        if (data.Code == 1) {
+                            window.location.href = "/Back/Home/Main";
+                        } else {
+                            $.messager.alert("友情提示", data.Message, "warning");
+                        }
+                    },
+                    error: function (err) {
+                        mask.close();
+                        $.messager.alert("友情提示", "服务器错误!", "error");
+                    }
+                })
+            });
+
+            /*$('#form').form({
+                url: "http://www.insdep.com/",
+                onSubmit: function () {
+                    var res = $(this).form('enableValidation').form('validate');
+                    res ? $.messager.progress() : "";
+                    return res;
+                },
+                success: function (data) {
+                    $.messager.progress('close');
+                    try {
+                        var data = eval('(' + data + ')');
+                        if (!data.success) {
+                            $.messager.alert('提示', data.message, 'error', function () {
+                                $('#username,#password').textbox('clear');
+                            });
+                        } else {
+                            window.location.reload();
+                        }
+                    }
+                    catch (e) {
+                        $.insdep.error(data);
+                    }
+                }
+            });
+            */
+        })
+
+        function ClickRemoveChangeCode() {
+            var code = $("#imgCode").attr("src");
+            $("#imgCode").attr("src", code + "1");
+        }
+    </script>
+</body>
+</html>

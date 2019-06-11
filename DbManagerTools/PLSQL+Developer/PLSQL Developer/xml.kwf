@@ -1,0 +1,88 @@
+//
+// Macro definitions. Parameters may be specified and the replacement text terminates with the end of
+// line (watch trailing blanks).
+//
+#define st_DEFAULT          0
+#define st_COMMENT          1
+#define st_IDENTIFIER       2
+#define st_STRING           3
+#define st_NUMBER           4
+#define st_SYMBOL           5
+#define st_RESERVED         6
+#define st_COMMENT_LINE     7
+#define st_COMMENT_XML      8
+
+#define st_TAGSTART         41
+#define st_TAGEND					  42
+
+#define st_CSTRING          51
+#define st_PSTRING          52
+
+#define ss_START            60
+#define ss_INTAG            61
+#define ss_STRING           62
+#define ss_RESERVED         63
+#define ss_IDENTIFIER       64
+
+#define _non_alpha_         '[^_A-Za-z0-9]'
+#define _all_chars_         '[\x00-\xFF]'
+#define _no_quotes_         '[\x00-\x21\x23-\x26\x28-\xFF]'
+#define _no_chars_          '[]'
+#define _dont_care_         _all_chars_
+
+%%language
+Name                        = 'XML'
+Gutter                      = 0 //_DEFAULT_GUTTER
+
+EditableStyles              ('Reserved word', st_RESERVED),
+                            ('Comment',       st_COMMENT),
+                            ('Identifier',    st_IDENTIFIER),
+                            ('String',        st_STRING),
+                            ('Number',        st_NUMBER),
+                            ('Symbols',       st_SYMBOL),
+                            ('Default',       st_DEFAULT)
+
+StartState                  = ss_START
+
+%%words
+'?xml'             _non_alpha_       st_RESERVED    [ss_INTAG]
+'version'          _non_alpha_       st_RESERVED    [ss_INTAG]
+'standalone'       _non_alpha_       st_RESERVED    [ss_INTAG]
+'encoding'         _non_alpha_       st_RESERVED    [ss_INTAG]
+'<'                _dont_care_       st_TAGSTART    [ss_START]
+'>'                _dont_care_       st_TAGEND      [ss_INTAG]
+'<!--'             _dont_care_       st_COMMENT_XML [ss_START]
+
+%%handler
+st_COMMENT_XML          _all_chars_?                  '->'           _use_
+
+%%tokens
+
+InState ss_INTAG
+(
+  st_IDENTIFIER           '[a-zA-Z_$#0-9=?/:%!]' '[a-zA-Z_$#0-9=?/:%!]'? '[^a-zA-Z_$#0-9=?/:%!]' _discard_
+  st_CSTRING              '[\x22]'      _all_chars_? '[\x22]'         _use_
+  st_PSTRING              '[\x27]'      _all_chars_? '[\x27]'         _use_
+)
+
+%%map
+st_TAGSTART        st_IDENTIFIER
+st_TAGEND          st_IDENTIFIER
+st_DEFAULT         st_STRING
+st_IDENTIFIER      st_IDENTIFIER
+st_STRING          st_STRING
+st_CSTRING         st_STRING
+st_PSTRING         st_STRING
+st_COMMENT         st_COMMENT
+st_COMMENT_XML     st_COMMENT
+st_RESERVED        st_RESERVED
+st_SYMBOL          st_SYMBOL
+
+%%states
+st_TAGSTART      (+[ss_INTAG])
+st_TAGEND        (-[ss_INTAG])
+//st_CSTRING     (+[ss_STRING] -[ss_RESERVED + ss_DEFAULT])
+//st_RESERVED    (+[ss_RESERVED] -[ss_STRING + ss_DEFAULT])
+//st_PSTRING     (+[ss_STRING] -[ss_RESERVED + ss_IDENTIFIER])
+//st_IDENTIFIER  (+[ss_IDENTIFIER] -[ss_RESERVED + ss_STRING])
+
